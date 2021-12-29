@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".fragments.OneWayFragment">
+
+    <RelativeLayout
+        android:id="@+id/rl_from"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/item_bg_with_corners"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/rl_to"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:text="FROM"
+            android:textColor="#707070"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_airport_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_from"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:text="HYD" />
+
+        <TextView
+            android:id="@+id/tv_airport_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_airport_title"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="Hyderabad" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_to"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/item_bg_with_corners"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rl_from"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:text="TO"
+            android:textColor="@color/gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_to_airport_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_to"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:text="HYD" />
+
+        <TextView
+            android:id="@+id/tv_to_airport_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_to_airport_title"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="Hyderabad" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_pointing_arrow"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_swap"
+        app:layout_constraintBottom_toBottomOf="@id/rl_to"
+        app:layout_constraintEnd_toStartOf="@id/rl_to"
+        app:layout_constraintStart_toEndOf="@id/rl_from"
+        app:layout_constraintTop_toTopOf="@id/rl_from" />
+
+    <RelativeLayout
+        android:id="@+id/rl_dep_date_picker"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:background="@drawable/item_bg_with_corners"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toStartOf="@id/rl_return_date_picker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_from">
+
+        <TextView
+            android:id="@+id/tv_dep_date_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:fontFamily="sans-serif"
+            android:text="DEPARTURE DATE"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_dep_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_dep_date_title"
+            android:layout_marginTop="5dp"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="5dp"
+            android:fontFamily="sans-serif"
+            android:text="Wed 29-Dec-2021"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_return_date_picker"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/item_bg_with_corners"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingStart="10dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rl_dep_date_picker"
+        app:layout_constraintTop_toBottomOf="@id/rl_from">
+
+        <TextView
+            android:id="@+id/tv_return_date_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:fontFamily="sans-serif"
+            android:text="RETURN DATE"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_return_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_return_date_title"
+            android:layout_marginTop="5dp"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="5dp"
+            android:fontFamily="sans-serif"
+            android:text="Wed 29-Dec-2021"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_travellers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/item_bg_with_corners"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        app:layout_constraintEnd_toStartOf="@id/rl_class"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_dep_date_picker">
+
+        <TextView
+            android:id="@+id/tv_travellers_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif"
+            android:text="Travellers"
+            android:textAllCaps="true"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_travellers_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_travellers_title"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="1 Traveller" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_class"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/item_bg_with_corners"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rl_travellers"
+        app:layout_constraintTop_toBottomOf="@id/rl_dep_date_picker">
+
+        <TextView
+            android:id="@+id/tv_class_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif"
+            android:text="Class"
+            android:textAllCaps="true"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_class_title"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="Economy" />
+
+
+    </RelativeLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_search_flights"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:backgroundTint="#FF5733"
+        android:insetTop="0dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:insetBottom="0dp"
+        android:text="Search Flights"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_class" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
