@@ -9,6 +9,14 @@
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_multi_city.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_one_way.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_round_trip.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable/gray_bg_with_round_corners.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/item_bg_with_corners.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/search_bar_bg.xml" value="0.209375" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/activity_search_airports.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_one_way.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/popular_cities_item_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/popular_cities_layout.xml" value="0.19322916666666667" />
       </map>
     </option>
   </component>
