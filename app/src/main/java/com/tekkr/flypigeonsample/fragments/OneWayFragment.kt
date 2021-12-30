@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import com.tekkr.flypigeonsample.CalendarPickerActivity
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.SearchAirportsActivity
 import com.tekkr.flypigeonsample.showToast
@@ -33,6 +34,9 @@ class OneWayFragment : Fragment() {
         rl_to.setOnClickListener {
             launchSearchAirportsActivity("Destination")
         }
+        rl_dep_date_picker.setOnClickListener {
+            launchDatePicker()
+        }
     }
 
     private fun launchSearchAirportsActivity(source_type: String) {
@@ -43,6 +47,12 @@ class OneWayFragment : Fragment() {
             ).apply {
                 putExtra("source_type", source_type)
             }
+        )
+    }
+
+    private fun launchDatePicker() {
+        datePickerLauncher.launch(
+            Intent(requireContext(), CalendarPickerActivity::class.java)
         )
     }
 
@@ -58,5 +68,11 @@ class OneWayFragment : Fragment() {
                 }
             }
         }
+
+    private val datePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+        }
+
 
 }

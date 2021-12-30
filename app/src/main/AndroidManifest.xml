@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FlyPigeonSample">
         <activity
+            android:name=".CalendarPickerActivity"
+            android:exported="true" />
+        <activity
             android:name=".SearchAirportsActivity"
             android:exported="true" />
         <activity

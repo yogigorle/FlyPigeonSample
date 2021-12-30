@@ -155,9 +155,9 @@
             android:drawableStart="@drawable/ic_calendar"
             android:drawablePadding="5dp"
             android:fontFamily="sans-serif"
+            android:text="Wed 29-Dec-2021"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:text="Wed 29-Dec-2021" />
+            android:textSize="16sp" />
 
 
     </RelativeLayout>

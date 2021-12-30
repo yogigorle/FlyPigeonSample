@@ -3,20 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../Android/Sdk/platforms/android-31/data/res/drawable/status_bar_item_background.xml" value="0.209375" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/drawable/ic_calendar.xml" value="0.26615384615384613" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/drawable/item_bg_with_corners.xml" value="0.26615384615384613" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_multi_city.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_one_way.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_round_trip.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.14166666666666666" />
+        <entry key="app/src/main/res/drawable/date_bg_selected.xml" value="0.14166666666666666" />
+        <entry key="app/src/main/res/drawable/date_bg_unselected.xml" value="0.14166666666666666" />
+        <entry key="app/src/main/res/drawable/date_selector.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/gray_bg_with_round_corners.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/item_bg_with_corners.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/search_bar_bg.xml" value="0.209375" />
+        <entry key="app/src/main/res/layout/activity_calendar_picker.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_search_airports.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/calendar_months_item.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/date_item.xml" value="0.12" />
         <entry key="app/src/main/res/layout/fragment_one_way.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/popular_cities_item_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/popular_cities_layout.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/standarad_toolbar.xml" value="0.19322916666666667" />
       </map>
     </option>
   </component>
