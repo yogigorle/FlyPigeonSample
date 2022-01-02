@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#364547"
+    android:elevation="4dp">
+
+    <FrameLayout
+        android:id="@+id/fl_back"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:background="?selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/ic_back_arrow_black" />
+
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/fl_back"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        tools:text="My Cart" />
+
+
+
+</RelativeLayout>

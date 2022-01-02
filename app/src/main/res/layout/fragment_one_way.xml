@@ -31,29 +31,31 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_airport_title"
+            android:id="@+id/tv_from_airport_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_from"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
+            android:text="HYD"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="HYD" />
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_airport_desc"
+            android:id="@+id/tv_from_airport_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_airport_title"
+            android:layout_below="@id/tv_from_airport_title"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
+            android:text="Hyderabad"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Hyderabad" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
@@ -88,9 +90,10 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
+            android:text="HYD"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="HYD" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tv_to_airport_desc"
@@ -101,9 +104,10 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
+            android:text="Hyderabad"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Hyderabad" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
@@ -151,9 +155,9 @@
             android:drawableStart="@drawable/ic_calendar"
             android:drawablePadding="5dp"
             android:fontFamily="sans-serif"
+            android:text="Wed 29-Dec-2021"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:text="Wed 29-Dec-2021" />
+            android:textSize="16sp" />
 
 
     </RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <TextView
+            android:id="@+id/tv_popular_cities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D6E5FA"
+            android:fontFamily="sans-serif"
+            android:padding="3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="popular cities"
+            android:textAllCaps="true"
+            android:textColor="@color/black" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_popular_cities"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:listitem="@layout/popular_cities_item_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_popular_cities"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
