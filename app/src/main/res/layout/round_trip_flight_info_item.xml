@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@drawable/white_bg_with_gray_stroke"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_flight_pic"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_flight_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="SG 8701"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/iv_flight_pic"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp" />
+
+    <TextView
+        android:id="@+id/tv_flight_fare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="5,793"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@id/tv_flight_name"
+        android:layout_marginStart="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_fl_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="18:55"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_flight_pic" />
+
+    <TextView
+        android:id="@+id/tv_fl_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="21:05"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        app:layout_constraintTop_toBottomOf="@id/iv_flight_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp" />
+
+    <View
+        android:id="@+id/seperator_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/gray"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintTop_toTopOf="@id/tv_fl_start_time"
+        app:layout_constraintBottom_toBottomOf="@id/tv_fl_start_time"
+        app:layout_constraintStart_toEndOf="@id/tv_fl_start_time"
+        app:layout_constraintEnd_toStartOf="@id/tv_fl_end_time" />
+
+    <TextView
+        android:id="@+id/tv_fl_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="02h 10m"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/tv_fl_end_time"
+        app:layout_constraintStart_toEndOf="@id/tv_fl_start_time"
+        app:layout_constraintBottom_toBottomOf="@id/seperator_line" />
+
+    <TextView
+        android:id="@+id/tv_stop_classification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="non-stop"
+        android:textColor="@color/purple_700"
+        android:textSize="16sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toStartOf="@id/tv_fl_end_time"
+        app:layout_constraintStart_toEndOf="@id/tv_fl_start_time"
+        app:layout_constraintTop_toBottomOf="@id/seperator_line" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

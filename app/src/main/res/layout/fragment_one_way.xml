@@ -195,9 +195,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif"
+            android:text="1 Traveller"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="1 Traveller" />
+            android:textSize="18sp" />
 
 
     </RelativeLayout>
@@ -235,9 +235,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif"
+            android:text="Economy"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="Economy" />
+            android:textSize="18sp" />
 
 
     </RelativeLayout>
@@ -247,6 +247,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/rl_travellers">
 
         <com.google.android.material.checkbox.MaterialCheckBox
@@ -291,8 +292,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:backgroundTint="#FF5733"
-        android:insetTop="0dp"
         android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="10dp"
+        android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="Search Flights"
         app:cornerRadius="5dp"

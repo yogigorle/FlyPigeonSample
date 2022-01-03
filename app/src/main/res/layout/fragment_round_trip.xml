@@ -31,22 +31,22 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_airport_title"
+            android:id="@+id/tv_from_airport_title_round_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_from"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
+            android:text="HYD"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="HYD" />
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_airport_desc"
+            android:id="@+id/tv_from_airport_desc_round_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_airport_title"
+            android:layout_below="@id/tv_from_airport_title_round_trip"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
@@ -81,7 +81,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_to_airport_title"
+            android:id="@+id/tv_to_airport_title_round_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_to"
@@ -93,10 +93,10 @@
             android:text="HYD" />
 
         <TextView
-            android:id="@+id/tv_to_airport_desc"
+            android:id="@+id/tv_to_airport_desc_round_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_to_airport_title"
+            android:layout_below="@id/tv_to_airport_title_round_trip"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"

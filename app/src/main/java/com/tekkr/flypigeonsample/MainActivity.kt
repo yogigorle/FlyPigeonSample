@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
             when (position) {
                 0 -> tab.text = "One Way"
                 1 -> tab.text = "Round Trip"
-                2 -> tab.text = "Multi City"
             }
         }.attach()
 

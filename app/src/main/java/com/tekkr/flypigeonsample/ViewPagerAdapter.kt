@@ -11,14 +11,13 @@ import com.tekkr.flypigeonsample.fragments.RoundTripFragment
 class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
-        return 3
+        return 2
     }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> OneWayFragment()
             1 -> RoundTripFragment()
-            2 -> MultiCityFragment()
             else -> OneWayFragment()
         }
     }
