@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".fragments.OneWayFragment">
+    tools:context=".ui.views.oneway.OneWayFragment">
 
     <RelativeLayout
         android:id="@+id/rl_from"
@@ -31,7 +31,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_from_airport_title_round_trip"
+            android:id="@+id/tv_round_trip_src_airport_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_from"
@@ -39,21 +39,23 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
             android:text="HYD"
+            android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_from_airport_desc_round_trip"
+            android:id="@+id/tv_round_trip_src_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_from_airport_title_round_trip"
+            android:layout_below="@id/tv_round_trip_src_airport_code"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
+            android:text="Hyderabad"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Hyderabad" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
@@ -81,37 +83,40 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_to_airport_title_round_trip"
+            android:id="@+id/tv_round_trip_dest_airport_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_to"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
+            android:text="HYD"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="HYD" />
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_to_airport_desc_round_trip"
+            android:id="@+id/tv_round_trip_dest_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_to_airport_title_round_trip"
+            android:layout_below="@id/tv_round_trip_dest_airport_code"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
+            android:text="Hyderabad"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Hyderabad" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/iv_pointing_arrow"
+        android:id="@+id/iv_pointing_arrow_round_trip"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/ic_swap"
+        app:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/rl_to"
         app:layout_constraintEnd_toStartOf="@id/rl_to"
         app:layout_constraintStart_toEndOf="@id/rl_from"

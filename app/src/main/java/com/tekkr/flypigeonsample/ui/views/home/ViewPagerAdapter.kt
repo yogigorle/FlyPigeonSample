@@ -1,12 +1,11 @@
-package com.tekkr.flypigeonsample
+package com.tekkr.flypigeonsample.ui.views.home
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.tekkr.flypigeonsample.fragments.MultiCityFragment
-import com.tekkr.flypigeonsample.fragments.OneWayFragment
-import com.tekkr.flypigeonsample.fragments.RoundTripFragment
+import com.tekkr.flypigeonsample.ui.views.oneway.OneWayFragment
+import com.tekkr.flypigeonsample.ui.views.roundtrip.RoundTripFragment
 
 class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {

@@ -1,8 +1,9 @@
-package com.tekkr.flypigeonsample
+package com.tekkr.flypigeonsample.ui.views.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayoutMediator
+import com.tekkr.flypigeonsample.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

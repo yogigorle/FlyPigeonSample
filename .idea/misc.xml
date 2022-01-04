@@ -35,7 +35,7 @@
         <entry key="app/src/main/res/layout/button_selector.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/calendar_months_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/date_item.xml" value="0.12" />
-        <entry key="app/src/main/res/layout/fragment_one_way.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/fragment_one_way.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_round_trip.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/one_way_flight_info_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/popular_cities_item_layout.xml" value="0.1" />
@@ -58,7 +58,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.2" />
+        <option name="scale" value="0.18" />
       </ProjectState>
     </option>
   </component>
