@@ -12,20 +12,36 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.ui.views.airportssearch.SearchAirportsActivity
+import com.tekkr.flypigeonsample.utils.DataStoreManager
+import com.tekkr.flypigeonsample.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_one_way.*
 import kotlinx.android.synthetic.main.travellers_count_toggle_btn.view.*
 import kotlinx.android.synthetic.main.travellers_selection_bottom_sheet.*
 import kotlinx.android.synthetic.main.travellers_selection_item.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
+@AndroidEntryPoint
 abstract class BaseFragment : Fragment() {
+
+    @Inject
+    lateinit var dataStoreManager: DataStoreManager
 
 
     protected fun showTravellersSelectionBottomSheet(
         travellersCount: (Int, Int, Int) -> Unit
     ) {
+
         val bottomSheet = BottomSheetDialog(requireContext())
         with(bottomSheet) {
             setContentView(R.layout.travellers_selection_bottom_sheet)
@@ -85,6 +101,15 @@ abstract class BaseFragment : Fragment() {
                                 adultTravellerToggleButtons[travellerCount - 1].text =
                                     travellerCount.toString()
 
+                                lifecycleScope.launch {
+                                    dataStoreManager.getBoolean("ADULT${travellerCount - 1}")
+                                        .collectLatest {
+                                            if (it != null)
+                                                adultTravellerToggleButtons[travellerCount - 1].isChecked =
+                                                    it
+                                        }
+                                }
+
                                 selectedToggleBtnList = adultTravellerToggleButtons
                             }
 
@@ -94,8 +119,18 @@ abstract class BaseFragment : Fragment() {
                                 childTravellerToggleButtons[travellerCount].text =
                                     travellerCount.toString()
 
-                                selectedToggleBtnList = childTravellerToggleButtons
 
+                                lifecycleScope.launch {
+                                    with(dataStoreManager) {
+                                        getBoolean("CHILD${travellerCount}")
+                                            .collectLatest {
+                                                if (it != null)
+                                                    childTravellerToggleButtons[travellerCount].isChecked =
+                                                        it
+                                            }
+                                    }
+                                }
+                                selectedToggleBtnList = childTravellerToggleButtons
                             }
 
                             else -> {
@@ -103,6 +138,18 @@ abstract class BaseFragment : Fragment() {
 
                                 infantTravellerToggleButtons[travellerCount].text =
                                     travellerCount.toString()
+
+                                lifecycleScope.launch {
+                                    with(dataStoreManager) {
+                                        getBoolean("INFANT${travellerCount}")
+                                            .collectLatest {
+                                                if (it != null)
+                                                    infantTravellerToggleButtons[travellerCount].isChecked =
+                                                        it
+                                            }
+
+                                    }
+                                }
                                 selectedToggleBtnList = infantTravellerToggleButtons
 
                             }
@@ -123,9 +170,20 @@ abstract class BaseFragment : Fragment() {
 
                         btn_done.setOnClickListener {
 
-                            adultTravellerToggleButtons.forEach { adults ->
-                                childTravellerToggleButtons.forEach { children ->
-                                    infantTravellerToggleButtons.forEach { infants ->
+                            adultTravellerToggleButtons.forEachIndexed { adultsIndex, adults ->
+                                childTravellerToggleButtons.forEachIndexed { childIndex, children ->
+                                    infantTravellerToggleButtons.forEachIndexed { infantsIndex, infants ->
+
+                                        with(dataStoreManager) {
+                                            lifecycleScope.launch {
+                                                putBoolean("ADULT${adultsIndex}", adults.isChecked)
+                                                putBoolean("CHILD${childIndex}", children.isChecked)
+                                                putBoolean(
+                                                    "INFANT${infantsIndex}",
+                                                    infants.isChecked
+                                                )
+                                            }
+                                        }
                                         if (adults.isChecked && children.isChecked && infants.isChecked) {
                                             travellersCount(
                                                 adults.text.toString().toInt(),
@@ -134,10 +192,11 @@ abstract class BaseFragment : Fragment() {
                                             )
                                         }
                                     }
+
                                 }
                             }
-                            hide()
 
+                            hide()
                         }
                     }
 
@@ -146,7 +205,6 @@ abstract class BaseFragment : Fragment() {
             }
             setCancelable(false)
             show()
-
 
         }
 

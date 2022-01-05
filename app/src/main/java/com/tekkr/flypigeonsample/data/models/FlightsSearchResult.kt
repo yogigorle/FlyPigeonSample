@@ -1,6 +1,9 @@
 package com.tekkr.flypigeonsample.data.models
 
 import com.google.gson.annotations.SerializedName
+import com.tekkr.flypigeonsample.utils.convertToHoursAndMins
+import com.tekkr.flypigeonsample.utils.formatFlightTime
+import com.tekkr.flypigeonsample.utils.formatMoney
 
 data class FlightsSearchResult(
     val AirSearchResponse: FlightsSearchResponse
@@ -9,9 +12,9 @@ data class FlightsSearchResult(
         val AirSearchResult: FlightSearchInfo
     ) {
         data class FlightSearchInfo(
-            val FareItineraries: List<FareItinerary>
+            val FareItineraries: List<AirFareItinerary>
         ) {
-            data class FareItinerary(
+            data class AirFareItinerary(
                 @SerializedName("FareItinerary")
                 val fareItinerary: FareItinerary
             ) {
@@ -53,7 +56,10 @@ data class FlightsSearchResult(
                                     val Amount: Int,
                                     val CurrencyCode: String,
                                     val DecimalPlaces: String
-                                )
+                                ) {
+                                    val formattedTotalFare: String
+                                        get() = Amount.formatMoney()
+                                }
                             }
 
                             data class PassengerTypeQuantity(
@@ -79,10 +85,10 @@ data class FlightsSearchResult(
 
                     data class OriginDestinationOption(
                         @SerializedName("OriginDestinationOption")
-                        val originDestinationOption: List<OriginDestinationOption>,
+                        val originDestinationOption: List<OriginDestinationOptions>,
                         val TotalStops: Int
                     ) {
-                        data class OriginDestinationOption(
+                        data class OriginDestinationOptions(
                             @SerializedName("FlightSegment")
                             val flightSegment: FlightSegment,
                             val ResBookDesigCode: Any,
@@ -115,7 +121,12 @@ data class FlightsSearchResult(
                                     val Code: String,
                                     val Equipment: Any,
                                     val FlightNumber: String
-                                )
+                                ) {
+                                    val formattedFlightCode: String
+                                        get() = "$Code $FlightNumber"
+                                }
+
+
                             }
 
                             data class SeatsRemaining(
@@ -128,7 +139,17 @@ data class FlightsSearchResult(
                                 val DepartureDateTime: String,
                                 val Duration: Int,
                                 val LocationCode: String
-                            )
+                            ) {
+
+                                val formattedDepTime: String
+                                    get() = DepartureDateTime.formatFlightTime()
+
+                                val formattedArrTime: String
+                                    get() = ArrivalDateTime.formatFlightTime()
+
+                                val formattedFlightDuration: String
+                                    get() = if (Duration > 60) Duration.convertToHoursAndMins() else "$Duration m"
+                            }
                         }
                     }
                 }

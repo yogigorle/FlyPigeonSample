@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object WebServices {
-    const val baseUrl = "http://3.109.142.98/"
+    const val baseUrl = "http://3.111.62.245/"
 
     private val okhttpClient = OkHttpClient.Builder()
         .connectTimeout(20, TimeUnit.SECONDS)

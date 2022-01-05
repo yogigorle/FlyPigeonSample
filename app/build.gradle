@@ -68,4 +68,10 @@ dependencies {
 
     //json parsing library
     implementation 'com.github.salomonbrys.kotson:kotson:2.5.0'
+
+    //datastore library
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //live data ktx
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
 }

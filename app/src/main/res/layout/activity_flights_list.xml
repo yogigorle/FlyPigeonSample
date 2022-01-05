@@ -7,6 +7,12 @@
     android:background="@color/light_gray"
     tools:context=".ui.views.flights.FlightsListActivity">
 
+
+    <include
+        android:id="@+id/progress_bar_layout"
+        layout="@layout/progress_bar_layout"/>
+
+
     <RelativeLayout
         android:id="@+id/rl_one_way_fl_info_toolbar"
         android:layout_width="match_parent"
@@ -61,15 +67,19 @@
 
     </RelativeLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_one_way_flights"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
+        app:layout_constrainedHeight="true"
+        android:visibility="visible"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar"
         tools:listitem="@layout/one_way_flight_info_item" />
+
 
     <TextView
         android:id="@+id/tv_first_route"
@@ -78,6 +88,7 @@
         android:layout_marginStart="4dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:padding="6dp"
+        android:visibility="gone"
         android:text="DEL - BOM"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -89,7 +100,7 @@
         android:id="@+id/rv_first_route_flights"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rv_second_route_flights"
@@ -101,7 +112,7 @@
         android:id="@+id/rv_second_route_flights"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -118,6 +129,7 @@
         android:layout_marginStart="4dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:padding="6dp"
+        android:visibility="gone"
         android:text="BOM - DEL"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -129,6 +141,7 @@
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="@color/gray"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tv_first_route"
         app:layout_constraintStart_toEndOf="@id/tv_first_route"
         app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar" />

@@ -16,9 +16,7 @@ class SearchAirportsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_airports)
-
         initUi()
-
     }
 
     private fun initUi() {
@@ -32,10 +30,10 @@ class SearchAirportsActivity : AppCompatActivity() {
 
         iv_back.setOnClickListener {
             setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra("source_city_code_name", "vtz")
-                putExtra("source_city_full_name", "Vizagpatnam")
-                putExtra("dest_city_code_name", "HYD")
-                putExtra("dest_city_full_name", "Hyderabad")
+                putExtra("source_city_code_name", "HYD")
+                putExtra("source_city_full_name", "Hyderabad")
+                putExtra("dest_city_code_name", "MAA")
+                putExtra("dest_city_full_name", "CHENNAI")
             })
             finish()
         }

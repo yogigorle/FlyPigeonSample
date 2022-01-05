@@ -3,11 +3,13 @@ package com.tekkr.flypigeonsample.ui.views.oneway
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -18,6 +20,8 @@ import com.tekkr.flypigeonsample.ui.viewmodels.FlightSearchViewModel
 import com.tekkr.flypigeonsample.ui.views.flights.FlightsListActivity
 import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.utils.checkIfStringsEmpty
+import com.tekkr.flypigeonsample.utils.convertMillsToDate
+import com.tekkr.flypigeonsample.utils.showToast
 import kotlinx.android.synthetic.main.fragment_one_way.*
 import kotlinx.android.synthetic.main.fragment_one_way.rl_class
 import kotlinx.android.synthetic.main.fragment_one_way.rl_dep_date_picker
@@ -25,11 +29,18 @@ import kotlinx.android.synthetic.main.fragment_one_way.rl_from
 import kotlinx.android.synthetic.main.fragment_one_way.rl_to
 import kotlinx.android.synthetic.main.fragment_one_way.rl_travellers
 import kotlinx.android.synthetic.main.fragment_one_way.tv_dep_date
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 class OneWayFragment : BaseFragment() {
 
+    var dateInMills = 0L
+    var adultTravellers = 0
+    var childTravellers = 0
+    var infantTravellers = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +63,6 @@ class OneWayFragment : BaseFragment() {
         //create instance of calendar for bounds
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         val currentDate = calendar.timeInMillis
-
 
         calendar.set(Calendar.MONTH, Calendar.JANUARY)
         val jan = calendar.timeInMillis
@@ -81,10 +91,14 @@ class OneWayFragment : BaseFragment() {
 
         depDatePicker.addOnPositiveButtonClickListener {
             tv_dep_date.text = depDatePicker.headerText
+            dateInMills = it
         }
 
         rl_travellers.setOnClickListener {
             showTravellersSelectionBottomSheet() { adults, children, infants ->
+                adultTravellers = adults
+                childTravellers = children
+                infantTravellers = infants
                 tv_travellers_count.text = "${adults + children + infants} Travellers"
             }
         }
@@ -104,11 +118,43 @@ class OneWayFragment : BaseFragment() {
         }
 
         btn_search_flights.setOnClickListener {
-           flightsSearchResultsActivityLauncher.launch(
-               Intent(requireContext(),FlightsListActivity::class.java).apply {
+            flightsSearchResultsActivityLauncher.launch(
+                Intent(requireContext(), FlightsListActivity::class.java).apply {
+                    putExtra(Constants.FlightSearchQueryParams.journeyType.param, "OneWay")
+                    putExtra(
+                        Constants.FlightSearchQueryParams.srcAirPortCode.param,
+                        tv_one_way_src_airport_code.text
+                    )
+                    putExtra(
+                        Constants.FlightSearchQueryParams.destAirPortCode.param,
+                        tv_one_way_dest_airport_code.text
+                    )
+                    putExtra(
+                        Constants.FlightSearchQueryParams.depDate.param,
+                        dateInMills.convertMillsToDate()
+                    )
+                    putExtra(Constants.FlightSearchQueryParams.adultsCount.param, adultTravellers)
+                    putExtra(Constants.FlightSearchQueryParams.childrenCount.param, childTravellers)
+                    putExtra(Constants.FlightSearchQueryParams.infantsCount.param, infantTravellers)
+                    putExtra(
+                        Constants.FlightSearchQueryParams.flightClass.param,
+                        tv_class.text
+                    )
+                    putExtra(
+                        Constants.FlightSearchQueryParams.srcCity.param,
+                        tv_one_way_src_city.text
+                    )
+                    putExtra(
+                        Constants.FlightSearchQueryParams.destCity.param,
+                        tv_one_way_dest_city.text
+                    )
+                    putExtra(
+                        Constants.FlightSearchQueryParams.formattedDepDate.param,
+                        tv_dep_date.text
+                    )
 
-               }
-           )
+                }
+            )
         }
 
     }

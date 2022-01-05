@@ -7,15 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_one_way.rl_from
 import kotlinx.android.synthetic.main.fragment_one_way.rl_to
 import kotlinx.android.synthetic.main.fragment_round_trip.*
+import java.util.*
 
 
 class RoundTripFragment : BaseFragment() {
+
+    var depDateInMillis = 0L
+    var returnDateInMills = 0L
+    var adultTravellers = 0
+    var childTravellers = 0
+    var infantTravellers = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,10 +38,10 @@ class RoundTripFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rl_from.setOnClickListener {
+        rl_from_round_trip.setOnClickListener {
             launchSearchAirportsActivity(Constants.origin, roundTripAirportSearchActvLauncher)
         }
-        rl_to.setOnClickListener {
+        rl_to_round_trip.setOnClickListener {
             launchSearchAirportsActivity(Constants.origin, roundTripAirportSearchActvLauncher)
         }
 
@@ -44,6 +54,19 @@ class RoundTripFragment : BaseFragment() {
                 tv_round_trip_dest_city
             )
         }
+
+        rl_travellers_round_trip.setOnClickListener {
+            showTravellersSelectionBottomSheet() { adults, children, infants ->
+                adultTravellers = adults
+                childTravellers = children
+                infantTravellers = infants
+            }
+        }
+
+        ll_dep_return_date_picker.setOnClickListener {
+            launchRangeDatePicker()
+        }
+
     }
 
     private val roundTripAirportSearchActvLauncher =
@@ -63,5 +86,41 @@ class RoundTripFragment : BaseFragment() {
                 }
             }
         }
+
+    private fun launchRangeDatePicker(
+    ) {
+        //create instance of calendar for bounds
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+
+        calendar.set(Calendar.MONTH, Calendar.JANUARY)
+        val jan = calendar.timeInMillis
+
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER)
+        val dec = calendar.timeInMillis
+
+
+        val calConstraintsBuilder = CalendarConstraints.Builder()
+        calConstraintsBuilder.apply {
+            setStart(jan)
+            setEnd(dec)
+            setValidator(DateValidatorPointForward.now())
+        }
+
+        val rangeDatePicker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select Departure and Return Date")
+            .setCalendarConstraints(calConstraintsBuilder.build())
+            .build()
+
+        with(rangeDatePicker){
+            show(parentFragmentManager,"RANGE_DATE_PICKER")
+            addOnPositiveButtonClickListener {
+                it?.let {
+                    depDateInMillis = it.first
+                    returnDateInMills = it.second
+                }
+            }
+        }
+    }
+
 
 }
