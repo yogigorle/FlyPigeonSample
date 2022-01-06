@@ -1,13 +1,13 @@
 package com.tekkr.flypigeonsample.ui.views.flights
 
 import com.tekkr.flypigeonsample.R
-import com.tekkr.flypigeonsample.data.models.FlightsSearchResult
+import com.tekkr.flypigeonsample.data.models.AirFareItinerary
 import com.tekkr.flypigeonsample.databinding.OneWayFlightInfoItemBinding
 import com.tekkr.flypigeonsample.utils.BaseBindingAdapter
 import com.tekkr.flypigeonsample.utils.diffChecker
 
-class FlightsListAdapter :
-    BaseBindingAdapter<FlightsSearchResult.FlightsSearchResponse.FlightSearchInfo.AirFareItinerary, OneWayFlightInfoItemBinding>(
+class OneWayFlightsListAdapter :
+    BaseBindingAdapter<AirFareItinerary, OneWayFlightInfoItemBinding>(
         R.layout.one_way_flight_info_item,
         diffChecker { old, new -> old.fareItinerary.airItineraryFareInfo.FareSourceCode == new.fareItinerary.airItineraryFareInfo.FareSourceCode }
     ) {

@@ -8,11 +8,6 @@
     tools:context=".ui.views.flights.FlightsListActivity">
 
 
-    <include
-        android:id="@+id/progress_bar_layout"
-        layout="@layout/progress_bar_layout"/>
-
-
     <RelativeLayout
         android:id="@+id/rl_one_way_fl_info_toolbar"
         android:layout_width="match_parent"
@@ -72,79 +67,99 @@
         android:id="@+id/rv_one_way_flights"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constrainedHeight="true"
-        android:visibility="visible"
         android:clipToPadding="false"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar"
         tools:listitem="@layout/one_way_flight_info_item" />
 
-
-    <TextView
-        android:id="@+id/tv_first_route"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:padding="6dp"
-        android:visibility="gone"
-        android:text="DEL - BOM"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@id/rv_first_route_flights"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_first_route_flights"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_round_trip_flights"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="horizontal"
         android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/rv_second_route_flights"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_first_route"
-        tools:listitem="@layout/round_trip_flight_info_item" />
+        app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_second_route_flights"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:clipToPadding="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/rv_first_route_flights"
-        app:layout_constraintTop_toBottomOf="@id/tv_first_route"
-        tools:listitem="@layout/round_trip_flight_info_item" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_first_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:padding="6dp"
+                android:text="DEL - BOM"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/rv_first_route_flights"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_first_route_flights"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/rv_second_route_flights"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_first_route"
+                tools:listitem="@layout/round_trip_flight_info_item" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_second_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:padding="6dp"
+                android:text="BOM - DEL"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/rv_second_route_flights"
+                app:layout_constraintStart_toStartOf="@id/rv_second_route_flights"
+                app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_second_route_flights"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/rv_first_route_flights"
+                app:layout_constraintTop_toBottomOf="@id/tv_first_route"
+                tools:listitem="@layout/round_trip_flight_info_item" />
 
 
-    <TextView
-        android:id="@+id/tv_second_route"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:padding="6dp"
-        android:visibility="gone"
-        android:text="BOM - DEL"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@id/rv_second_route_flights"
-        app:layout_constraintStart_toStartOf="@id/rv_second_route_flights"
-        app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:background="@color/gray"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/tv_first_route"
-        app:layout_constraintStart_toEndOf="@id/tv_first_route"
-        app:layout_constraintTop_toBottomOf="@id/rl_one_way_fl_info_toolbar" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

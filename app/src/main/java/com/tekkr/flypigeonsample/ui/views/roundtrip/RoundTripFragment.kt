@@ -1,21 +1,28 @@
 package com.tekkr.flypigeonsample.ui.views.roundtrip
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_one_way.rl_from
-import kotlinx.android.synthetic.main.fragment_one_way.rl_to
+import com.tekkr.flypigeonsample.utils.convertMillisToReadableDate
+import com.tekkr.flypigeonsample.utils.convertMillsToDate
+import kotlinx.android.synthetic.main.fragment_one_way.*
 import kotlinx.android.synthetic.main.fragment_round_trip.*
+import kotlinx.android.synthetic.main.fragment_round_trip.tv_travellers_count
+import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 
@@ -26,6 +33,7 @@ class RoundTripFragment : BaseFragment() {
     var adultTravellers = 0
     var childTravellers = 0
     var infantTravellers = 0
+    var depAndReturnDate = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +44,7 @@ class RoundTripFragment : BaseFragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rl_from_round_trip.setOnClickListener {
@@ -44,6 +53,14 @@ class RoundTripFragment : BaseFragment() {
         rl_to_round_trip.setOnClickListener {
             launchSearchAirportsActivity(Constants.origin, roundTripAirportSearchActvLauncher)
         }
+
+        //set default travellers count
+        lifecycleScope.launchWhenStarted {
+            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
+                tv_travellers_count.text = it ?: "1 Travellers"
+            }
+        }
+
 
         iv_pointing_arrow_round_trip.setOnClickListener {
             interChangeSrcAndDest(
@@ -60,11 +77,41 @@ class RoundTripFragment : BaseFragment() {
                 adultTravellers = adults
                 childTravellers = children
                 infantTravellers = infants
+                tv_travellers_count.text = "${adults + children + infants} Travellers"
             }
         }
 
         ll_dep_return_date_picker.setOnClickListener {
-            launchRangeDatePicker()
+            launchRangeDatePicker(parentFragmentManager) { depDate, returnDate, headerText ->
+                depDateInMillis = depDate
+                returnDateInMills = returnDate
+                depAndReturnDate = headerText
+                tv_dep_date_round_trip.text = depDateInMillis.convertMillisToReadableDate()
+                tv_return_date_round_trip.text = returnDateInMills.convertMillisToReadableDate()
+            }
+
+        }
+
+        rl_class_round_trip.setOnClickListener {
+            showClassPopupMenu(tv_class_round_trip)
+        }
+
+        btn_search_flights_round_trip.setOnClickListener {
+            launchFlightSearchActivity(
+                roundTripSearchResultsLauncher,
+                Constants.roundTrip,
+                tv_round_trip_src_airport_code.text.toString(),
+                tv_round_trip_dest_airport_code.text.toString(),
+                depDateInMillis.convertMillsToDate(),
+                returnDateInMills.convertMillsToDate(),
+                adultTravellers,
+                childTravellers,
+                infantTravellers,
+                tv_class_round_trip.text.toString(),
+                tv_round_trip_src_city.text.toString(),
+                tv_round_trip_dest_city.text.toString(),
+                depAndReturnDate
+            )
         }
 
     }
@@ -88,6 +135,8 @@ class RoundTripFragment : BaseFragment() {
         }
 
     private fun launchRangeDatePicker(
+        fragmentManager: FragmentManager,
+        result: (Long, Long, String) -> Unit
     ) {
         //create instance of calendar for bounds
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
@@ -111,16 +160,17 @@ class RoundTripFragment : BaseFragment() {
             .setCalendarConstraints(calConstraintsBuilder.build())
             .build()
 
-        with(rangeDatePicker){
-            show(parentFragmentManager,"RANGE_DATE_PICKER")
+        with(rangeDatePicker) {
+            show(fragmentManager, "RANGE_DATE_PICKER")
             addOnPositiveButtonClickListener {
                 it?.let {
-                    depDateInMillis = it.first
-                    returnDateInMills = it.second
+                    result(it.first, it.second, rangeDatePicker.headerText)
                 }
             }
         }
     }
 
+    private val roundTripSearchResultsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
 }

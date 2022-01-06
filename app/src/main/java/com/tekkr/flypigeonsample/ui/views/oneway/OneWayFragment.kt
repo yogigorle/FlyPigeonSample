@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -29,6 +30,8 @@ import kotlinx.android.synthetic.main.fragment_one_way.rl_from
 import kotlinx.android.synthetic.main.fragment_one_way.rl_to
 import kotlinx.android.synthetic.main.fragment_one_way.rl_travellers
 import kotlinx.android.synthetic.main.fragment_one_way.tv_dep_date
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
@@ -38,7 +41,7 @@ import java.util.*
 class OneWayFragment : BaseFragment() {
 
     var dateInMills = 0L
-    var adultTravellers = 0
+    var adultTravellers = 1
     var childTravellers = 0
     var infantTravellers = 0
 
@@ -53,11 +56,20 @@ class OneWayFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         rl_from.setOnClickListener {
             launchSearchAirportsActivity(Constants.origin, oneWayAirportSearchActvLauncher)
         }
         rl_to.setOnClickListener {
             launchSearchAirportsActivity(Constants.destination, oneWayAirportSearchActvLauncher)
+        }
+
+        //set default travellers count from shared prefs
+        lifecycleScope.launchWhenStarted {
+            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
+                tv_travellers_count.text = it ?: "1 Travellers"
+            }
         }
 
         //create instance of calendar for bounds
@@ -104,7 +116,7 @@ class OneWayFragment : BaseFragment() {
         }
 
         rl_class.setOnClickListener {
-            showClassPopupMenu()
+            showClassPopupMenu(tv_class)
         }
 
         iv_pointing_arrow.setOnClickListener {
@@ -118,43 +130,23 @@ class OneWayFragment : BaseFragment() {
         }
 
         btn_search_flights.setOnClickListener {
-            flightsSearchResultsActivityLauncher.launch(
-                Intent(requireContext(), FlightsListActivity::class.java).apply {
-                    putExtra(Constants.FlightSearchQueryParams.journeyType.param, "OneWay")
-                    putExtra(
-                        Constants.FlightSearchQueryParams.srcAirPortCode.param,
-                        tv_one_way_src_airport_code.text
-                    )
-                    putExtra(
-                        Constants.FlightSearchQueryParams.destAirPortCode.param,
-                        tv_one_way_dest_airport_code.text
-                    )
-                    putExtra(
-                        Constants.FlightSearchQueryParams.depDate.param,
-                        dateInMills.convertMillsToDate()
-                    )
-                    putExtra(Constants.FlightSearchQueryParams.adultsCount.param, adultTravellers)
-                    putExtra(Constants.FlightSearchQueryParams.childrenCount.param, childTravellers)
-                    putExtra(Constants.FlightSearchQueryParams.infantsCount.param, infantTravellers)
-                    putExtra(
-                        Constants.FlightSearchQueryParams.flightClass.param,
-                        tv_class.text
-                    )
-                    putExtra(
-                        Constants.FlightSearchQueryParams.srcCity.param,
-                        tv_one_way_src_city.text
-                    )
-                    putExtra(
-                        Constants.FlightSearchQueryParams.destCity.param,
-                        tv_one_way_dest_city.text
-                    )
-                    putExtra(
-                        Constants.FlightSearchQueryParams.formattedDepDate.param,
-                        tv_dep_date.text
-                    )
 
-                }
+            launchFlightSearchActivity(
+                flightsSearchResultsActivityLauncher,
+                Constants.oneWay,
+                tv_one_way_src_airport_code.text.toString(),
+                tv_one_way_dest_airport_code.text.toString(),
+                dateInMills.convertMillsToDate(),
+                "",
+                adultTravellers,
+                childTravellers,
+                infantTravellers,
+                tv_class.text.toString(),
+                tv_one_way_src_city.text.toString(),
+                tv_one_way_dest_city.text.toString(),
+                tv_dep_date.text.toString()
             )
+
         }
 
     }

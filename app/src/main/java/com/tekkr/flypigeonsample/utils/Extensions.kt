@@ -35,6 +35,12 @@ fun Long.convertMillsToDate(): String {
     return dateFormat.format(this)
 }
 
+fun Long.convertMillisToReadableDate(): String {
+    val dateFormat = SimpleDateFormat("EEE, dd-MMM-yyyy")
+    return dateFormat.format(this)
+}
+
+
 val gson = Gson()
 fun Any.toJson() = gson.toJson(this)
 

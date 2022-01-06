@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tekkr.flypigeonsample.data.models.FlightsSearchResult
+import com.tekkr.flypigeonsample.data.models.OneWayFlightsSearchResult
+import com.tekkr.flypigeonsample.data.models.RoundTripFlightSearchResult
 import com.tekkr.flypigeonsample.data.network.Resource
 import com.tekkr.flypigeonsample.data.repositories.FlightsSearchRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,12 +19,26 @@ class FlightSearchViewModel @Inject constructor(
     private val flightSearchRepo: FlightsSearchRepo
 ) : ViewModel() {
 
-    fun getFlightSearchResults(queryParams: HashMap<String, String>): LiveData<Resource<FlightsSearchResult>> {
-        val response: MutableLiveData<Resource<FlightsSearchResult>> = MutableLiveData()
+    fun getOneWayFlightSearchResults(queryParams: HashMap<String, String>): LiveData<Resource<OneWayFlightsSearchResult>> {
+        val response: MutableLiveData<Resource<OneWayFlightsSearchResult>> = MutableLiveData()
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                response.postValue(flightSearchRepo.getFlightsSearchResults(queryParams))
+                response.postValue(Resource.Loading)
+                response.postValue(flightSearchRepo.getOneWayFlightsSearchResults(queryParams))
+            }
+        }
+
+        return response
+    }
+
+    fun getRoundTripFlightSearchResults(queryParams: HashMap<String, String>): LiveData<Resource<RoundTripFlightSearchResult>> {
+        val response: MutableLiveData<Resource<RoundTripFlightSearchResult>> = MutableLiveData()
+
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                response.postValue(Resource.Loading)
+                response.postValue(flightSearchRepo.getRoundTripFlightsSearchResults(queryParams))
             }
         }
 

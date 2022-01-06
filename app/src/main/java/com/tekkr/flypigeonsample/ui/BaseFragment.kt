@@ -17,7 +17,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.ui.views.airportssearch.SearchAirportsActivity
+import com.tekkr.flypigeonsample.ui.views.flights.FlightsListActivity
+import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.utils.DataStoreManager
+import com.tekkr.flypigeonsample.utils.convertMillsToDate
 import com.tekkr.flypigeonsample.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_one_way.*
@@ -36,7 +39,6 @@ abstract class BaseFragment : Fragment() {
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
-
 
     protected fun showTravellersSelectionBottomSheet(
         travellersCount: (Int, Int, Int) -> Unit
@@ -170,9 +172,23 @@ abstract class BaseFragment : Fragment() {
 
                         btn_done.setOnClickListener {
 
+                            var totalTravellersCount = 0
+
                             adultTravellerToggleButtons.forEachIndexed { adultsIndex, adults ->
                                 childTravellerToggleButtons.forEachIndexed { childIndex, children ->
                                     infantTravellerToggleButtons.forEachIndexed { infantsIndex, infants ->
+
+                                        if (adults.isChecked && children.isChecked && infants.isChecked) {
+                                            val adultCount = adults.text.toString().toInt()
+                                            val childrenCount = children.text.toString().toInt()
+                                            val infantCount = infants.text.toString().toInt()
+                                            travellersCount(
+                                                adultCount, childrenCount, infantCount
+                                            )
+                                            totalTravellersCount =
+                                                adultCount + childrenCount + infantCount
+
+                                        }
 
                                         with(dataStoreManager) {
                                             lifecycleScope.launch {
@@ -182,14 +198,11 @@ abstract class BaseFragment : Fragment() {
                                                     "INFANT${infantsIndex}",
                                                     infants.isChecked
                                                 )
+                                                dataStoreManager.putString(
+                                                    "TRAVELLERS_COUNT",
+                                                    "$totalTravellersCount Travellers"
+                                                )
                                             }
-                                        }
-                                        if (adults.isChecked && children.isChecked && infants.isChecked) {
-                                            travellersCount(
-                                                adults.text.toString().toInt(),
-                                                children.text.toString().toInt(),
-                                                infants.text.toString().toInt()
-                                            )
                                         }
                                     }
 
@@ -210,8 +223,8 @@ abstract class BaseFragment : Fragment() {
 
     }
 
-    protected fun showClassPopupMenu() {
-        val popupMenu = PopupMenu(requireContext(), tv_class_title)
+    protected fun showClassPopupMenu(textView: TextView) {
+        val popupMenu = PopupMenu(requireContext(), textView)
         with(popupMenu) {
             menuInflater.inflate(R.menu.flight_seating_class_menu, menu)
             setOnMenuItemClickListener { item ->
@@ -278,6 +291,64 @@ abstract class BaseFragment : Fragment() {
                 view.isEnabled = true
             }
         })
+    }
+
+    protected fun launchFlightSearchActivity(
+        launcher: ActivityResultLauncher<Intent>,
+        journeyType: String,
+        srcAirportCode: String,
+        destAirportCode: String,
+        depDate: String,
+        returnDate: String = "",
+        adultsCount: Int,
+        childrenCount: Int,
+        infantsCount: Int,
+        flightClass: String,
+        srcCity: String,
+        destCity: String,
+        formattedDepDate: String,
+    ) {
+        launcher.launch(
+            Intent(requireContext(), FlightsListActivity::class.java).apply {
+                putExtra(Constants.FlightSearchQueryParams.journeyType.param, journeyType)
+                putExtra(
+                    Constants.FlightSearchQueryParams.srcAirPortCode.param,
+                    srcAirportCode
+                )
+                putExtra(
+                    Constants.FlightSearchQueryParams.destAirPortCode.param,
+                    destAirportCode
+                )
+                putExtra(
+                    Constants.FlightSearchQueryParams.depDate.param,
+                    depDate
+                )
+                putExtra(
+                    Constants.FlightSearchQueryParams.returnDate.param,
+                    returnDate
+                )
+                putExtra(Constants.FlightSearchQueryParams.adultsCount.param, adultsCount)
+                putExtra(Constants.FlightSearchQueryParams.childrenCount.param, childrenCount)
+                putExtra(Constants.FlightSearchQueryParams.infantsCount.param, infantsCount)
+                putExtra(
+                    Constants.FlightSearchQueryParams.flightClass.param,
+                    flightClass
+                )
+                putExtra(
+                    Constants.FlightSearchQueryParams.srcCity.param,
+                    srcCity
+                )
+                putExtra(
+                    Constants.FlightSearchQueryParams.destCity.param,
+                    destCity
+                )
+                putExtra(
+                    Constants.FlightSearchQueryParams.formattedDepDate.param,
+                    formattedDepDate
+                )
+
+            }
+        )
     }
 
 }

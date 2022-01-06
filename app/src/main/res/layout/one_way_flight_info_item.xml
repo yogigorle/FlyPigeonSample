@@ -5,7 +5,7 @@
     <data>
         <variable
             name="flightInfo"
-            type="com.tekkr.flypigeonsample.data.models.FlightsSearchResult.FlightsSearchResponse.FlightSearchInfo.AirFareItinerary.FareItinerary.OriginDestinationOption.OriginDestinationOptions" />
+            type="com.tekkr.flypigeonsample.data.models.AirFareItinerary.FareItinerary.OriginDestinationOption.OriginDestinationOptions" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -13,8 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
         android:elevation="4dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="5dp">

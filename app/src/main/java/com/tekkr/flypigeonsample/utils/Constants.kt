@@ -3,6 +3,8 @@ package com.tekkr.flypigeonsample.utils
 object Constants {
     const val origin = "Origin"
     const val destination = "Destination"
+    const val oneWay = "OneWay"
+    const val roundTrip = "RoundTrip"
 
     enum class FlightSearchQueryParams(val param: String) {
         journeyType("journey_type"),

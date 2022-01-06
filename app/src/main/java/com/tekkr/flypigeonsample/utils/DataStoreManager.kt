@@ -21,7 +21,6 @@ class DataStoreManager(val context: Context) {
         val dataStoreKey = stringPreferencesKey(key)
         context.dataStore.edit {
             it[dataStoreKey] = value
-            Log.i("token", value)
         }
     }
 
@@ -42,7 +41,6 @@ class DataStoreManager(val context: Context) {
         val dataStoreKey = stringPreferencesKey(key)
 
         return context.dataStore.data.map { preferences ->
-            Log.i("token", preferences[dataStoreKey].toString())
             preferences[dataStoreKey]
 
         }

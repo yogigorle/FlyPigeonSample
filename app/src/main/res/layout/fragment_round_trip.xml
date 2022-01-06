@@ -277,7 +277,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/tv_class"
+            android:id="@+id/tv_class_round_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_class_title"

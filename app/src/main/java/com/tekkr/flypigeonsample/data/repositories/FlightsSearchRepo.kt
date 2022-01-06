@@ -7,8 +7,12 @@ class FlightsSearchRepo(
     private val apiService: ApiInterface
 ) : SafeApiRequest() {
 
-    suspend fun getFlightsSearchResults(queryParams: HashMap<String, String>) = executeApiCall {
-        apiService.getFlightSearchResults(queryParams)
+    suspend fun getOneWayFlightsSearchResults(queryParams: HashMap<String, String>) = executeApiCall {
+        apiService.getOneWayFlightSearchResults(queryParams)
+    }
+
+    suspend fun getRoundTripFlightsSearchResults(queryParams: HashMap<String, String>) = executeApiCall {
+        apiService.getRoundTripFlightSearchResults(queryParams)
     }
 
 
