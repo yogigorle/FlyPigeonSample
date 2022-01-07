@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class ProgressBarHandler(
     private val activity: Activity
 ) {
+
     private lateinit var view: View
     val layout = activity.findViewById<View>(android.R.id.content).rootView as ViewGroup
 
@@ -36,7 +37,7 @@ class ProgressBarHandler(
                 layout.addView(view)
                 view.progress_bar_view.visibility = View.VISIBLE
 
-                delay(15000)
+                delay(10000)
                 hide()
 
             } catch (e: java.lang.Exception) {

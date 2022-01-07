@@ -1,0 +1,24 @@
+package com.tekkr.flypigeonsample.ui.views.bookingFlow
+
+import com.tekkr.flypigeonsample.R
+import com.tekkr.flypigeonsample.data.models.TravellerDetails
+import com.tekkr.flypigeonsample.databinding.LayoutTravellerDetailsItemBinding
+import com.tekkr.flypigeonsample.utils.BaseBindingAdapter
+
+class TravellerDetailsAdapter :
+    BaseBindingAdapter<TravellerDetails, LayoutTravellerDetailsItemBinding>(
+        R.layout.layout_traveller_details_item
+    ) {
+
+    override fun onBindViewHolder(
+        holder: Holder<LayoutTravellerDetailsItemBinding>,
+        position: Int
+    ) {
+        val currentTravellerDetails = getItemAt(position)
+        with(holder) {
+            itemBinding.apply {
+                travellerDetails = currentTravellerDetails
+            }
+        }
+    }
+}

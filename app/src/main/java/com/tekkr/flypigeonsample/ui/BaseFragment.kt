@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.ui.views.airportssearch.SearchAirportsActivity
@@ -350,5 +351,14 @@ abstract class BaseFragment : Fragment() {
             }
         )
     }
+
+    protected fun navigateById(navigationId: Int) {
+        findNavController().navigate(navigationId)
+    }
+
+    protected fun navigateBack() {
+        findNavController().popBackStack()
+    }
+
 
 }

@@ -1,18 +1,23 @@
 package com.tekkr.flypigeonsample.ui.views.flights
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.tekkr.flypigeonsample.R
+import com.tekkr.flypigeonsample.data.models.AirFareItinerary
 import com.tekkr.flypigeonsample.ui.BaseActivity
 import com.tekkr.flypigeonsample.ui.viewmodels.FlightSearchViewModel
+import com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightBookingFlowActivity
 import com.tekkr.flypigeonsample.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flights_list.*
 import kotlinx.android.synthetic.main.progress_bar_layout.view.*
+import kotlin.math.log
 
 @AndroidEntryPoint
 class FlightsListActivity : BaseActivity() {
@@ -20,7 +25,7 @@ class FlightsListActivity : BaseActivity() {
     var flightSearchType = Constants.oneWay
 
     private val flightsSearchViewModel: FlightSearchViewModel by viewModels()
-    private val oneWayFlightSearchAdapter by lazy { OneWayFlightsListAdapter() }
+    private val oneWayFlightSearchAdapter by lazy { OneWayFlightsListAdapter(::onOneWayFlightItemClicked) }
     private val roundTripDepFlightSearchAdapter by lazy { RoundTripFlightsListAdapter() }
     private val roundTripArrFlightSearchAdapter by lazy { RoundTripFlightsListAdapter() }
 
@@ -100,5 +105,12 @@ class FlightsListActivity : BaseActivity() {
             }
 
         }
+    }
+
+    private fun onOneWayFlightItemClicked(airFareItinerary: AirFareItinerary) {
+        //call revalidate api and launch booking flow
+        Log.e("fareSourceCode", airFareItinerary.fareItinerary.airItineraryFareInfo.FareSourceCode)
+//        val intent = Intent(this, FlightBookingFlowActivity::class.java)
+//        startActivity(intent)
     }
 }

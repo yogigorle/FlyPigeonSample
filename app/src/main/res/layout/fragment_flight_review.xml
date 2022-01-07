@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:padding="10dp"
+    tools:context=".ui.views.bookingFlow.FlightReviewFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_flight_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_flight_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E8F6EF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_flight_take_off"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_flight_take_off"
+                    app:tint="@color/purple_500" />
+
+                <TextView
+                    android:id="@+id/tv_src_and_dest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@id/iv_flight_take_off"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:text="Hyderabad to Visakhapatnam" />
+
+                <TextView
+                    android:id="@+id/tv_journey_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_src_and_dest"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@id/iv_flight_take_off"
+                    android:fontFamily="sans-serif"
+                    android:text="Flight Review"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/tv_flight_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.1"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rl_flight_overview"
+                tools:text="SG 1097" />
+
+            <TextView
+                android:id="@+id/tv_dep_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.1"
+                android:textAllCaps="true"
+                android:textColor="#B3000000"
+                android:textSize="21sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flight_name"
+                tools:text="18:55" />
+
+            <TextView
+                android:id="@+id/tv_src_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:textColor="#b3000000"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_flight_duration"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_dep_time"
+                tools:text="Hyderabad(HYD)" />
+
+            <TextView
+                android:id="@+id/tv_dep_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:textColor="#B3000000"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_src_city"
+                tools:text="Thu 06-jan-2022" />
+
+            <TextView
+                android:id="@+id/tv_src_airport_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif"
+                android:textAlignment="textStart"
+                android:textColor="#B3000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_dest_airport_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_dep_date"
+                tools:ignore="RtlCompat"
+                tools:text="Rajiv Gandhi International Airport" />
+
+            <ImageView
+                android:id="@+id/iv_flight_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_duration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flight_name"
+                app:tint="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_flight_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_flight_duration"
+                tools:text="01h 15m" />
+
+            <TextView
+                android:id="@+id/tv_arrival_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.1"
+                android:textAllCaps="true"
+                android:textColor="#B3000000"
+                android:textSize="21sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flight_name"
+                tools:text="18:55" />
+
+            <TextView
+                android:id="@+id/tv_dest_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:textAlignment="textEnd"
+                android:textColor="#b3000000"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_flight_duration"
+                app:layout_constraintTop_toBottomOf="@id/tv_dep_time"
+                tools:ignore="RtlCompat"
+                tools:text="Hyderabad(HYD)" />
+
+            <TextView
+                android:id="@+id/tv_arr_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:textColor="#B3000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_src_city"
+                tools:text="Thu 06-jan-2022" />
+
+            <TextView
+                android:id="@+id/tv_dest_airport_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif"
+                android:textAlignment="textEnd"
+                android:textColor="#B3000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_src_airport_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_dep_date"
+                tools:ignore="RtlCompat"
+                tools:text="Rajiv Gandhi International Airport" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_refund_status"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/white"
+                android:text="Non Refundable"
+                android:textColor="@color/red"
+                android:enabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_src_airport_name"
+                app:strokeColor="@color/red"
+                app:strokeWidth="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_fare_rules"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Fare Rules"
+                android:textAllCaps="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_refund_status" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_baggage"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Baggage"
+                android:textAllCaps="false"
+                app:layout_constraintStart_toEndOf="@id/btn_fare_rules"
+                app:layout_constraintTop_toBottomOf="@id/tv_refund_status" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cv_flight_info"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="Why Book with FlyPigeon?"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_customer_support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:text="1) 24h Customer Support"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_customer_support_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_customer_support"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:text="     We are here to help whenever you need us"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"/>
+
+
+    <TextView
+        android:id="@+id/tv_secure_booking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_customer_support_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:text="2) Secure Booking Process"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_secure_booking_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_secure_booking"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:text="     Your Personal Information is secured with us."
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/gray"/>
+
+
+    <TextView
+        android:id="@+id/tv_trusted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_secure_booking_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:text="3) Trusted By Members"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_trusted_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_trusted"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:text="     We have earned good rating in PlayStore."
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/gray"/>
+
+
+    <TextView
+        android:id="@+id/tv_happy_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_trusted_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:text="4) Millions of Happy Members"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_happy_members_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_happy_members"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:text="     Millions of member rely on our platform for Booking needs"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/gray"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

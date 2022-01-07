@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+
 }
 
 android {
@@ -74,4 +76,9 @@ dependencies {
 
     //live data ktx
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+
+    // Android Navigation Components.
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+
 }

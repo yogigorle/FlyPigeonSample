@@ -6,7 +6,9 @@ import com.tekkr.flypigeonsample.databinding.OneWayFlightInfoItemBinding
 import com.tekkr.flypigeonsample.utils.BaseBindingAdapter
 import com.tekkr.flypigeonsample.utils.diffChecker
 
-class OneWayFlightsListAdapter :
+class OneWayFlightsListAdapter(
+    val onFlightItemClicked: (AirFareItinerary) -> Unit
+) :
     BaseBindingAdapter<AirFareItinerary, OneWayFlightInfoItemBinding>(
         R.layout.one_way_flight_info_item,
         diffChecker { old, new -> old.fareItinerary.airItineraryFareInfo.FareSourceCode == new.fareItinerary.airItineraryFareInfo.FareSourceCode }
@@ -21,6 +23,11 @@ class OneWayFlightsListAdapter :
                     itemAtPos.fareItinerary.airItineraryFareInfo.fareBreakdown[0].passengerFare.totalFare.formattedTotalFare
                 tvStopClassification.text =
                     if (originDestinationOption.TotalStops > 0) "${originDestinationOption.TotalStops} stop" else "non-stop"
+
+                cvOneWayFlight.setOnClickListener {
+                    onFlightItemClicked(itemAtPos)
+                }
+
             }
 
         }

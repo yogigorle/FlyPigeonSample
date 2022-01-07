@@ -1,9 +1,12 @@
 package com.tekkr.flypigeonsample.data.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.tekkr.flypigeonsample.utils.convertToHoursAndMins
 import com.tekkr.flypigeonsample.utils.formatFlightTime
 import com.tekkr.flypigeonsample.utils.formatMoney
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 data class OneWayFlightsSearchResult(
     val AirSearchResponse: FlightsSearchResponse
@@ -17,10 +20,11 @@ data class OneWayFlightsSearchResult(
     }
 }
 
+@Parcelize
 data class AirFareItinerary(
     @SerializedName("FareItinerary")
-    val fareItinerary: FareItinerary
-) {
+    val fareItinerary: @RawValue FareItinerary
+): Parcelable {
     data class FareItinerary(
         @SerializedName("AirItineraryFareInfo")
         val airItineraryFareInfo: AirItineraryFareInfo,
