@@ -12,7 +12,6 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -21,19 +20,15 @@ import com.tekkr.flypigeonsample.ui.views.airportssearch.SearchAirportsActivity
 import com.tekkr.flypigeonsample.ui.views.flights.FlightsListActivity
 import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.utils.DataStoreManager
-import com.tekkr.flypigeonsample.utils.convertMillsToDate
-import com.tekkr.flypigeonsample.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_one_way.*
 import kotlinx.android.synthetic.main.travellers_count_toggle_btn.view.*
 import kotlinx.android.synthetic.main.travellers_selection_bottom_sheet.*
 import kotlinx.android.synthetic.main.travellers_selection_item.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 abstract class BaseFragment : Fragment() {
@@ -311,40 +306,40 @@ abstract class BaseFragment : Fragment() {
     ) {
         launcher.launch(
             Intent(requireContext(), FlightsListActivity::class.java).apply {
-                putExtra(Constants.FlightSearchQueryParams.journeyType.param, journeyType)
+                putExtra(Constants.FlightSearchQueryParams.JourneyType.param, journeyType)
                 putExtra(
-                    Constants.FlightSearchQueryParams.srcAirPortCode.param,
+                    Constants.FlightSearchQueryParams.SrcAirPortCode.param,
                     srcAirportCode
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.destAirPortCode.param,
+                    Constants.FlightSearchQueryParams.DestAirPortCode.param,
                     destAirportCode
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.depDate.param,
+                    Constants.FlightSearchQueryParams.DepDate.param,
                     depDate
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.returnDate.param,
+                    Constants.FlightSearchQueryParams.ReturnDate.param,
                     returnDate
                 )
-                putExtra(Constants.FlightSearchQueryParams.adultsCount.param, adultsCount)
-                putExtra(Constants.FlightSearchQueryParams.childrenCount.param, childrenCount)
-                putExtra(Constants.FlightSearchQueryParams.infantsCount.param, infantsCount)
+                putExtra(Constants.FlightSearchQueryParams.AdultsCount.param, adultsCount)
+                putExtra(Constants.FlightSearchQueryParams.ChildrenCount.param, childrenCount)
+                putExtra(Constants.FlightSearchQueryParams.InfantsCount.param, infantsCount)
                 putExtra(
-                    Constants.FlightSearchQueryParams.flightClass.param,
+                    Constants.FlightSearchQueryParams.FlightClass.param,
                     flightClass
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.srcCity.param,
+                    Constants.FlightSearchQueryParams.SrcCity.param,
                     srcCity
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.destCity.param,
+                    Constants.FlightSearchQueryParams.DestCity.param,
                     destCity
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.formattedDepDate.param,
+                    Constants.FlightSearchQueryParams.FormattedDepDate.param,
                     formattedDepDate
                 )
 

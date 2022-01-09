@@ -1,24 +1,31 @@
 package com.tekkr.flypigeonsample.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.datepicker.MaterialDatePicker
 import androidx.activity.result.contract.ActivityResultContracts
-import com.tekkr.flypigeonsample.CalendarPickerActivity
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.tekkr.flypigeonsample.R
+import com.tekkr.flypigeonsample.ui.BaseFragment
+import com.tekkr.flypigeonsample.utils.Constants
+import com.tekkr.flypigeonsample.utils.convertMillsToDate
 import kotlinx.android.synthetic.main.fragment_one_way.*
-import com.tekkr.flypigeonsample.SearchAirportsActivity
-import com.tekkr.flypigeonsample.showToast
-import kotlinx.android.synthetic.main.fragment_one_way.*
+import kotlinx.coroutines.flow.collectLatest
+import java.util.*
 
+class OneWayFragment : BaseFragment() {
 
-class OneWayFragment : Fragment() {
-
+    var dateInMills = 0L
+    var adultTravellers = 1
+    var childTravellers = 0
+    var infantTravellers = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,62 +35,123 @@ class OneWayFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_one_way, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //invoke date picker dialog
-        val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Departure Date").build()
-        datePicker.addOnPositiveButtonClickListener {
-            tv_dep_date.text = datePicker.headerText
-        }
-
-        rl_dep_date_picker.setOnClickListener {
-            datePicker.show(parentFragmentManager,"DEP_DATE_PICKER")
-        }
-    }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         rl_from.setOnClickListener {
-            launchSearchAirportsActivity("Origin")
+            launchSearchAirportsActivity(Constants.origin, oneWayAirportSearchActvLauncher)
         }
         rl_to.setOnClickListener {
-            launchSearchAirportsActivity("Destination")
+            launchSearchAirportsActivity(Constants.destination, oneWayAirportSearchActvLauncher)
         }
-        rl_dep_date_picker.setOnClickListener {
-            launchDatePicker()
-        }
-    }
 
-    private fun launchSearchAirportsActivity(source_type: String) {
-        airportSearchActvLauncher.launch(
-            Intent(
-                requireContext(),
-                SearchAirportsActivity::class.java
-            ).apply {
-                putExtra("source_type", source_type)
+        //set default travellers count from shared prefs
+        lifecycleScope.launchWhenStarted {
+            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
+                tv_travellers_count.text = it ?: "1 Travellers"
             }
-        )
+        }
+
+        //create instance of calendar for bounds
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val currentDate = calendar.timeInMillis
+
+        calendar.set(Calendar.MONTH, Calendar.JANUARY)
+        val jan = calendar.timeInMillis
+
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER)
+        val dec = calendar.timeInMillis
+
+
+        val calConstraintsBuilder = CalendarConstraints.Builder()
+        calConstraintsBuilder.apply {
+            setStart(jan)
+            setEnd(dec)
+            setValidator(DateValidatorPointForward.now())
+        }
+
+        //init and launch date picker
+        val depDatePicker =
+            MaterialDatePicker.Builder.datePicker().setTitleText("Select a Departure Date")
+                .setCalendarConstraints(calConstraintsBuilder.build())
+                .setSelection(currentDate)
+                .build()
+
+        rl_dep_date_picker.setOnClickListener {
+            depDatePicker.show(parentFragmentManager, "DEP_DATE_PICKER")
+        }
+
+        depDatePicker.addOnPositiveButtonClickListener {
+            tv_dep_date.text = depDatePicker.headerText
+            dateInMills = it
+        }
+
+        rl_travellers.setOnClickListener {
+            showTravellersSelectionBottomSheet() { adults, children, infants ->
+                adultTravellers = adults
+                childTravellers = children
+                infantTravellers = infants
+                tv_travellers_count.text = "${adults + children + infants} Travellers"
+            }
+        }
+
+        rl_class.setOnClickListener {
+            showClassPopupMenu(tv_class)
+        }
+
+        iv_pointing_arrow.setOnClickListener {
+            interChangeSrcAndDest(
+                iv_pointing_arrow,
+                tv_one_way_src_airport_code,
+                tv_one_way_src_city,
+                tv_one_way_dest_airport_code,
+                tv_one_way_dest_city
+            )
+        }
+
+        btn_search_flights.setOnClickListener {
+
+            launchFlightSearchActivity(
+                flightsSearchResultsActivityLauncher,
+                Constants.oneWay,
+                tv_one_way_src_airport_code.text.toString(),
+                tv_one_way_dest_airport_code.text.toString(),
+                dateInMills.convertMillsToDate(),
+                "",
+                adultTravellers,
+                childTravellers,
+                infantTravellers,
+                tv_class.text.toString(),
+                tv_one_way_src_city.text.toString(),
+                tv_one_way_dest_city.text.toString(),
+                tv_dep_date.text.toString()
+            )
+
+        }
+
     }
 
-    private fun launchDatePicker() {
-        datePickerLauncher.launch(
-            Intent(requireContext(), CalendarPickerActivity::class.java)
-        )
-    }
-
-    private val airportSearchActvLauncher =
+    private val oneWayAirportSearchActvLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 data?.let {
-                    tv_from_airport_title.text = it.getStringExtra("source_city_code_name")
-                    tv_from_airport_desc.text = it.getStringExtra("source_city_full_name")
-                    tv_to_airport_title.text = it.getStringExtra("dest_city_code_name")
-                    tv_to_airport_desc.text = it.getStringExtra("dest_city_full_name")
+                    tv_one_way_src_airport_code.text =
+                        it.getStringExtra("source_city_code_name").toString()
+                    tv_one_way_src_city.text =
+                        it.getStringExtra("source_city_full_name").toString()
+                    tv_one_way_dest_airport_code.text =
+                        it.getStringExtra("dest_city_code_name").toString()
+                    tv_one_way_dest_city.text = it.getStringExtra("dest_city_full_name").toString()
+
                 }
             }
         }
 
-    private val datePickerLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val flightsSearchResultsActivityLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+
+
+}

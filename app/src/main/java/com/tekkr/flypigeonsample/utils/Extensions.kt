@@ -69,9 +69,17 @@ fun String.formatFlightTime(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     val calendar = Calendar.getInstance()
     calendar.time = dateFormat.parse(this)!!
-    val hoursAndMins = Formatter().format("%tl:%tM",calendar,calendar)
+    val hoursAndMins = Formatter().format("%tl:%tM", calendar, calendar)
     return hoursAndMins.toString()
 }
+
+fun String.formatFlightDate(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+    val calendar = Calendar.getInstance()
+    calendar.time = dateFormat.parse(this)!!
+    return calendar.timeInMillis.convertMillisToReadableDate()
+}
+
 
 fun Int.convertToHoursAndMins(): String {
     val hours = this / 60

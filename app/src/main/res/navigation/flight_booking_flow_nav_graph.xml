@@ -16,11 +16,33 @@
     </fragment>
     <fragment
         android:id="@+id/travellerDetailsFragment"
-        android:name="com.tekkr.flypigeonsample.TravellerDetailsFragment"
+        android:name="com.tekkr.flypigeonsample.ui.views.bookingFlow.TravellerDetailsFragment"
         android:label="fragment_traveller_details"
         tools:layout="@layout/fragment_traveller_details" >
         <action
             android:id="@+id/action_travellerDetailsFragment_to_flightReviewFragment"
             app:destination="@id/flightReviewFragment" />
+        <argument
+            android:name="src_and_dest_city"
+            app:argType="string" />
+        <argument
+            android:name="flight_info"
+            app:argType="string" />
+        <argument
+            android:name="adultTravellers"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="childTravellers"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="infantTravellers"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="isPassportRequired"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 </navigation>

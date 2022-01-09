@@ -3,8 +3,6 @@ package com.tekkr.flypigeonsample.ui.views.flights
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -17,7 +15,7 @@ import com.tekkr.flypigeonsample.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flights_list.*
 import kotlinx.android.synthetic.main.progress_bar_layout.view.*
-import kotlin.math.log
+import java.io.Serializable
 
 @AndroidEntryPoint
 class FlightsListActivity : BaseActivity() {
@@ -29,6 +27,13 @@ class FlightsListActivity : BaseActivity() {
     private val roundTripDepFlightSearchAdapter by lazy { RoundTripFlightsListAdapter() }
     private val roundTripArrFlightSearchAdapter by lazy { RoundTripFlightsListAdapter() }
 
+    //some important params
+    var flightSrcAndDest = ""
+    var selectedClass = ""
+    var adultsCount = ""
+    var childrenCount = ""
+    var infantsCount = ""
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,50 +41,54 @@ class FlightsListActivity : BaseActivity() {
 
         intent?.let {
             flightSearchType =
-                (it.getStringExtra(Constants.FlightSearchQueryParams.journeyType.param)
+                (it.getStringExtra(Constants.FlightSearchQueryParams.JourneyType.param)
                     ?: "")
+            selectedClass = (it.getStringExtra(Constants.FlightSearchQueryParams.FlightClass.param)
+                ?: "")
+            adultsCount = it.getIntExtra(
+                Constants.FlightSearchQueryParams.AdultsCount.param,
+                0
+            ).toString()
+            childrenCount = it.getIntExtra(
+                Constants.FlightSearchQueryParams.ChildrenCount.param, 0
+            ).toString()
+            infantsCount = it.getIntExtra(
+                Constants.FlightSearchQueryParams.InfantsCount.param,
+                0
+            ).toString()
             val flightSearchParams = hashMapOf(
-                Constants.FlightSearchQueryParams.journeyType.param to flightSearchType,
-                Constants.FlightSearchQueryParams.srcAirPortCode.param to (it.getStringExtra(
-                    Constants.FlightSearchQueryParams.srcAirPortCode.param
+                Constants.FlightSearchQueryParams.JourneyType.param to flightSearchType,
+                Constants.FlightSearchQueryParams.SrcAirPortCode.param to (it.getStringExtra(
+                    Constants.FlightSearchQueryParams.SrcAirPortCode.param
                 ) ?: ""),
-                Constants.FlightSearchQueryParams.destAirPortCode.param to (it.getStringExtra(
-                    Constants.FlightSearchQueryParams.destAirPortCode.param
+                Constants.FlightSearchQueryParams.DestAirPortCode.param to (it.getStringExtra(
+                    Constants.FlightSearchQueryParams.DestAirPortCode.param
                 ) ?: ""),
-                Constants.FlightSearchQueryParams.depDate.param to (it.getStringExtra(Constants.FlightSearchQueryParams.depDate.param)
+                Constants.FlightSearchQueryParams.DepDate.param to (it.getStringExtra(Constants.FlightSearchQueryParams.DepDate.param)
                     ?: ""),
-                Constants.FlightSearchQueryParams.returnDate.param to (it.getStringExtra(Constants.FlightSearchQueryParams.returnDate.param)
+                Constants.FlightSearchQueryParams.ReturnDate.param to (it.getStringExtra(Constants.FlightSearchQueryParams.ReturnDate.param)
                     ?: ""),
-                Constants.FlightSearchQueryParams.adultsCount.param to it.getIntExtra(
-                    Constants.FlightSearchQueryParams.adultsCount.param,
-                    0
-                ).toString(),
-                Constants.FlightSearchQueryParams.childrenCount.param to it.getIntExtra(
-                    Constants.FlightSearchQueryParams.childrenCount.param, 0
-                ).toString(),
-                Constants.FlightSearchQueryParams.infantsCount.param to it.getIntExtra(
-                    Constants.FlightSearchQueryParams.infantsCount.param,
-                    0
-                ).toString(),
-                Constants.FlightSearchQueryParams.flightClass.param to (it.getStringExtra(Constants.FlightSearchQueryParams.flightClass.param)
-                    ?: "")
+                Constants.FlightSearchQueryParams.AdultsCount.param to adultsCount,
+                Constants.FlightSearchQueryParams.ChildrenCount.param to childrenCount,
+                Constants.FlightSearchQueryParams.InfantsCount.param to infantsCount,
+                Constants.FlightSearchQueryParams.FlightClass.param to selectedClass
             )
 
-            tv_toolbar_title.text =
-                "${it.getStringExtra(Constants.FlightSearchQueryParams.srcCity.param)} to ${
-                    it.getStringExtra(Constants.FlightSearchQueryParams.destCity.param)
+            flightSrcAndDest =
+                "${it.getStringExtra(Constants.FlightSearchQueryParams.SrcCity.param)} to ${
+                    it.getStringExtra(Constants.FlightSearchQueryParams.DestCity.param)
                 }"
+            tv_toolbar_title.text = flightSrcAndDest
+
+
             tv_departure_date.text =
-                it.getStringExtra(Constants.FlightSearchQueryParams.formattedDepDate.param)
+                it.getStringExtra(Constants.FlightSearchQueryParams.FormattedDepDate.param) ?: ""
 
             //get api call
-
             if (flightSearchType == Constants.oneWay) {
                 flightsSearchViewModel.getOneWayFlightSearchResults(flightSearchParams)
                     .observe(this, Observer {
-//                        progress_bar_layout.progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) { searchResult ->
-//                            progress_bar_layout.progress_bar_view.visibility = GONE
                             oneWayFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries)
                             rv_one_way_flights.visibility = VISIBLE
                             rv_one_way_flights.adapter = oneWayFlightSearchAdapter
@@ -88,9 +97,7 @@ class FlightsListActivity : BaseActivity() {
             } else {
                 flightsSearchViewModel.getRoundTripFlightSearchResults(flightSearchParams)
                     .observe(this, Observer {
-//                        progress_bar_layout.progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) { searchResult ->
-//                            progress_bar_layout.progress_bar_view.visibility = GONE
                             roundTripDepFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[0])
                             roundTripArrFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[1])
                             ll_round_trip_flights.visibility = VISIBLE
@@ -109,8 +116,21 @@ class FlightsListActivity : BaseActivity() {
 
     private fun onOneWayFlightItemClicked(airFareItinerary: AirFareItinerary) {
         //call revalidate api and launch booking flow
-        Log.e("fareSourceCode", airFareItinerary.fareItinerary.airItineraryFareInfo.FareSourceCode)
-//        val intent = Intent(this, FlightBookingFlowActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this, FlightBookingFlowActivity::class.java)
+        with(intent) {
+            putExtra(
+                Constants.fareItinerary,
+                airFareItinerary.fareItinerary
+            )
+            putExtra(Constants.FlightSearchQueryParams.FlightClass.param, selectedClass)
+            putExtra(Constants.sourceAnDestCity, flightSrcAndDest)
+            putExtra(Constants.FlightSearchQueryParams.ChildrenCount.param, childrenCount.toInt())
+            putExtra(Constants.FlightSearchQueryParams.AdultsCount.param, adultsCount.toInt())
+            putExtra(Constants.FlightSearchQueryParams.InfantsCount.param, infantsCount.toInt())
+
+        }
+
+
+        startActivity(intent)
     }
 }
