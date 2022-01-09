@@ -87,8 +87,3 @@ class OneWayFragment : Fragment() {
 
     private val datePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-        }
-
-
-}

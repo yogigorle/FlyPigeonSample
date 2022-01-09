@@ -2,4 +2,8 @@
     <string name="app_name">FlyPigeonSample</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="economy_class">Economy</string>
+    <string name="premium_economy_class">Premium Economy</string>
+    <string name="business_class">Business</string>
 </resources>

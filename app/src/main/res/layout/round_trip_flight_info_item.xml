@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="roundTripFlightInfo"
+            type="com.tekkr.flypigeonsample.data.models.AirFareItinerary.FareItinerary.OriginDestinationOption.OriginDestinationOptions" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_bg_with_gray_stroke"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_flight_pic"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_flight_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{roundTripFlightInfo.flightSegment.OperatingAirline.formattedFlightCode}"
+            tools:text="SG 8701"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/iv_flight_pic"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_flight_fare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            tools:text="5,793111"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_fl_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{roundTripFlightInfo.StopQuantityInfo.formattedDepTime}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_flight_pic" />
+
+        <TextView
+            android:id="@+id/tv_fl_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{roundTripFlightInfo.StopQuantityInfo.formattedArrTime}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_flight_pic" />
+
+        <View
+            android:id="@+id/seperator_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@id/tv_fl_start_time"
+            app:layout_constraintEnd_toStartOf="@id/tv_fl_end_time"
+            app:layout_constraintStart_toEndOf="@id/tv_fl_start_time"
+            app:layout_constraintTop_toTopOf="@id/tv_fl_start_time" />
+
+        <TextView
+            android:id="@+id/tv_fl_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@{roundTripFlightInfo.StopQuantityInfo.formattedFlightDuration}"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/seperator_line"
+            app:layout_constraintEnd_toStartOf="@id/tv_fl_end_time"
+            app:layout_constraintStart_toEndOf="@id/tv_fl_start_time" />
+
+        <TextView
+            android:id="@+id/tv_stop_classification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
+            tools:text="non-stop"
+            android:textColor="@color/purple_700"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_fl_end_time"
+            app:layout_constraintStart_toEndOf="@id/tv_fl_start_time"
+            app:layout_constraintTop_toBottomOf="@id/seperator_line" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

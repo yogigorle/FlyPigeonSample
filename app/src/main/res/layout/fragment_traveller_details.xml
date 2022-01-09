@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        tools:context=".TravellerDetailsFragment">
+
+        <RelativeLayout
+            android:background="#E8F6EF"
+            android:id="@+id/rl_flight_overview"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_flight_take_off"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_height="38dp"
+                android:layout_width="38dp"
+                android:src="@drawable/ic_flight_take_off"
+                app:tint="@color/purple_500" />
+
+            <TextView
+                android:fontFamily="sans-serif-medium"
+                android:id="@+id/tv_src_and_dest"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/iv_flight_take_off"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="Hyderabad to Visakhapatnam" />
+
+            <TextView
+                android:fontFamily="sans-serif"
+                android:id="@+id/tv_journey_overview"
+                android:layout_below="@id/tv_src_and_dest"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/iv_flight_take_off"
+                android:layout_width="wrap_content"
+                android:text="Flight Review"
+                android:textColor="@color/gray"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_flight_info"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="5dp">
+
+                <RelativeLayout
+                    android:background="#E8F6EF"
+                    android:id="@+id/rl_travellers_info"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_travellers"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:layout_height="38dp"
+                        android:layout_width="38dp"
+                        android:src="@drawable/ic_people"
+                        app:tint="@color/purple_500" />
+
+                    <TextView
+                        android:fontFamily="sans-serif-medium"
+                        android:id="@+id/tv_travellers"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_toRightOf="@id/iv_travellers"
+                        android:layout_width="wrap_content"
+                        android:text="Travellers"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:id="@+id/tv_adults_count"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignStart="@id/tv_adults"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_toLeftOf="@id/tv_children"
+                        android:layout_width="wrap_content"
+                        android:text="6"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:id="@+id/tv_adults"
+                        android:layout_below="@id/tv_adults_count"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_toLeftOf="@id/tv_children"
+                        android:layout_width="wrap_content"
+                        android:text="ADULT"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:id="@+id/tv_children_count"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignStart="@id/tv_children"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_toLeftOf="@id/tv_infants"
+                        android:layout_width="wrap_content"
+                        android:text="6"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:id="@+id/tv_children"
+                        android:layout_below="@id/tv_children_count"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_toLeftOf="@id/tv_infants"
+                        android:layout_width="wrap_content"
+                        android:text="CHILDREN"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:id="@+id/tv_infants_count"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignStart="@id/tv_infants"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:text="6"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:fontFamily="sans-serif"
+                        android:id="@+id/tv_infants"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/tv_infants_count"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="wrap_content"
+                        android:text="INFANT(S)"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp"
+                        tools:ignore="RtlCompat" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:fontFamily="sans-serif"
+                    android:id="@+id/tv_note"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:text="**Name should be same as in Government Id Proof."
+                    android:textColor="@color/purple_500"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rl_travellers_info" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_add_adult_travellers"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_note">
+
+
+                    <TextView
+                        android:fontFamily="sans-serif-medium"
+                        android:id="@+id/tv_adult"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="Adult"
+                        android:textColor="@color/light_black"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:fontFamily="sans-serif-medium"
+                        android:id="@+id/btn_add_adult"
+                        android:insetBottom="0dp"
+                        android:insetTop="0dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="+ ADD ADULT"
+                        android:textColor="@color/purple_500"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:background="@color/light_gray"
+                        android:id="@+id/adults_seperator_line"
+                        android:layout_below="@id/btn_add_adult"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_adult_travellers"
+                        android:layout_below="@id/adults_seperator_line"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_add_child_travellers"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rl_add_adult_travellers">
+
+
+                    <TextView
+                        android:fontFamily="sans-serif-medium"
+                        android:id="@+id/tv_child"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="Child"
+                        android:textColor="@color/light_black"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:fontFamily="sans-serif-medium"
+                        android:id="@+id/btn_add_children"
+                        android:insetBottom="0dp"
+                        android:insetTop="0dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="+ ADD CHILD"
+                        android:textColor="@color/purple_500"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:background="@color/light_gray"
+                        android:id="@+id/children_seperator_line"
+                        android:layout_below="@id/btn_add_children"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_child_travellers"
+                        android:layout_below="@id/children_seperator_line"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_add_infant_travellers"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rl_add_child_travellers">
+
+
+                    <TextView
+                        android:fontFamily="sans-serif-medium"
+                        android:id="@+id/tv_infant"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="Infant"
+                        android:textColor="@color/light_black"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:fontFamily="sans-serif-medium"
+                        android:id="@+id/btn_add_infant"
+                        android:insetBottom="0dp"
+                        android:insetTop="0dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="+ ADD INFANT"
+                        android:textColor="@color/purple_500"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:background="@color/light_gray"
+                        android:id="@+id/infants_seperator_line"
+                        android:layout_below="@id/btn_add_infant"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_infant_travellers"
+                        android:layout_below="@id/infants_seperator_line"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+                </RelativeLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
+

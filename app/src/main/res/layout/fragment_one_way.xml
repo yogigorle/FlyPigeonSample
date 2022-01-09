@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".fragments.OneWayFragment">
+    tools:context=".ui.views.oneway.OneWayFragment">
+
 
     <RelativeLayout
         android:id="@+id/rl_from"
@@ -31,7 +32,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_from_airport_title"
+            android:id="@+id/tv_one_way_src_airport_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_from"
@@ -44,10 +45,10 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_from_airport_desc"
+            android:id="@+id/tv_one_way_src_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_from_airport_title"
+            android:layout_below="@id/tv_one_way_src_airport_code"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
@@ -83,28 +84,28 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_to_airport_title"
+            android:id="@+id/tv_one_way_dest_airport_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_to"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
-            android:text="HYD"
+            android:text="VTZ"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_to_airport_desc"
+            android:id="@+id/tv_one_way_dest_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_to_airport_title"
+            android:layout_below="@id/tv_one_way_dest_airport_code"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
-            android:text="Hyderabad"
+            android:text="Visakhapatnam"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -113,9 +114,9 @@
 
     <ImageView
         android:id="@+id/iv_pointing_arrow"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_swap"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/single_pointing_arrow"
         app:layout_constraintBottom_toBottomOf="@id/rl_to"
         app:layout_constraintEnd_toStartOf="@id/rl_to"
         app:layout_constraintStart_toEndOf="@id/rl_from"
@@ -195,9 +196,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif"
+            android:text="1 Traveller"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="1 Traveller" />
+            android:textSize="18sp" />
 
 
     </RelativeLayout>
@@ -235,9 +236,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif"
+            android:text="Economy"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="Economy" />
+            android:textSize="18sp" />
 
 
     </RelativeLayout>
@@ -247,6 +248,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/rl_travellers">
 
         <com.google.android.material.checkbox.MaterialCheckBox
@@ -291,8 +293,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:backgroundTint="#FF5733"
-        android:insetTop="0dp"
         android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="10dp"
+        android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="Search Flights"
         app:cornerRadius="5dp"

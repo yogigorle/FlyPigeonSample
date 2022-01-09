@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".fragments.OneWayFragment">
+    tools:context=".ui.views.oneway.OneWayFragment">
 
     <RelativeLayout
-        android:id="@+id/rl_from"
+        android:id="@+id/rl_from_round_trip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:background="@drawable/item_bg_with_corners"
         app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toStartOf="@id/rl_to"
+        app:layout_constraintEnd_toStartOf="@id/rl_to_round_trip"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,41 +31,43 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_airport_title"
+            android:id="@+id/tv_round_trip_src_airport_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_from"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
+            android:text="HYD"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="HYD" />
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_airport_desc"
+            android:id="@+id/tv_round_trip_src_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_airport_title"
+            android:layout_below="@id/tv_round_trip_src_airport_code"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
+            android:text="Hyderabad"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Hyderabad" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_to"
+        android:id="@+id/rl_to_round_trip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@drawable/item_bg_with_corners"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/rl_from"
+        app:layout_constraintStart_toEndOf="@id/rl_from_round_trip"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -81,123 +83,136 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_to_airport_title"
+            android:id="@+id/tv_round_trip_dest_airport_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_to"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
+            android:text="VTZ"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="HYD" />
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_to_airport_desc"
+            android:id="@+id/tv_round_trip_dest_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_to_airport_title"
+            android:layout_below="@id/tv_round_trip_dest_airport_code"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
+            android:text="Visakhapatnam"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Hyderabad" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/iv_pointing_arrow"
+        android:id="@+id/iv_pointing_arrow_round_trip"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/ic_swap"
-        app:layout_constraintBottom_toBottomOf="@id/rl_to"
-        app:layout_constraintEnd_toStartOf="@id/rl_to"
-        app:layout_constraintStart_toEndOf="@id/rl_from"
-        app:layout_constraintTop_toTopOf="@id/rl_from" />
+        app:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/rl_to_round_trip"
+        app:layout_constraintEnd_toStartOf="@id/rl_to_round_trip"
+        app:layout_constraintStart_toEndOf="@id/rl_from_round_trip"
+        app:layout_constraintTop_toTopOf="@id/rl_from_round_trip" />
 
-    <RelativeLayout
-        android:id="@+id/rl_dep_date_picker"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_dep_return_date_picker"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingStart="10dp"
-        android:background="@drawable/item_bg_with_corners"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:layout_marginEnd="5dp"
-        app:layout_constraintEnd_toStartOf="@id/rl_return_date_picker"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_from">
+        app:layout_constraintTop_toBottomOf="@id/rl_from_round_trip"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_dep_date_title"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rl_dep_date_picker_round_trip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:fontFamily="sans-serif"
-            android:text="DEPARTURE DATE"
-            android:textColor="@color/gray"
-            android:textSize="15sp" />
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:background="@drawable/item_bg_with_corners"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginEnd="5dp"
+            >
 
-        <TextView
-            android:id="@+id/tv_dep_date"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_dep_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:fontFamily="sans-serif"
+                android:text="DEPARTURE DATE"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_dep_date_round_trip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_dep_date_title"
+                android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="5dp"
+                android:fontFamily="sans-serif"
+                android:text="Wed 29-Dec-2021"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_return_date_picker_round_trip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_dep_date_title"
-            android:layout_marginTop="5dp"
-            android:drawableStart="@drawable/ic_calendar"
-            android:drawablePadding="5dp"
-            android:fontFamily="sans-serif"
-            android:text="Wed 29-Dec-2021"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/item_bg_with_corners"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:paddingStart="10dp"
+            android:layout_marginStart="5dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_return_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:fontFamily="sans-serif"
+                android:text="RETURN DATE"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_return_date_round_trip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_return_date_title"
+                android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="5dp"
+                android:fontFamily="sans-serif"
+                android:text="Wed 29-Dec-2021"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
     <RelativeLayout
-        android:id="@+id/rl_return_date_picker"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/item_bg_with_corners"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:paddingStart="10dp"
-        android:layout_marginStart="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/rl_dep_date_picker"
-        app:layout_constraintTop_toBottomOf="@id/rl_from">
-
-        <TextView
-            android:id="@+id/tv_return_date_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:fontFamily="sans-serif"
-            android:text="RETURN DATE"
-            android:textColor="@color/gray"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tv_return_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_return_date_title"
-            android:layout_marginTop="5dp"
-            android:drawableStart="@drawable/ic_calendar"
-            android:drawablePadding="5dp"
-            android:fontFamily="sans-serif"
-            android:text="Wed 29-Dec-2021"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_travellers"
+        android:id="@+id/rl_travellers_round_trip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -205,9 +220,9 @@
         android:background="@drawable/item_bg_with_corners"
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
-        app:layout_constraintEnd_toStartOf="@id/rl_class"
+        app:layout_constraintEnd_toStartOf="@id/rl_class_round_trip"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_dep_date_picker">
+        app:layout_constraintTop_toBottomOf="@id/ll_dep_return_date_picker">
 
         <TextView
             android:id="@+id/tv_travellers_title"
@@ -237,7 +252,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_class"
+        android:id="@+id/rl_class_round_trip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -246,8 +261,8 @@
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/rl_travellers"
-        app:layout_constraintTop_toBottomOf="@id/rl_dep_date_picker">
+        app:layout_constraintStart_toEndOf="@id/rl_travellers_round_trip"
+        app:layout_constraintTop_toBottomOf="@id/ll_dep_return_date_picker">
 
         <TextView
             android:id="@+id/tv_class_title"
@@ -262,7 +277,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/tv_class"
+            android:id="@+id/tv_class_round_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_class_title"
@@ -278,7 +293,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_search_flights"
+        android:id="@+id/btn_search_flights_round_trip"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:backgroundTint="#FF5733"
@@ -290,7 +305,7 @@
         app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_class" />
+        app:layout_constraintTop_toBottomOf="@id/rl_class_round_trip" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
