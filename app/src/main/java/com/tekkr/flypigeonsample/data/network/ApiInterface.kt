@@ -1,5 +1,6 @@
 package com.tekkr.flypigeonsample.data.network
 
+import com.tekkr.flypigeonsample.data.models.AirportsData
 import com.tekkr.flypigeonsample.data.models.OneWayFlightsSearchResult
 import com.tekkr.flypigeonsample.data.models.RoundTripFlightSearchResult
 import com.tekkr.flypigeonsample.data.models.RevalidateFlightResult
@@ -23,5 +24,11 @@ interface ApiInterface {
     suspend fun revalidateFlight(
         @Query("fare_source_code") fareSourceCode: String
     ): RevalidateFlightResult
+
+    @GET("api/flights/airportlist/")
+    suspend fun getAirportsList(
+        @Query("airport_search") airportSearchString: String
+    ): List<AirportsData>
+
 
 }

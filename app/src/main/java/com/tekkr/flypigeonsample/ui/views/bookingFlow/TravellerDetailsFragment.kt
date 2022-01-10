@@ -26,15 +26,18 @@ class TravellerDetailsFragment : BaseFragment() {
     private val adultTravellerDetailsAdapter by lazy { TravellerDetailsAdapter() }
     private val childTravellerDetailsAdapter by lazy { TravellerDetailsAdapter() }
     private val infantTravellerDetailsAdapter by lazy { TravellerDetailsAdapter() }
-    val adultsTravellersList = arrayListOf<TravellerDetails>()
-    val childTravellersList = arrayListOf<TravellerDetails>()
-    val infantsTravellersList = arrayListOf<TravellerDetails>()
-    var adultsCount = 0
-    var childrenCount = 0
-    var infantsCount = 0
+    private val adultsTravellersList = arrayListOf<TravellerDetails>()
+    private val childTravellersList = arrayListOf<TravellerDetails>()
+    private val infantsTravellersList = arrayListOf<TravellerDetails>()
+    private var addedAdultsCount = 0
+    private var addedChildCount = 0
+    private var addedInfantsCount = 0
+    private var totalAdultsCount = 0
+    private var totalChildrenCount = 0
+    private var totalInfantsCount = 0
 
     private val args: TravellerDetailsFragmentArgs by navArgs()
-    var isPassportMandatory = false
+    private var isPassportMandatory = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,32 +52,38 @@ class TravellerDetailsFragment : BaseFragment() {
         with(args) {
             tv_src_and_dest.text = srcAndDestCity
             tv_journey_overview_traveller_details.text = flightInfo
-            tv_adults_count.text = adultTravellers.toString()
-            tv_children_count.text = childTravellers.toString()
-            tv_infants_count.text = infantTravellers.toString()
+            totalAdultsCount = adultTravellers
+            totalChildrenCount = childTravellers
+            totalInfantsCount = infantTravellers
+            tv_adults_count.text = totalAdultsCount.toString()
+            tv_children_count.text = totalChildrenCount.toString()
+            tv_infants_count.text = totalInfantsCount.toString()
             isPassportMandatory = isPassportRequired
         }
 
         btn_add_adult.setOnClickListener {
-            invokeTravellerDetailsBottomSheet(Constants.TravellerType.Adult.type) {
-                adultsTravellersList.add(it)
-                adultTravellerDetailsAdapter.submitList(adultsTravellersList)
-                rv_adult_travellers.adapter = adultTravellerDetailsAdapter
-            }
+            setAdapter(
+                totalAdultsCount,
+                Constants.TravellerType.Adult.type,
+                adultsTravellersList,
+                adultTravellerDetailsAdapter
+            )
         }
         btn_add_children.setOnClickListener {
-            invokeTravellerDetailsBottomSheet(Constants.TravellerType.Child.type) {
-                childTravellersList.add(it)
-                childTravellerDetailsAdapter.submitList(childTravellersList)
-                rv_child_travellers.adapter = childTravellerDetailsAdapter
-            }
+            setAdapter(
+                totalChildrenCount,
+                Constants.TravellerType.Child.type,
+                childTravellersList,
+                childTravellerDetailsAdapter
+            )
         }
         btn_add_infant.setOnClickListener {
-            invokeTravellerDetailsBottomSheet(Constants.TravellerType.Infant.type) {
-                infantsTravellersList.add(it)
-                infantTravellerDetailsAdapter.submitList(infantsTravellersList)
-                rv_infant_travellers.adapter = infantTravellerDetailsAdapter
-            }
+            setAdapter(
+                totalInfantsCount,
+                Constants.TravellerType.Infant.type,
+                infantsTravellersList,
+                infantTravellerDetailsAdapter
+            )
 
         }
     }
@@ -113,7 +122,7 @@ class TravellerDetailsFragment : BaseFragment() {
                 }
             }
 
-            toggle_button_group.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            toggle_button_group.addOnButtonCheckedListener { _, checkedId, isChecked ->
                 if (isChecked) {
                     selectedGender = when (checkedId) {
                         R.id.gender_first_btn -> {
@@ -136,7 +145,7 @@ class TravellerDetailsFragment : BaseFragment() {
 
             et_passport_issue_date.setOnClickListener {
                 invokeDatePicker(parentFragmentManager) {
-                    with(et_user_dob) {
+                    with(et_passport_issue_date) {
                         setText(it)
                     }
                 }
@@ -144,7 +153,7 @@ class TravellerDetailsFragment : BaseFragment() {
 
             et_passport_expiry_date.setOnClickListener {
                 invokeDatePicker(parentFragmentManager) {
-                    with(et_user_dob) {
+                    with(et_passport_expiry_date) {
                         setText(it)
                     }
                 }
@@ -174,61 +183,35 @@ class TravellerDetailsFragment : BaseFragment() {
                                 if (it) {
                                     requireContext().showToast("All Fields along with Passport details are Mandatory")
                                 } else {
-
-                                    val id = when (travellerType) {
-                                        Constants.TravellerType.Adult.type -> {
-                                            adultsCount++
-                                        }
-                                        Constants.TravellerType.Child.type -> {
-                                            childrenCount++
-                                        }
-                                        Constants.TravellerType.Infant.type -> {
-                                            infantsCount++
-                                        }
-                                        else -> 0
+                                    addTravellerDetails(
+                                        travellerType,
+                                        firstName,
+                                        lastName,
+                                        dob,
+                                        passportNo,
+                                        passportIssueDate,
+                                        passportExpiryDate,
+                                        selectedGender
+                                    ) {
+                                        result(it)
                                     }
-
-
-                                    result(
-                                        TravellerDetails(
-                                            id,
-                                            firstName,
-                                            lastName,
-                                            dob,
-                                            passportNo,
-                                            passportIssueDate,
-                                            passportExpiryDate,
-                                            selectedGender
-                                        )
-                                    )
                                     dismiss()
                                 }
                             }
 
                         } else {
-
-                            val id = when (travellerType) {
-                                Constants.TravellerType.Adult.type -> {
-                                    adultsCount++
-                                }
-                                Constants.TravellerType.Child.type -> {
-                                    childrenCount++
-                                }
-                                Constants.TravellerType.Infant.type -> {
-                                    infantsCount++
-                                }
-                                else -> 0
+                            addTravellerDetails(
+                                travellerType,
+                                firstName,
+                                lastName,
+                                dob,
+                                passportNo,
+                                passportIssueDate,
+                                passportExpiryDate,
+                                selectedGender
+                            ) {
+                                result(it)
                             }
-
-                            result(
-                                TravellerDetails(
-                                    id,
-                                    firstName,
-                                    lastName,
-                                    dob,
-                                    gender = selectedGender
-                                )
-                            )
                             dismiss()
 
                         }
@@ -262,5 +245,62 @@ class TravellerDetailsFragment : BaseFragment() {
             }
         }
     }
+
+    private fun setAdapter(
+        travellersCount: Int,
+        travellerType: String,
+        travellersList: ArrayList<TravellerDetails>,
+        adapter: TravellerDetailsAdapter
+    ) {
+        if (travellersCount == travellersList.size) {
+            requireContext().showToast("You can add only $travellersCount $travellerType")
+        } else {
+            invokeTravellerDetailsBottomSheet(travellerType) {
+                travellersList.add(it)
+                adapter.submitList(travellersList)
+                rv_adult_travellers.adapter = adapter
+            }
+        }
+
+    }
+
+    private fun addTravellerDetails(
+        travellerType: String,
+        firstName: String,
+        lastName: String,
+        dob: String,
+        passportNo: String = "",
+        passportIssueDate: String = "",
+        passportExpiryDate: String = "",
+        selectedGender: String,
+        response: (TravellerDetails) -> Unit
+    ) {
+        val id = when (travellerType) {
+            Constants.TravellerType.Adult.type -> {
+                addedAdultsCount++
+            }
+            Constants.TravellerType.Child.type -> {
+                addedChildCount++
+            }
+            Constants.TravellerType.Infant.type -> {
+                addedInfantsCount++
+            }
+            else -> 0
+        }
+
+        response(
+            TravellerDetails(
+                id,
+                firstName,
+                lastName,
+                dob,
+                passportNo,
+                passportIssueDate,
+                passportExpiryDate,
+                selectedGender
+            )
+        )
+    }
+
 
 }

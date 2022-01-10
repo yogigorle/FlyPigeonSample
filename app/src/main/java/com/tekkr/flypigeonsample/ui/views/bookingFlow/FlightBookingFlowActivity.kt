@@ -5,18 +5,16 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.navigation.findNavController
-import androidx.navigation.navArgs
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.data.models.AirFareItinerary
+import com.tekkr.flypigeonsample.ui.BaseActivity
 import com.tekkr.flypigeonsample.utils.Constants
-import com.tekkr.flypigeonsample.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flight_booking_flow.*
 
 @AndroidEntryPoint
-class FlightBookingFlowActivity : AppCompatActivity() {
+class FlightBookingFlowActivity : BaseActivity() {
 
     var fareItinerary: AirFareItinerary.FareItinerary? = null
     var src_and_dest = ""
@@ -37,17 +35,17 @@ class FlightBookingFlowActivity : AppCompatActivity() {
         intent?.let { intent ->
 
             adultCount =
-                intent.getIntExtra(Constants.FlightSearchQueryParams.AdultsCount.param, 0)
+                intent.getIntExtra(Constants.FlightJourneyParams.AdultsCount.param, 0)
             childCount =
-                intent.getIntExtra(Constants.FlightSearchQueryParams.ChildrenCount.param, 0)
+                intent.getIntExtra(Constants.FlightJourneyParams.ChildrenCount.param, 0)
             infantCount =
-                intent.getIntExtra(Constants.FlightSearchQueryParams.InfantsCount.param, 0)
+                intent.getIntExtra(Constants.FlightJourneyParams.InfantsCount.param, 0)
 
             val fareItinerary =
                 intent.getParcelableExtra<AirFareItinerary.FareItinerary>(Constants.fareItinerary) as AirFareItinerary.FareItinerary
             fareItinerary.let {
                 val selectedClass =
-                    intent.getStringExtra(Constants.FlightSearchQueryParams.FlightClass.param) ?: ""
+                    intent.getStringExtra(Constants.FlightJourneyParams.FlightClass.param) ?: ""
                 val stopInfo =
                     if (it.OriginDestinationOptions[0].TotalStops > 0) "${it.OriginDestinationOptions[0].TotalStops} stop" else "non-stop"
                 val flightDuration =
@@ -99,8 +97,7 @@ class FlightBookingFlowActivity : AppCompatActivity() {
         }
 
         btn_continue_booking.setOnClickListener {
-            val currentDestinationId = navController.currentDestination?.id
-            when (currentDestinationId) {
+            when (navController.currentDestination?.id) {
                 R.id.flightReviewFragment -> {
                     val action =
                         FlightReviewFragmentDirections.actionFlightReviewFragmentToTravellerDetailsFragment(
@@ -114,6 +111,14 @@ class FlightBookingFlowActivity : AppCompatActivity() {
 
                     navController.navigate(action)
                 }
+            }
+        }
+
+        iv_back.setOnClickListener {
+            if(navController.currentDestination?.id == R.id.flightReviewFragment){
+                finish()
+            }else{
+                navController.popBackStack()
             }
         }
     }

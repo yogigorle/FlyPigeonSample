@@ -15,9 +15,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-      <include
-          android:id="@+id/layout_toolbar"
-          layout="@layout/standarad_toolbar"/>
+    <include
+        android:id="@+id/layout_toolbar"
+        layout="@layout/standarad_toolbar" />
+
+    <include layout="@layout/progress_bar_layout"/>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/airports_search_view"
@@ -32,23 +34,13 @@
         app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
         app:queryBackground="@android:color/transparent" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_airports_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constrainedHeight="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_bg">
-
-        <LinearLayout
-            android:id="@+id/ll_placeholder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
-
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_constraintTop_toBottomOf="@id/view_bg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

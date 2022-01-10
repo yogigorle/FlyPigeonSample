@@ -3,6 +3,8 @@ package com.tekkr.flypigeonsample.ui.views.flights
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -12,15 +14,15 @@ import com.tekkr.flypigeonsample.ui.BaseActivity
 import com.tekkr.flypigeonsample.ui.viewmodels.FlightSearchViewModel
 import com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightBookingFlowActivity
 import com.tekkr.flypigeonsample.utils.Constants
+import com.tekkr.flypigeonsample.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flights_list.*
-import kotlinx.android.synthetic.main.progress_bar_layout.view.*
-import java.io.Serializable
+import kotlinx.android.synthetic.main.progress_bar_layout.*
 
 @AndroidEntryPoint
 class FlightsListActivity : BaseActivity() {
 
-    var flightSearchType = Constants.oneWay
+    var flightSearchType = Constants.FlightJourneyParams.OneWay.param
 
     private val flightsSearchViewModel: FlightSearchViewModel by viewModels()
     private val oneWayFlightSearchAdapter by lazy { OneWayFlightsListAdapter(::onOneWayFlightItemClicked) }
@@ -41,54 +43,56 @@ class FlightsListActivity : BaseActivity() {
 
         intent?.let {
             flightSearchType =
-                (it.getStringExtra(Constants.FlightSearchQueryParams.JourneyType.param)
+                (it.getStringExtra(Constants.FlightJourneyParams.JourneyType.param)
                     ?: "")
-            selectedClass = (it.getStringExtra(Constants.FlightSearchQueryParams.FlightClass.param)
+            selectedClass = (it.getStringExtra(Constants.FlightJourneyParams.FlightClass.param)
                 ?: "")
             adultsCount = it.getIntExtra(
-                Constants.FlightSearchQueryParams.AdultsCount.param,
+                Constants.FlightJourneyParams.AdultsCount.param,
                 0
             ).toString()
             childrenCount = it.getIntExtra(
-                Constants.FlightSearchQueryParams.ChildrenCount.param, 0
+                Constants.FlightJourneyParams.ChildrenCount.param, 0
             ).toString()
             infantsCount = it.getIntExtra(
-                Constants.FlightSearchQueryParams.InfantsCount.param,
+                Constants.FlightJourneyParams.InfantsCount.param,
                 0
             ).toString()
             val flightSearchParams = hashMapOf(
-                Constants.FlightSearchQueryParams.JourneyType.param to flightSearchType,
-                Constants.FlightSearchQueryParams.SrcAirPortCode.param to (it.getStringExtra(
-                    Constants.FlightSearchQueryParams.SrcAirPortCode.param
+                Constants.FlightJourneyParams.JourneyType.param to flightSearchType,
+                Constants.FlightJourneyParams.SrcAirPortCode.param to (it.getStringExtra(
+                    Constants.FlightJourneyParams.SrcAirPortCode.param
                 ) ?: ""),
-                Constants.FlightSearchQueryParams.DestAirPortCode.param to (it.getStringExtra(
-                    Constants.FlightSearchQueryParams.DestAirPortCode.param
+                Constants.FlightJourneyParams.DestAirPortCode.param to (it.getStringExtra(
+                    Constants.FlightJourneyParams.DestAirPortCode.param
                 ) ?: ""),
-                Constants.FlightSearchQueryParams.DepDate.param to (it.getStringExtra(Constants.FlightSearchQueryParams.DepDate.param)
+                Constants.FlightJourneyParams.DepDate.param to (it.getStringExtra(Constants.FlightJourneyParams.DepDate.param)
                     ?: ""),
-                Constants.FlightSearchQueryParams.ReturnDate.param to (it.getStringExtra(Constants.FlightSearchQueryParams.ReturnDate.param)
+                Constants.FlightJourneyParams.ReturnDate.param to (it.getStringExtra(Constants.FlightJourneyParams.ReturnDate.param)
                     ?: ""),
-                Constants.FlightSearchQueryParams.AdultsCount.param to adultsCount,
-                Constants.FlightSearchQueryParams.ChildrenCount.param to childrenCount,
-                Constants.FlightSearchQueryParams.InfantsCount.param to infantsCount,
-                Constants.FlightSearchQueryParams.FlightClass.param to selectedClass
+                Constants.FlightJourneyParams.AdultsCount.param to adultsCount,
+                Constants.FlightJourneyParams.ChildrenCount.param to childrenCount,
+                Constants.FlightJourneyParams.InfantsCount.param to infantsCount,
+                Constants.FlightJourneyParams.FlightClass.param to selectedClass
             )
 
             flightSrcAndDest =
-                "${it.getStringExtra(Constants.FlightSearchQueryParams.SrcCity.param)} to ${
-                    it.getStringExtra(Constants.FlightSearchQueryParams.DestCity.param)
+                "${it.getStringExtra(Constants.FlightJourneyParams.SrcCity.param)} to ${
+                    it.getStringExtra(Constants.FlightJourneyParams.DestCity.param)
                 }"
             tv_toolbar_title.text = flightSrcAndDest
 
 
             tv_departure_date.text =
-                it.getStringExtra(Constants.FlightSearchQueryParams.FormattedDepDate.param) ?: ""
+                it.getStringExtra(Constants.FlightJourneyParams.FormattedDepDate.param) ?: ""
 
             //get api call
-            if (flightSearchType == Constants.oneWay) {
+            if (flightSearchType == Constants.FlightJourneyParams.OneWay.param) {
                 flightsSearchViewModel.getOneWayFlightSearchResults(flightSearchParams)
                     .observe(this, Observer {
+                        progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) { searchResult ->
+                            progress_bar_view.visibility = GONE
                             oneWayFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries)
                             rv_one_way_flights.visibility = VISIBLE
                             rv_one_way_flights.adapter = oneWayFlightSearchAdapter
@@ -97,7 +101,9 @@ class FlightsListActivity : BaseActivity() {
             } else {
                 flightsSearchViewModel.getRoundTripFlightSearchResults(flightSearchParams)
                     .observe(this, Observer {
+                        progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) { searchResult ->
+                            progress_bar_view.visibility = GONE
                             roundTripDepFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[0])
                             roundTripArrFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[1])
                             ll_round_trip_flights.visibility = VISIBLE
@@ -116,21 +122,47 @@ class FlightsListActivity : BaseActivity() {
 
     private fun onOneWayFlightItemClicked(airFareItinerary: AirFareItinerary) {
         //call revalidate api and launch booking flow
-        val intent = Intent(this, FlightBookingFlowActivity::class.java)
-        with(intent) {
-            putExtra(
-                Constants.fareItinerary,
-                airFareItinerary.fareItinerary
-            )
-            putExtra(Constants.FlightSearchQueryParams.FlightClass.param, selectedClass)
-            putExtra(Constants.sourceAnDestCity, flightSrcAndDest)
-            putExtra(Constants.FlightSearchQueryParams.ChildrenCount.param, childrenCount.toInt())
-            putExtra(Constants.FlightSearchQueryParams.AdultsCount.param, adultsCount.toInt())
-            putExtra(Constants.FlightSearchQueryParams.InfantsCount.param, infantsCount.toInt())
 
-        }
+        flightsSearchViewModel.revalidateFlight(airFareItinerary.fareItinerary.airItineraryFareInfo.FareSourceCode)
+            .observe(this,
+                Observer {
+                    it?.let {
+                        progress_bar_view.visibility = VISIBLE
+                        handleApiCall(it) {
+                            progress_bar_view.visibility = GONE
+                            if (it.airRevalidateResponse.airRevalidateResult.isValid) {
+                                val intent = Intent(this, FlightBookingFlowActivity::class.java)
+                                with(intent) {
+                                    putExtra(
+                                        Constants.fareItinerary,
+                                        it.airRevalidateResponse.airRevalidateResult.fareItineraries
+                                    )
+                                    putExtra(
+                                        Constants.FlightJourneyParams.FlightClass.param,
+                                        selectedClass
+                                    )
+                                    putExtra(Constants.sourceAnDestCity, flightSrcAndDest)
+                                    putExtra(
+                                        Constants.FlightJourneyParams.ChildrenCount.param,
+                                        childrenCount.toInt()
+                                    )
+                                    putExtra(
+                                        Constants.FlightJourneyParams.AdultsCount.param,
+                                        adultsCount.toInt()
+                                    )
+                                    putExtra(
+                                        Constants.FlightJourneyParams.InfantsCount.param,
+                                        infantsCount.toInt()
+                                    )
+                                }
+                                startActivity(intent)
 
-
-        startActivity(intent)
+                            }else{
+                                showToast("Sorry Something went wrong please try again...")
+                            }
+                        }
+                    }
+                })
+        Log.e("fareSourceCode", airFareItinerary.fareItinerary.airItineraryFareInfo.FareSourceCode)
     }
 }

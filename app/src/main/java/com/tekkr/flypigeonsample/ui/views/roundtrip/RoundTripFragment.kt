@@ -99,7 +99,7 @@ class RoundTripFragment : BaseFragment() {
         btn_search_flights_round_trip.setOnClickListener {
             launchFlightSearchActivity(
                 roundTripSearchResultsLauncher,
-                Constants.roundTrip,
+                Constants.FlightJourneyParams.RoundTrip.param,
                 tv_round_trip_src_airport_code.text.toString(),
                 tv_round_trip_dest_airport_code.text.toString(),
                 depDateInMillis.convertMillsToDate(),

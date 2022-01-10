@@ -44,6 +44,7 @@ class OneWayFragment : BaseFragment() {
     var adultTravellers = 1
     var childTravellers = 0
     var infantTravellers = 0
+    var sourceType = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,18 +60,20 @@ class OneWayFragment : BaseFragment() {
 
 
         rl_from.setOnClickListener {
-            launchSearchAirportsActivity(Constants.origin, oneWayAirportSearchActvLauncher)
+            sourceType = Constants.origin
+            launchSearchAirportsActivity(sourceType, oneWayAirportSearchActvLauncher)
         }
         rl_to.setOnClickListener {
-            launchSearchAirportsActivity(Constants.destination, oneWayAirportSearchActvLauncher)
+            sourceType = Constants.destination
+            launchSearchAirportsActivity(sourceType,oneWayAirportSearchActvLauncher)
         }
 
         //set default travellers count from shared prefs
-        lifecycleScope.launchWhenStarted {
-            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
-                tv_travellers_count.text = it ?: "1 Travellers"
-            }
-        }
+//        lifecycleScope.launchWhenStarted {
+//            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
+//                tv_travellers_count.text = it ?: "1 Travellers"
+//            }
+//        }
 
         //create instance of calendar for bounds
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
@@ -115,7 +118,7 @@ class OneWayFragment : BaseFragment() {
             }
         }
 
-        rl_class.setOnClickListener {
+        rl_class.setOnClickListener {sourceType
             showClassPopupMenu(tv_class)
         }
 
@@ -133,7 +136,7 @@ class OneWayFragment : BaseFragment() {
 
             launchFlightSearchActivity(
                 flightsSearchResultsActivityLauncher,
-                Constants.oneWay,
+                Constants.FlightJourneyParams.OneWay.param,
                 tv_one_way_src_airport_code.text.toString(),
                 tv_one_way_dest_airport_code.text.toString(),
                 dateInMills.convertMillsToDate(),
@@ -156,14 +159,21 @@ class OneWayFragment : BaseFragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 data?.let {
-                    tv_one_way_src_airport_code.text =
-                        it.getStringExtra("source_city_code_name").toString()
-                    tv_one_way_src_city.text =
-                        it.getStringExtra("source_city_full_name").toString()
-                    tv_one_way_dest_airport_code.text =
-                        it.getStringExtra("dest_city_code_name").toString()
-                    tv_one_way_dest_city.text = it.getStringExtra("dest_city_full_name").toString()
-
+                    if (sourceType == Constants.origin) {
+                        tv_one_way_src_airport_code.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.SrcAirPortCode.param)
+                                .toString()
+                        tv_one_way_src_city.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.SrcCity.param)
+                                .toString()
+                    } else {
+                        tv_one_way_dest_airport_code.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.DestAirPortCode.param)
+                                .toString()
+                        tv_one_way_dest_city.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.DestCity.param)
+                                .toString()
+                    }
                 }
             }
         }

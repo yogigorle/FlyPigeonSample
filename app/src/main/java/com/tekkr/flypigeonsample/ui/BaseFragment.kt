@@ -306,40 +306,40 @@ abstract class BaseFragment : Fragment() {
     ) {
         launcher.launch(
             Intent(requireContext(), FlightsListActivity::class.java).apply {
-                putExtra(Constants.FlightSearchQueryParams.JourneyType.param, journeyType)
+                putExtra(Constants.FlightJourneyParams.JourneyType.param, journeyType)
                 putExtra(
-                    Constants.FlightSearchQueryParams.SrcAirPortCode.param,
+                    Constants.FlightJourneyParams.SrcAirPortCode.param,
                     srcAirportCode
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.DestAirPortCode.param,
+                    Constants.FlightJourneyParams.DestAirPortCode.param,
                     destAirportCode
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.DepDate.param,
+                    Constants.FlightJourneyParams.DepDate.param,
                     depDate
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.ReturnDate.param,
+                    Constants.FlightJourneyParams.ReturnDate.param,
                     returnDate
                 )
-                putExtra(Constants.FlightSearchQueryParams.AdultsCount.param, adultsCount)
-                putExtra(Constants.FlightSearchQueryParams.ChildrenCount.param, childrenCount)
-                putExtra(Constants.FlightSearchQueryParams.InfantsCount.param, infantsCount)
+                putExtra(Constants.FlightJourneyParams.AdultsCount.param, adultsCount)
+                putExtra(Constants.FlightJourneyParams.ChildrenCount.param, childrenCount)
+                putExtra(Constants.FlightJourneyParams.InfantsCount.param, infantsCount)
                 putExtra(
-                    Constants.FlightSearchQueryParams.FlightClass.param,
+                    Constants.FlightJourneyParams.FlightClass.param,
                     flightClass
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.SrcCity.param,
+                    Constants.FlightJourneyParams.SrcCity.param,
                     srcCity
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.DestCity.param,
+                    Constants.FlightJourneyParams.DestCity.param,
                     destCity
                 )
                 putExtra(
-                    Constants.FlightSearchQueryParams.FormattedDepDate.param,
+                    Constants.FlightJourneyParams.FormattedDepDate.param,
                     formattedDepDate
                 )
 

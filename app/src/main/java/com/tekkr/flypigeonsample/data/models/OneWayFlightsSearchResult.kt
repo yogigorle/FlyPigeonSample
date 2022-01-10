@@ -139,7 +139,6 @@ data class AirFareItinerary(
                             get() = "$Code $FlightNumber"
                     }
 
-
                 }
 
                 @Parcelize

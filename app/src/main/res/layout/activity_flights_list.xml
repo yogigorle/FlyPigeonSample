@@ -7,6 +7,7 @@
     android:background="@color/light_gray"
     tools:context=".ui.views.flights.FlightsListActivity">
 
+    <include layout="@layout/progress_bar_layout" />
 
     <RelativeLayout
         android:id="@+id/rl_one_way_fl_info_toolbar"
@@ -67,10 +68,10 @@
         android:id="@+id/rv_one_way_flights"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:visibility="gone"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:clipToPadding="false"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,8 +89,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -123,8 +124,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -154,12 +155,9 @@
                 tools:listitem="@layout/round_trip_flight_info_item" />
 
 
-
-
         </LinearLayout>
 
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

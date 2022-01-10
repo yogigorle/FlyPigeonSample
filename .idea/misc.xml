@@ -8,20 +8,12 @@
         <entry key="../../Android/Sdk/platforms/android-31/data/res/drawable/btn_toggle_bg.xml" value="0.209375" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/drawable/btn_toggle_material.xml" value="0.209375" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/drawable/status_bar_item_background.xml" value="0.209375" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/drawable/btn_selector_bg.xml" value="0.2703125" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/drawable/ic_calendar.xml" value="0.26615384615384613" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/drawable/item_bg_with_corners.xml" value="0.26615384615384613" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/activity_flight_booking_flow.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/activity_flights_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/add_travellers_info_bottom_sheet.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_flight_review.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_multi_city.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_one_way.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_round_trip.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/fragment_traveller_details.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/one_way_flight_info_item.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/deves/AndroidStudioProjects/FlyPigeonSample/app/src/main/res/layout/travellers_count_toggle_btn.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/drawable-v24/btn_selector_text.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/btn_selector.xml" value="0.14166666666666666" />
@@ -44,6 +36,7 @@
         <entry key="app/src/main/res/layout/activity_flights_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_search_airports.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/airports_info_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/button_selector.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/calendar_months_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/date_item.xml" value="0.12" />
@@ -51,7 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_one_way.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_round_trip.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_traveller_details.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/layout_traveller_details_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/layout_traveller_details_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/one_way_flight_info_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/popular_cities_item_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/popular_cities_layout.xml" value="0.19322916666666667" />

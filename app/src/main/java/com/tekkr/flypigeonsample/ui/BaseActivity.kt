@@ -38,16 +38,16 @@ abstract class BaseActivity : AppCompatActivity() {
         noinline onRetry: (() -> Unit)? = null,
         onSuccess: (T) -> Unit
     ) {
-        val progressBarHandler = ProgressBarHandler(this)
+//        val progressBarHandler = ProgressBarHandler(this)
         response?.let {
             when (it) {
-                is Resource.Loading -> progressBarHandler.show()
+//                is Resource.Loading -> progressBarHandler.show()
                 is Resource.Success -> {
-                    progressBarHandler.hide()
+//                    progressBarHandler.hide()
                     onSuccess(it.value)
                 }
-                is Resource.Failure ->{
-                    progressBarHandler.hide()
+                is Resource.Failure -> {
+//                    progressBarHandler.hide()
                     handleApiError(it) { onRetry?.invoke() }
                 }
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="airportInfo"
+            type="com.tekkr.flypigeonsample.data.models.AirportsData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_airport_data_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_airport_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{airportInfo.city+`, `+airportInfo.country}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_airport_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@{airportInfo.airportname}"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_airport_city" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/airport_code"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:backgroundTint="@color/gray"
+            android:enabled="false"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@{airportInfo.airportcode}"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_airport_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_airport_city" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

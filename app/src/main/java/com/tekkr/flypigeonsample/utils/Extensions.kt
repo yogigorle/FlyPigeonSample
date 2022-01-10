@@ -48,7 +48,6 @@ fun <T> diffChecker(itemsSame: (T, T) -> Boolean): DiffUtil.ItemCallback<T> wher
     return object : DiffUtil.ItemCallback<T>() {
         override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
             return itemsSame(oldItem, newItem)
-
         }
 
         override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
