@@ -42,6 +42,7 @@
         <entry key="app/src/main/res/layout/date_item.xml" value="0.12" />
         <entry key="app/src/main/res/layout/fragment_flight_review.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_one_way.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_round_trip.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_traveller_details.xml" value="0.18" />
         <entry key="app/src/main/res/layout/layout_traveller_details_item.xml" value="0.22" />

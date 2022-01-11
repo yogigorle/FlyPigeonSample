@@ -5,15 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.data.network.Resource
+import com.tekkr.flypigeonsample.utils.Constants
+import com.tekkr.flypigeonsample.utils.DataStoreManager
 import com.tekkr.flypigeonsample.utils.ProgressBarHandler
 import com.tekkr.flypigeonsample.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.progress_bar_layout.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 abstract class BaseActivity : AppCompatActivity() {
 
+    protected val baseViewModel: BaseViewModel by viewModels()
 
     protected fun handleApiError(
         failure: Resource.Failure,
@@ -54,5 +64,9 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
+
 
 }

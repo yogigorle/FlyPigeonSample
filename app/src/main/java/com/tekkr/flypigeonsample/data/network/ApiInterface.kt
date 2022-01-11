@@ -1,9 +1,6 @@
 package com.tekkr.flypigeonsample.data.network
 
-import com.tekkr.flypigeonsample.data.models.AirportsData
-import com.tekkr.flypigeonsample.data.models.OneWayFlightsSearchResult
-import com.tekkr.flypigeonsample.data.models.RoundTripFlightSearchResult
-import com.tekkr.flypigeonsample.data.models.RevalidateFlightResult
+import com.tekkr.flypigeonsample.data.models.*
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.QueryMap

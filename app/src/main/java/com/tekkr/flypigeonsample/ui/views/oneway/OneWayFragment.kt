@@ -65,7 +65,7 @@ class OneWayFragment : BaseFragment() {
         }
         rl_to.setOnClickListener {
             sourceType = Constants.destination
-            launchSearchAirportsActivity(sourceType,oneWayAirportSearchActvLauncher)
+            launchSearchAirportsActivity(sourceType, oneWayAirportSearchActvLauncher)
         }
 
         //set default travellers count from shared prefs
@@ -118,7 +118,8 @@ class OneWayFragment : BaseFragment() {
             }
         }
 
-        rl_class.setOnClickListener {sourceType
+        rl_class.setOnClickListener {
+            sourceType
             showClassPopupMenu(tv_class)
         }
 
@@ -134,21 +135,33 @@ class OneWayFragment : BaseFragment() {
 
         btn_search_flights.setOnClickListener {
 
-            launchFlightSearchActivity(
-                flightsSearchResultsActivityLauncher,
-                Constants.FlightJourneyParams.OneWay.param,
-                tv_one_way_src_airport_code.text.toString(),
-                tv_one_way_dest_airport_code.text.toString(),
-                dateInMills.convertMillsToDate(),
-                "",
-                adultTravellers,
-                childTravellers,
-                infantTravellers,
-                tv_class.text.toString(),
-                tv_one_way_src_city.text.toString(),
-                tv_one_way_dest_city.text.toString(),
-                tv_dep_date.text.toString()
-            )
+            val srcAirportCode = tv_one_way_src_airport_code.text.toString()
+            val destAirportCode = tv_one_way_dest_airport_code.text.toString()
+
+            checkIfStringsEmpty(listOf(srcAirportCode, destAirportCode)) {
+                if (!it) {
+                    launchFlightSearchActivity(
+                        flightsSearchResultsActivityLauncher,
+                        Constants.FlightJourneyParams.OneWay.param,
+                        srcAirportCode,
+                        destAirportCode,
+                        dateInMills.convertMillsToDate(),
+                        "",
+                        adultTravellers,
+                        childTravellers,
+                        infantTravellers,
+                        tv_class.text.toString(),
+                        tv_one_way_src_city.text.toString(),
+                        tv_one_way_dest_city.text.toString(),
+                        tv_dep_date.text.toString()
+                    )
+
+                } else {
+                    requireContext().showToast("All fields are mandatory..")
+                }
+
+            }
+
 
         }
 

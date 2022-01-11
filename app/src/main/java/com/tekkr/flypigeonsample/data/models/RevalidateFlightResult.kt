@@ -17,9 +17,9 @@ data class RevalidateFlightResult(
             @SerializedName("ExtraServices")
             val extraServices: ExtraServices,
             @SerializedName("FareItineraries")
-            val fareItineraries: RevalidatedFareItinerary,
+            val fareItineraries: FareItinerary,
             @SerializedName("IsValid")
-            val isValid: Boolean
+            val isValid: String
         ) : Parcelable {
             @Parcelize
             data class ExtraServices(
@@ -27,27 +27,47 @@ data class RevalidateFlightResult(
             ) : Parcelable {
                 @Parcelize
                 data class Service(
-                    val behaviour: String,
-                    val checkInType: String,
-                    val description: String,
-                    val flightDesignator: String,
-                    val isMandatory: Boolean,
-                    val relation: String,
-                    val serviceCost: ServiceCost,
-                    val serviceId: String,
-                    val type: String
+                    val Service: ServicesOffered
+
                 ) : Parcelable {
                     @Parcelize
+                    data class ServicesOffered(
+                        @SerializedName("Behavior")
+                        val behaviour: String,
+                        @SerializedName("CheckInType")
+                        val checkInType: String,
+                        @SerializedName("Description")
+                        val description: String,
+                        @SerializedName("FlightDesignator")
+                        val flightDesignator: String,
+                        @SerializedName("IsMandatory")
+                        val isMandatory: Boolean,
+                        @SerializedName("Relation")
+                        val relation: String,
+                        @SerializedName("ServiceCost")
+                        val serviceCost: ServiceCost,
+                        @SerializedName("ServiceId")
+                        val serviceId: String,
+                        @SerializedName("Type")
+                        val type: String
+                    ) : Parcelable
+
+                    @Parcelize
                     data class ServiceCost(
+                        @SerializedName("Amount")
                         val amount: Int,
+                        @SerializedName("CurrencyCode")
                         val currencyCode: String
                     ) : Parcelable
                 }
             }
+
+            @Parcelize
+            data class FareItinerary(
+                @SerializedName("FareItinerary")
+                val fareItinerary: RevalidatedFareItinerary
+            ) : Parcelable
         }
-
-
-
 
     }
 }

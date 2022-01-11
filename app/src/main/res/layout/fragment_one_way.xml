@@ -39,7 +39,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
-            android:text="HYD"
+            android:text="-"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="24sp" />
@@ -53,7 +53,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
-            android:text="Hyderabad"
+            android:text="-"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -91,7 +91,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
-            android:text="VTZ"
+            android:text="-"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="24sp" />
@@ -105,7 +105,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="sans-serif"
-            android:text="Visakhapatnam"
+            android:text="-"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="14sp" />

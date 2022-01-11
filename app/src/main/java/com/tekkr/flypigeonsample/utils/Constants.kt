@@ -4,6 +4,7 @@ object Constants {
     const val origin = "Origin"
     const val destination = "Destination"
     const val fareItinerary = "FARE_ITINERARY"
+    const val revalidatedFlightResult = "REVALIDATED_FLIGHT_RESULT"
     const val sourceAnDestCity = "source_to_dest_city"
 
     enum class FlightJourneyParams(val param: String) {

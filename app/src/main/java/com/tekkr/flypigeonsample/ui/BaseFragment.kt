@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.tekkr.flypigeonsample.FlyPigeonSampleApplication
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.ui.views.airportssearch.SearchAirportsActivity
 import com.tekkr.flypigeonsample.ui.views.flights.FlightsListActivity
@@ -35,6 +36,9 @@ abstract class BaseFragment : Fragment() {
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
+
+    @Inject
+    lateinit var applicationContext: FlyPigeonSampleApplication
 
     protected fun showTravellersSelectionBottomSheet(
         travellersCount: (Int, Int, Int) -> Unit

@@ -2,6 +2,10 @@ package com.tekkr.flypigeonsample.data.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.tekkr.flypigeonsample.utils.convertToHoursAndMins
+import com.tekkr.flypigeonsample.utils.formatFlightDate
+import com.tekkr.flypigeonsample.utils.formatFlightTime
+import com.tekkr.flypigeonsample.utils.formatMoney
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -16,7 +20,7 @@ data class RevalidatedFareItinerary(
     val ValidatingAirlineCode: String
 ) : Parcelable {
     @Parcelize
-    data class  AirItineraryFareInfo(
+    data class AirItineraryFareInfo(
         val DivideInPartyIndicator: Boolean,
         @SerializedName("FareBreakdown")
         val fareBreakdown: List<FareBreakdown>,
@@ -62,7 +66,10 @@ data class RevalidatedFareItinerary(
                     val Amount: Int,
                     val CurrencyCode: String,
                     val DecimalPlaces: String
-                ) : Parcelable
+                ) : Parcelable {
+                    val formattedTotalFare: String
+                        get() = Amount.formatMoney()
+                }
             }
 
             @Parcelize
@@ -85,7 +92,7 @@ data class RevalidatedFareItinerary(
                 val DecimalPlaces: String
             )
 
-                data class EquivFare(
+            data class EquivFare(
                 val Amount: String,
                 val CurrencyCode: String,
                 val DecimalPlaces: String
@@ -143,12 +150,31 @@ data class RevalidatedFareItinerary(
                 val distanceBetweenAirports: String,
                 val distanceUnit: String
             ) : Parcelable {
+                val readableDepDate: String
+                    get() = DepartureDateTime.formatFlightDate()
+
+                val readableArrDate: String
+                    get() = ArrivalDateTime.formatFlightDate()
+
+                val formattedDepTime: String
+                    get() = DepartureDateTime.formatFlightTime()
+
+                val formattedArrTime: String
+                    get() = ArrivalDateTime.formatFlightTime()
+
+                val formattedFlightDuration: String
+                    get() = if (JourneyDuration.toInt() > 60) JourneyDuration.toInt().convertToHoursAndMins() else "$JourneyDuration m"
+
                 @Parcelize
                 data class OperatingAirline(
                     val Code: String,
                     val FlightNumber: String
-                ) : Parcelable
+                ) : Parcelable {
+                    val formattedFlightCode: String
+                        get() = "$Code $FlightNumber"
+                }
             }
+
             @Parcelize
             data class SeatsRemaining(
                 val BelowMinimum: String,

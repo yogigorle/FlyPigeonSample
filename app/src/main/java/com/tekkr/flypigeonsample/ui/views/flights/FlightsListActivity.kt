@@ -15,6 +15,7 @@ import com.tekkr.flypigeonsample.ui.viewmodels.FlightSearchViewModel
 import com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightBookingFlowActivity
 import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.utils.showToast
+import com.tekkr.flypigeonsample.utils.toJson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flights_list.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
@@ -93,7 +94,7 @@ class FlightsListActivity : BaseActivity() {
                         progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) { searchResult ->
                             progress_bar_view.visibility = GONE
-                            oneWayFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries)
+                            oneWayFlightSearchAdapter.submitList(searchResult.airSearchResponse.airSearchResult.fareItineraries)
                             rv_one_way_flights.visibility = VISIBLE
                             rv_one_way_flights.adapter = oneWayFlightSearchAdapter
                         }
@@ -130,12 +131,12 @@ class FlightsListActivity : BaseActivity() {
                         progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) {
                             progress_bar_view.visibility = GONE
-                            if (it.airRevalidateResponse.airRevalidateResult.isValid) {
+                            if (it.airRevalidateResponse.airRevalidateResult.isValid.toBooleanStrict()) {
                                 val intent = Intent(this, FlightBookingFlowActivity::class.java)
                                 with(intent) {
                                     putExtra(
-                                        Constants.fareItinerary,
-                                        it.airRevalidateResponse.airRevalidateResult.fareItineraries
+                                        Constants.revalidatedFlightResult,
+                                        it.airRevalidateResponse.airRevalidateResult
                                     )
                                     putExtra(
                                         Constants.FlightJourneyParams.FlightClass.param,

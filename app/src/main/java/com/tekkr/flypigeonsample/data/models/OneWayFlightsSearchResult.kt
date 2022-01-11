@@ -10,13 +10,16 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
 data class OneWayFlightsSearchResult(
-    val AirSearchResponse: FlightsSearchResponse
+    @SerializedName("AirSearchResponse")
+    val airSearchResponse: FlightsSearchResponse
 ) {
     data class FlightsSearchResponse(
-        val AirSearchResult: FlightSearchInfo
+        @SerializedName("AirSearchResult")
+        val airSearchResult: FlightSearchInfo
     ) {
         data class FlightSearchInfo(
-            val FareItineraries: List<AirFareItinerary>
+            @SerializedName("FareItineraries")
+            val fareItineraries: List<AirFareItinerary>
         )
     }
 }

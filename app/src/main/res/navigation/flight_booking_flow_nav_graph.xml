@@ -9,7 +9,7 @@
         android:id="@+id/flightReviewFragment"
         android:name="com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightReviewFragment"
         android:label="fragment_flight_review"
-        tools:layout="@layout/fragment_flight_review" >
+        tools:layout="@layout/fragment_flight_review">
         <action
             android:id="@+id/action_flightReviewFragment_to_travellerDetailsFragment"
             app:destination="@id/travellerDetailsFragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/travellerDetailsFragment"
         android:name="com.tekkr.flypigeonsample.ui.views.bookingFlow.TravellerDetailsFragment"
         android:label="fragment_traveller_details"
-        tools:layout="@layout/fragment_traveller_details" >
+        tools:layout="@layout/fragment_traveller_details">
         <action
             android:id="@+id/action_travellerDetailsFragment_to_flightReviewFragment"
             app:destination="@id/flightReviewFragment" />
@@ -44,5 +44,21 @@
             android:name="isPassportRequired"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_travellerDetailsFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.tekkr.flypigeonsample.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment">
+        <action
+            android:id="@+id/action_paymentFragment_to_travellerDetailsFragment"
+            app:destination="@id/travellerDetailsFragment" />
+        <argument
+            android:name="payment_order_id"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

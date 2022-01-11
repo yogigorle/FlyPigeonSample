@@ -7,7 +7,7 @@
     android:background="@color/light_gray"
     tools:context=".ui.views.flights.FlightsListActivity">
 
-    <include layout="@layout/progress_bar_layout" />
+
 
     <RelativeLayout
         android:id="@+id/rl_one_way_fl_info_toolbar"
@@ -158,6 +158,8 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <include layout="@layout/progress_bar_layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

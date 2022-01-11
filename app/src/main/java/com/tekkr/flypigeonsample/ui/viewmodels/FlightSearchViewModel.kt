@@ -1,10 +1,7 @@
 package com.tekkr.flypigeonsample.ui.viewmodels
 
 import androidx.lifecycle.*
-import com.tekkr.flypigeonsample.data.models.AirportsData
-import com.tekkr.flypigeonsample.data.models.OneWayFlightsSearchResult
-import com.tekkr.flypigeonsample.data.models.RevalidateFlightResult
-import com.tekkr.flypigeonsample.data.models.RoundTripFlightSearchResult
+import com.tekkr.flypigeonsample.data.models.*
 import com.tekkr.flypigeonsample.data.network.Resource
 import com.tekkr.flypigeonsample.data.repositories.FlightsSearchRepo
 import com.tekkr.flypigeonsample.utils.Constants
@@ -26,7 +23,7 @@ class FlightSearchViewModel @Inject constructor(
     val filteredAirportsData: LiveData<Resource<List<AirportsData>>> = _filteredAirportsData
 
     fun getAirportsList(query: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _filteredAirportsData.postValue(Resource.Loading)
             _filteredAirportsData.postValue(flightSearchRepo.getAirportsList(query))
 
@@ -43,10 +40,8 @@ class FlightSearchViewModel @Inject constructor(
         val response: MutableLiveData<Resource<OneWayFlightsSearchResult>> = MutableLiveData()
 
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                response.postValue(Resource.Loading)
-                response.postValue(flightSearchRepo.getOneWayFlightsSearchResults(queryParams))
-            }
+            response.postValue(Resource.Loading)
+            response.postValue(flightSearchRepo.getOneWayFlightsSearchResults(queryParams))
         }
 
         return response
@@ -55,7 +50,7 @@ class FlightSearchViewModel @Inject constructor(
     fun getRoundTripFlightSearchResults(queryParams: HashMap<String, String>): LiveData<Resource<RoundTripFlightSearchResult>> {
         val response: MutableLiveData<Resource<RoundTripFlightSearchResult>> = MutableLiveData()
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             response.postValue(Resource.Loading)
             response.postValue(flightSearchRepo.getRoundTripFlightsSearchResults(queryParams))
         }
@@ -66,7 +61,7 @@ class FlightSearchViewModel @Inject constructor(
     fun revalidateFlight(fareSourceCode: String): LiveData<Resource<RevalidateFlightResult>> {
         val response: MutableLiveData<Resource<RevalidateFlightResult>> = MutableLiveData()
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             response.postValue(Resource.Loading)
             response.postValue(flightSearchRepo.revalidateFlight(fareSourceCode))
         }
