@@ -1,6 +1,7 @@
 package com.tekkr.flypigeonsample.di
 
 import com.tekkr.flypigeonsample.data.network.ApiInterface
+import com.tekkr.flypigeonsample.data.repositories.FlightBookingRepo
 import com.tekkr.flypigeonsample.data.repositories.FlightsSearchRepo
 import dagger.Module
 import dagger.Provides
@@ -17,4 +18,11 @@ object RepositoriesModule {
     fun provideFlightsSearchResultsRepo(
         apiInterface: ApiInterface
     ): FlightsSearchRepo = FlightsSearchRepo(apiInterface)
+
+
+    @Singleton
+    @Provides
+    fun provideFlightBookingRepo(
+        apiInterface: ApiInterface
+    ): FlightBookingRepo = FlightBookingRepo(apiInterface)
 }

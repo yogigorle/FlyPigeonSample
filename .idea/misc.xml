@@ -32,6 +32,7 @@
         <entry key="app/src/main/res/drawable/white_bg_with_gray_stroke.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/white_bg_with_light_gray_stroke.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/layout/activity_calendar_picker.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_extra_flight_details.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_flight_booking_flow.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_flights_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />

@@ -20,7 +20,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideApplicationContext(): FlyPigeonSampleApplication =
-        FlyPigeonSampleApplication.appContenxt!!
+        FlyPigeonSampleApplication.appContext!!
 
     @Singleton
     @Provides

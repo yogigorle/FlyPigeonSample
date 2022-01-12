@@ -15,14 +15,11 @@
         android:theme="@style/Theme.FlyPigeonSample"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.views.bookingFlow.FlightBookingFlowActivity"
+            android:name=".ui.views.bookingFlow.ExtraFlightDetailsActivity"
             android:exported="true" />
-        <activity
-            android:name=".ui.views.flights.FlightsListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.views.airportssearch.SearchAirportsActivity"
-            android:exported="true" />
+        <activity android:name=".ui.views.bookingFlow.FlightBookingFlowActivity" />
+        <activity android:name=".ui.views.flights.FlightsListActivity" />
+        <activity android:name=".ui.views.airportssearch.SearchAirportsActivity" />
         <activity
             android:name=".ui.views.home.MainActivity"
             android:exported="true">
@@ -32,10 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_JW67c07tSgsoAP"
-            />
+            android:value="rzp_test_JW67c07tSgsoAP" />
     </application>
 
 </manifest>

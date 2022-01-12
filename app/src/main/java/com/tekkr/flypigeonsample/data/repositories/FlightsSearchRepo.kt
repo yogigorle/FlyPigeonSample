@@ -1,5 +1,6 @@
 package com.tekkr.flypigeonsample.data.repositories
 
+import android.util.Log
 import com.tekkr.flypigeonsample.data.network.ApiInterface
 import com.tekkr.flypigeonsample.data.network.SafeApiRequest
 import java.security.CodeSource
@@ -22,6 +23,7 @@ class FlightsSearchRepo(
         executeApiCall {
             apiService.getRoundTripFlightSearchResults(queryParams)
         }
+
 
     suspend fun revalidateFlight(fareSourceCode: String) = executeApiCall {
         apiService.revalidateFlight(fareSourceCode)

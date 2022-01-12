@@ -151,7 +151,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/light_gray"
-        app:layout_constraintBottom_toTopOf="@id/ll_total_price"
+        app:layout_constraintBottom_toTopOf="@id/ll_bottom_strip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_toolbar">
@@ -453,7 +453,7 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_total_price"
+        android:id="@+id/ll_bottom_strip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#B3000000"
@@ -462,6 +462,7 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_grand_total"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

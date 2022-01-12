@@ -27,5 +27,9 @@ interface ApiInterface {
         @Query("airport_search") airportSearchString: String
     ): List<AirportsData>
 
+    @GET("api/flights/FlightFareRuleApi/")
+    suspend fun getFareRules(
+        @Query("fare_source_code") fareSourceCode: String
+    ): FareRulesResult
 
 }

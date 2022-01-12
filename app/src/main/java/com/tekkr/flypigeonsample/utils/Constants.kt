@@ -6,6 +6,7 @@ object Constants {
     const val fareItinerary = "FARE_ITINERARY"
     const val revalidatedFlightResult = "REVALIDATED_FLIGHT_RESULT"
     const val sourceAnDestCity = "source_to_dest_city"
+    const val fareSourceCode = "FARE_SOURCE_CODE"
 
     enum class FlightJourneyParams(val param: String) {
         JourneyType("journey_type"),
@@ -23,7 +24,7 @@ object Constants {
         DestCity("dest_city"),
         OneWay("OneWay"),
         FormattedDepDate("formatted_dep_date"),
-        RoundTrip("RoundTrip"),
+        Return("Return"),
 
     }
 

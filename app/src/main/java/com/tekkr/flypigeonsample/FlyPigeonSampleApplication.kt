@@ -7,12 +7,12 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class FlyPigeonSampleApplication: Application() {
     companion object{
-        var appContenxt: FlyPigeonSampleApplication? = null
+        var appContext: FlyPigeonSampleApplication? = null
             private set
     }
 
     override fun onCreate() {
         super.onCreate()
-        appContenxt = this
+        appContext = this
     }
 }

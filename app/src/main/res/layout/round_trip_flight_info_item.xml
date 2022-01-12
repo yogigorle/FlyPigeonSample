@@ -7,7 +7,7 @@
 
         <variable
             name="roundTripFlightInfo"
-            type="com.tekkr.flypigeonsample.data.models.AirFareItinerary.FareItinerary.OriginDestinationOption.OriginDestinationOptions" />
+            type="com.tekkr.flypigeonsample.data.models.RoundTripAirFareItinerary.FareItinerary.OriginDestinationOption" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

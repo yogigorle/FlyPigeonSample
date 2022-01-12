@@ -1,6 +1,7 @@
 package com.tekkr.flypigeonsample
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.tekkr.flypigeonsample.ui.BaseFragment
 import com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightBookingFlowActivity
+import com.tekkr.flypigeonsample.utils.toJson
 import kotlinx.android.synthetic.main.fragment_payment.*
 import org.json.JSONObject
 import java.lang.Exception
@@ -42,6 +44,12 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
             startPaymentProcess()
         }
 
+        btn_payment.setOnClickListener {
+            paymentOrderId?.let {
+                startPaymentProcess()
+            }
+        }
+
     }
 
     private fun startPaymentProcess() {
@@ -60,13 +68,13 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
                     put("currency", "INR")
 
                     val retryObj = JSONObject()
-                    retryObj.put("enabled", true)
+                    retryObj.put("enabled", false)
                     put("retry", retryObj)
 
                 }
                 co.open(activity, options)
             } catch (e: Exception) {
-                handlePaymentFailedCase()
+                handleSuccessAndFailureCase()
                 e.printStackTrace()
             }
         }
@@ -75,7 +83,8 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
     }
 
     override fun onPaymentSuccess(razorpayPaymentId: String?, paymentData: PaymentData?) {
-        Log.e("paymentData", paymentData.toString())
+        Log.e("successPaymentData", paymentData?.toJson()!!)
+        handleSuccessAndFailureCase(true)
     }
 
     override fun onPaymentError(
@@ -83,15 +92,19 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
         errorDescription: String?,
         paymentData: PaymentData?
     ) {
-
+        Log.e("failurePaymentData", "$errorCode $errorDescription")
+        handleSuccessAndFailureCase(false)
     }
 
-    private fun handlePaymentFailedCase() {
-        tv_payment_status.text = "Payment Failed Please Try agian.."
+    private fun handleSuccessAndFailureCase(paymentSuccess: Boolean = false) {
+        tv_payment_status.text =
+            if (paymentSuccess) "Your payment is successful" else "Payment Failed Please Try agian.."
         with(btn_payment) {
-            text = "Try Again"
-            setOnClickListener {
-                startPaymentProcess()
+            text = if (paymentSuccess) "Paid" else "Try Again"
+            if (paymentSuccess) setBackgroundColor(Color.GREEN) else setBackgroundColor(Color.RED)
+            if (paymentSuccess) {
+                setBackgroundColor(Color.GREEN)
+                isEnabled = false
             }
         }
     }

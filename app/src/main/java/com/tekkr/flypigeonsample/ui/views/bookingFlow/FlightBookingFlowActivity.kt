@@ -1,11 +1,13 @@
 package com.tekkr.flypigeonsample.ui.views.bookingFlow
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -20,6 +22,8 @@ import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.utils.DataStoreManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flight_booking_flow.*
+import kotlinx.android.synthetic.main.activity_flight_booking_flow.tv_flight_name
+import kotlinx.android.synthetic.main.one_way_flight_info_item.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,6 +35,7 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
     private var childCount = 0
     private var infantCount = 0
     private var isPassportRequired = false
+    private var fareSourceCode = ""
 
     private var paymentStatusListener: PaymentStatusListener? = null
 
@@ -103,6 +108,7 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
                     fareItinerary.airItineraryFareInfo.fareBreakdown[0].passengerFare.totalFare.formattedTotalFare
 
                 isPassportRequired = fareItinerary.IsPassportMandatory
+                fareSourceCode = fareItinerary.airItineraryFareInfo.FareSourceCode
 
                 //get src and dest airport city names
                 with(baseViewModel) {
@@ -143,23 +149,39 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
                 R.id.travellerDetailsFragment -> {
                     val action =
                         TravellerDetailsFragmentDirections.actionTravellerDetailsFragmentToPaymentFragment(
-                            "order_IiObzmWiqVMJHS"
+                            "order_IiOmdLJMUcsabv"
                         )
                     navController.navigate(action)
                     //make some ui adjustments
                     btn_continue_booking.visibility = GONE
-                    tv_grand_total.gravity = Gravity.CENTER
-                    tv_total_price.gravity = Gravity.CENTER
+                    ll_grand_total.gravity = Gravity.CENTER
                 }
             }
         }
 
         iv_back.setOnClickListener {
-            if (navController.currentDestination?.id == R.id.flightReviewFragment) {
-                finish()
-            } else {
-                navController.popBackStack()
+            when (navController.currentDestination?.id) {
+                R.id.flightReviewFragment -> {
+                    finish()
+                }
+                R.id.travellerDetailsFragment -> {
+                    navController.popBackStack()
+                    btn_continue_booking.text = "Continue Booking"
+                }
+                R.id.paymentFragment -> {
+                    navController.popBackStack()
+                    btn_continue_booking.visibility = VISIBLE
+                    btn_continue_booking.text = "Continue Payment"
+                    ll_grand_total.gravity = Gravity.START
+                }
             }
+
+        }
+
+        btn_fare_rules.setOnClickListener {
+            val intent = Intent(this, ExtraFlightDetailsActivity::class.java)
+            intent.putExtra(Constants.fareSourceCode, fareSourceCode)
+            startActivity(intent)
         }
     }
 

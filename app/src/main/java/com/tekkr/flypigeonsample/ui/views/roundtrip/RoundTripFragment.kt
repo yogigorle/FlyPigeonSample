@@ -34,6 +34,7 @@ class RoundTripFragment : BaseFragment() {
     var childTravellers = 0
     var infantTravellers = 0
     var depAndReturnDate = ""
+    var sourceType = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,19 +49,21 @@ class RoundTripFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rl_from_round_trip.setOnClickListener {
-            launchSearchAirportsActivity(Constants.origin, roundTripAirportSearchActvLauncher)
+            sourceType = Constants.origin
+            launchSearchAirportsActivity(sourceType, roundTripAirportSearchActvLauncher)
         }
         rl_to_round_trip.setOnClickListener {
-            launchSearchAirportsActivity(Constants.origin, roundTripAirportSearchActvLauncher)
+            sourceType = Constants.destination
+            launchSearchAirportsActivity(sourceType, roundTripAirportSearchActvLauncher)
         }
 
         //set default travellers count
-        lifecycleScope.launchWhenStarted {
-            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
-                tv_travellers_count.text = it ?: "1 Travellers"
-            }
-        }
-
+//        lifecycleScope.launchWhenStarted {
+//            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
+//                tv_travellers_count.text = it ?: "1 Travellers"
+//            }
+//        }
+//
 
         iv_pointing_arrow_round_trip.setOnClickListener {
             interChangeSrcAndDest(
@@ -99,7 +102,7 @@ class RoundTripFragment : BaseFragment() {
         btn_search_flights_round_trip.setOnClickListener {
             launchFlightSearchActivity(
                 roundTripSearchResultsLauncher,
-                Constants.FlightJourneyParams.RoundTrip.param,
+                Constants.FlightJourneyParams.Return.param,
                 tv_round_trip_src_airport_code.text.toString(),
                 tv_round_trip_dest_airport_code.text.toString(),
                 depDateInMillis.convertMillsToDate(),
@@ -121,14 +124,21 @@ class RoundTripFragment : BaseFragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 data?.let {
-                    tv_round_trip_src_airport_code.text =
-                        it.getStringExtra("source_city_code_name").toString()
-                    tv_round_trip_src_city.text =
-                        it.getStringExtra("source_city_full_name").toString()
-                    tv_round_trip_dest_airport_code.text =
-                        it.getStringExtra("dest_city_code_name").toString()
-                    tv_round_trip_dest_city.text =
-                        it.getStringExtra("dest_city_full_name").toString()
+                    if (sourceType == Constants.origin) {
+                        tv_round_trip_src_airport_code.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.SrcAirPortCode.param)
+                                .toString()
+                        tv_round_trip_src_city.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.SrcCity.param)
+                                .toString()
+                    } else {
+                        tv_round_trip_dest_airport_code.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.DestAirPortCode.param)
+                                .toString()
+                        tv_round_trip_dest_city.text =
+                            it.getStringExtra(Constants.FlightJourneyParams.DestCity.param)
+                                .toString()
+                    }
 
                 }
             }

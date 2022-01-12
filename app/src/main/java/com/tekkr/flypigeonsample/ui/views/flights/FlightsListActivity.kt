@@ -50,7 +50,7 @@ class FlightsListActivity : BaseActivity() {
                 ?: "")
             adultsCount = it.getIntExtra(
                 Constants.FlightJourneyParams.AdultsCount.param,
-                0
+                1
             ).toString()
             childrenCount = it.getIntExtra(
                 Constants.FlightJourneyParams.ChildrenCount.param, 0
@@ -102,6 +102,7 @@ class FlightsListActivity : BaseActivity() {
             } else {
                 flightsSearchViewModel.getRoundTripFlightSearchResults(flightSearchParams)
                     .observe(this, Observer {
+                        Log.e("return_response",it.toString())
                         progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) { searchResult ->
                             progress_bar_view.visibility = GONE
