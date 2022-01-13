@@ -139,8 +139,8 @@ data class RoundTripAirFareItinerary(
             val formattedArrTime: String
                 get() = ArrivalDateTime.formatFlightTime()
 
-            val formattedFlightDuration: String
-                get() = if (JourneyDuration.toInt() > 60) JourneyDuration.toInt().convertToHoursAndMins() else "$JourneyDuration m"
+//            val formattedFlightDuration: String
+//                get() = if (JourneyDuration.toInt() > 60) JourneyDuration.toInt().convertToHoursAndMins() else "$JourneyDuration m"
 
             @Parcelize
             data class OperatingAirline(
