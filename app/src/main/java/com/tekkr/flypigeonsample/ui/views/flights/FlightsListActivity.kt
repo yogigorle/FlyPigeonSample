@@ -108,6 +108,7 @@ class FlightsListActivity : BaseActivity() {
                             progress_bar_view.visibility = GONE
                             roundTripDepFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[0])
                             roundTripArrFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[1])
+                            Log.e("round_trip_dep_flights",searchResult.AirSearchResponse.AirSearchResult.FareItineraries[0].toJson())
                             ll_round_trip_flights.visibility = VISIBLE
                             rv_first_route_flights.adapter = roundTripDepFlightSearchAdapter
                             rv_second_route_flights.adapter = roundTripArrFlightSearchAdapter

@@ -7,7 +7,7 @@
 
         <variable
             name="roundTripFlightInfo"
-            type="com.tekkr.flypigeonsample.data.models.RoundTripAirFareItinerary.FareItinerary.OriginDestinationOption" />
+            type="com.tekkr.flypigeonsample.data.models.RoundTripAirFareItinerary.OriginDestinationOption" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
-            android:text="@{roundTripFlightInfo.stopQuantityInfo.formattedDepTime}"
+            android:text="@{roundTripFlightInfo.flightSegment.formattedDepTime}"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
-            android:text="@{roundTripFlightInfo.stopQuantityInfo.formattedArrTime}"
+            android:text="@{roundTripFlightInfo.flightSegment.formattedArrTime}"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="@{roundTripFlightInfo.stopQuantityInfo.formattedFlightDuration}"
+            android:text="@{roundTripFlightInfo.flightSegment.formattedFlightDuration}"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/seperator_line"

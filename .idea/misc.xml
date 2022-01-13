@@ -23,6 +23,7 @@
         <entry key="app/src/main/res/drawable/date_bg_unselected.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/date_selector.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/gray_bg_with_round_corners.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/ic_flight_take_off.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/ic_man.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_woman.xml" value="0.209375" />

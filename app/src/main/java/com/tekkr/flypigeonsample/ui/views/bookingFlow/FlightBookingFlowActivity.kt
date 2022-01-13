@@ -8,26 +8,25 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.LinearLayout
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
-import com.tekkr.flypigeonsample.PaymentFragmentDirections
 import com.tekkr.flypigeonsample.R
-import com.tekkr.flypigeonsample.data.models.AirFareItinerary
 import com.tekkr.flypigeonsample.data.models.RevalidateFlightResult
+import com.tekkr.flypigeonsample.databinding.ActivityFlightBookingFlowBinding
 import com.tekkr.flypigeonsample.ui.BaseActivity
 import com.tekkr.flypigeonsample.utils.Constants
-import com.tekkr.flypigeonsample.utils.DataStoreManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flight_booking_flow.*
-import kotlinx.android.synthetic.main.activity_flight_booking_flow.tv_flight_name
+import kotlinx.android.synthetic.main.fragment_one_way.*
 import kotlinx.android.synthetic.main.one_way_flight_info_item.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener {
+
+    lateinit var flightBookingFlowDatBinding: ActivityFlightBookingFlowBinding
 
     private var srcAndDest = ""
     private var journeyOverview = ""
@@ -42,7 +41,8 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
     @SuppressLint("SetTextIn")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_flight_booking_flow)
+        flightBookingFlowDatBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_flight_booking_flow)
 
         val navController = findNavController(R.id.flight_booking_flow_nav_host_fragment)
 
@@ -60,76 +60,65 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
                     Constants.revalidatedFlightResult
                 ) as RevalidateFlightResult.AirRevalidateResponse.AirRevalidateResult
             revalidateFlightResult.let {
-                val fareItinerary = it.fareItineraries.fareItinerary
-                val selectedClass =
-                    intent.getStringExtra(Constants.FlightJourneyParams.FlightClass.param) ?: ""
-                val stopInfo =
-                    if (fareItinerary.originDestinationOptions[0].TotalStops > 0) "${fareItinerary.originDestinationOptions[0].TotalStops} stop" else "non-stop"
-
-                with(fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment) {
-                    tv_dep_date.text = readableDepDate
-                    tv_arr_date.text = readableArrDate
-                    tv_dep_time.text = formattedDepTime
-                    tv_arrival_time.text = formattedArrTime
-                }
-                val flightDuration =
-                    fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.formattedFlightDuration
-                val srcCity =
-                    intent.getStringExtra(Constants.sourceAnDestCity)?.substringBefore("to")
-                val destCity =
-                    intent.getStringExtra(Constants.sourceAnDestCity)?.substringAfter("to")
-                val srcAirportCode =
-                    fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.DepartureAirportLocationCode
-                val destAirportCode =
-                    fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.ArrivalAirportLocationCode
-                tv_flight_duration.text = flightDuration
-                journeyOverview = "$selectedClass | $stopInfo | $flightDuration"
-                srcAndDest = "$srcCity to $destCity"
-                tv_journey_overview.text = journeyOverview
-                tv_src_city.text = "$srcCity($srcAirportCode)"
-                tv_dest_city.text = "$destCity($destAirportCode)"
-                tv_src_and_dest.text = srcAndDest
-                with(tv_refund_status) {
-                    if (fareItinerary.airItineraryFareInfo.IsRefundable) {
-                        strokeColor = ColorStateList.valueOf(Color.GREEN)
-                        setTextColor(Color.GREEN)
-                        text = "Refundable"
-                    } else {
-                        strokeColor = ColorStateList.valueOf(Color.RED)
-                        setTextColor(Color.RED)
-                        text = "Non Refundable"
+                with(flightBookingFlowDatBinding) {
+                    val fareItinerary = it.fareItineraries.fareItinerary
+                    oneWayOriginDestOption =
+                        fareItinerary.originDestinationOptions[0].originDestinationOption[0]
+                    val selectedClass =
+                        intent.getStringExtra(Constants.FlightJourneyParams.FlightClass.param) ?: ""
+                    val stopInfo =
+                        if (fareItinerary.originDestinationOptions[0].TotalStops > 0) "${fareItinerary.originDestinationOptions[0].TotalStops} stop" else "non-stop"
+                    val flightDuration =
+                        fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.formattedFlightDuration
+                    val srcCity =
+                        intent.getStringExtra(Constants.sourceAnDestCity)?.substringBefore("to")
+                    val destCity =
+                        intent.getStringExtra(Constants.sourceAnDestCity)?.substringAfter("to")
+                    val srcAirportCode =
+                        fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.DepartureAirportLocationCode
+                    val destAirportCode =
+                        fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.ArrivalAirportLocationCode
+                    journeyOverview = "$selectedClass | $stopInfo | $flightDuration"
+                    srcAndDest = "$srcCity to $destCity"
+                    tv_journey_overview.text = journeyOverview
+                    tv_oneway_src_city.text = "$srcCity($srcAirportCode)"
+                    tv_one_way_dest_city.text = "$destCity($destAirportCode)"
+                    tv_src_and_dest.text = srcAndDest
+                    with(tv_oneway_refund_status) {
+                        if (fareItinerary.airItineraryFareInfo.IsRefundable) {
+                            strokeColor = ColorStateList.valueOf(Color.GREEN)
+                            setTextColor(Color.GREEN)
+                            text = "Refundable"
+                        } else {
+                            strokeColor = ColorStateList.valueOf(Color.RED)
+                            setTextColor(Color.RED)
+                            text = "Non Refundable"
+                        }
                     }
+
+                    tv_total_price.text =
+                        fareItinerary.airItineraryFareInfo.fareBreakdown[0].passengerFare.totalFare.formattedTotalFare
+                    isPassportRequired = fareItinerary.IsPassportMandatory
+                    fareSourceCode = fareItinerary.airItineraryFareInfo.FareSourceCode
+                    //get src and dest airport city names
+                    with(baseViewModel) {
+                        srcAirportName.observe(this@FlightBookingFlowActivity, Observer {
+                            it?.let {
+                                tv_oneway_src_airport_name.text = it
+                            }
+                        })
+
+                        destAirportName.observe(this@FlightBookingFlowActivity, Observer {
+                            it?.let {
+                                tv_oneway_dest_airport_name.text = it
+                            }
+                        })
+                    }
+
                 }
-
-                tv_flight_name.text =
-                    fareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.operatingAirline.formattedFlightCode
-
-                tv_total_price.text =
-                    fareItinerary.airItineraryFareInfo.fareBreakdown[0].passengerFare.totalFare.formattedTotalFare
-
-                isPassportRequired = fareItinerary.IsPassportMandatory
-                fareSourceCode = fareItinerary.airItineraryFareInfo.FareSourceCode
-
-                //get src and dest airport city names
-                with(baseViewModel) {
-                    srcAirportName.observe(this@FlightBookingFlowActivity, Observer {
-                        it?.let {
-                            tv_src_airport_name.text = it
-                        }
-                    })
-
-                    destAirportName.observe(this@FlightBookingFlowActivity, Observer {
-                        it?.let {
-                            tv_dest_airport_name.text = it
-                        }
-                    })
-                }
-
-
             }
 
         }
-
 
         btn_continue_booking.setOnClickListener {
             when (navController.currentDestination?.id) {
@@ -178,7 +167,7 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
 
         }
 
-        btn_fare_rules.setOnClickListener {
+        btn_oneway_fare_rules.setOnClickListener {
             val intent = Intent(this, ExtraFlightDetailsActivity::class.java)
             intent.putExtra(Constants.fareSourceCode, fareSourceCode)
             startActivity(intent)

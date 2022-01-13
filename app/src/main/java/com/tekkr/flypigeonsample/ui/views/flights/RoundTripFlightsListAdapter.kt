@@ -3,6 +3,7 @@ package com.tekkr.flypigeonsample.ui.views.flights
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.data.models.AirFareItinerary
 import com.tekkr.flypigeonsample.data.models.RoundTripAirFareItinerary
+import com.tekkr.flypigeonsample.data.models.RoundTripF
 import com.tekkr.flypigeonsample.databinding.OneWayFlightInfoItemBinding
 import com.tekkr.flypigeonsample.databinding.RoundTripFlightInfoItemBinding
 import com.tekkr.flypigeonsample.utils.BaseBindingAdapter
@@ -17,7 +18,7 @@ class RoundTripFlightsListAdapter :
         val itemAtPos = getItemAt(position)
         with(holder) {
             itemBinding.apply {
-                val originDestinationOption = itemAtPos.fareItinerary.OriginDestinationOptions[0]
+                val originDestinationOption = itemAtPos.OriginDestinationOptions[0]
                 roundTripFlightInfo = originDestinationOption
                 tvFlightFare.text =
                     itemAtPos.fareItinerary.airItineraryFareInfo.fareBreakdown.passengerFare.totalFare.formattedTotalFare
