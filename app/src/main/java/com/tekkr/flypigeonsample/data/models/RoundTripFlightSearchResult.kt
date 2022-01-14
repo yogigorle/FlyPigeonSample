@@ -24,7 +24,6 @@ data class RoundTripFlightSearchResult(
 
 @Parcelize
 data class RoundTripAirFareItinerary(
-
     @SerializedName("FareItinerary")
     val fareItinerary: FareItinerary,
     val DirectionInd: String,
@@ -102,62 +101,73 @@ data class RoundTripAirFareItinerary(
         }
     }
 
+}
+
+@Parcelize
+data class OriginDestinationOption(
+    @SerializedName("FlightSegment")
+    val flightSegment: FlightSegment,
+    @SerializedName("SeatsRemaining")
+    val seatsRemaining: SeatsRemaining,
+    @SerializedName("StopQuantityInfo")
+    val stopQuantityInfo: FlightSegment.StopQuantityInfo,
+    var isFlightSelected: Boolean = false
+) : Parcelable {
     @Parcelize
-    data class OriginDestinationOption(
-        @SerializedName("FlightSegment")
-        val flightSegment: FlightSegment,
-        @SerializedName("SeatsRemaining")
-        val seatsRemaining: SeatsRemaining
+    data class FlightSegment(
+        val ArrivalAirportLocationCode: String,
+        val ArrivalDateTime: String,
+        val CabinClassCode: String,
+        val CabinClassText: String,
+        val DepartureAirportLocationCode: String,
+        val DepartureDateTime: String,
+        val Eticket: Boolean,
+        val FlightNumber: String,
+        val JourneyDuration: String,
+        val MarketingAirlineCode: String,
+        @SerializedName("OperatingAirline")
+        val operatingAirline: OperatingAirline,
+        val distanceBetweenAirports: String,
+        val distanceUnit: String
     ) : Parcelable {
+
+        val readableDepDate: String
+            get() = DepartureDateTime.formatFlightDate()
+
+        val readableArrDate: String
+            get() = ArrivalDateTime.formatFlightDate()
+
+        val formattedDepTime: String
+            get() = DepartureDateTime.formatFlightTime()
+
+        val formattedArrTime: String
+            get() = ArrivalDateTime.formatFlightTime()
+
+
         @Parcelize
-        data class FlightSegment(
-            val ArrivalAirportLocationCode: String,
-            val ArrivalDateTime: String,
-            val CabinClassCode: String,
-            val CabinClassText: String,
-            val DepartureAirportLocationCode: String,
-            val DepartureDateTime: String,
-            val Eticket: Boolean,
-            val FlightNumber: String,
-            val JourneyDuration: String,
-            val MarketingAirlineCode: String,
-            @SerializedName("OperatingAirline")
-            val operatingAirline: OperatingAirline,
-            val distanceBetweenAirports: String,
-            val distanceUnit: String
+        data class OperatingAirline(
+            val Code: String,
+            val FlightNumber: String
         ) : Parcelable {
-
-            val readableDepDate: String
-                get() = DepartureDateTime.formatFlightDate()
-
-            val readableArrDate: String
-                get() = ArrivalDateTime.formatFlightDate()
-
-            val formattedDepTime: String
-                get() = DepartureDateTime.formatFlightTime()
-
-            val formattedArrTime: String
-                get() = ArrivalDateTime.formatFlightTime()
-
-//            val formattedFlightDuration: String
-//                get() = if (JourneyDuration.toInt() > 60) JourneyDuration.toInt().convertToHoursAndMins() else "$JourneyDuration m"
-
-            @Parcelize
-            data class OperatingAirline(
-                val Code: String,
-                val FlightNumber: String
-            ) : Parcelable {
-                val formattedFlightCode: String
-                    get() = "$Code $FlightNumber"
-            }
-
+            val formattedFlightCode: String
+                get() = "$Code $FlightNumber"
         }
 
         @Parcelize
-        data class SeatsRemaining(
-            val BelowMinimum: String,
-            val Number: Int
-        ) : Parcelable
+        data class StopQuantityInfo(
+            val Duration: Int,
+        ) : Parcelable {
+
+            val formattedFlightDuration: String
+                get() = if (Duration > 60) Duration.convertToHoursAndMins() else "$Duration m"
+        }
 
     }
+
+    @Parcelize
+    data class SeatsRemaining(
+        val BelowMinimum: String,
+        val Number: Int
+    ) : Parcelable
+
 }

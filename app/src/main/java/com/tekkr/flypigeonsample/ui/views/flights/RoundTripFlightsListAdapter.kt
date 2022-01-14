@@ -9,22 +9,39 @@ import com.tekkr.flypigeonsample.databinding.RoundTripFlightInfoItemBinding
 import com.tekkr.flypigeonsample.utils.BaseBindingAdapter
 import com.tekkr.flypigeonsample.utils.diffChecker
 
-class RoundTripFlightsListAdapter :
+
+class RoundTripFlightsListAdapter(val flightType: String, val onFlightSelected: (RoundTripAirFareItinerary, String) -> Unit) :
     BaseBindingAdapter<RoundTripAirFareItinerary, RoundTripFlightInfoItemBinding>(
         R.layout.round_trip_flight_info_item,
         diffChecker { old, new -> old.fareItinerary.airItineraryFareInfo.FareSourceCode == new.fareItinerary.airItineraryFareInfo.FareSourceCode }
     ) {
+
+    private var selectedItemIndex = -1
+    private var lastSelectedItemIndex = -1
+
     override fun onBindViewHolder(holder: Holder<RoundTripFlightInfoItemBinding>, position: Int) {
         val itemAtPos = getItemAt(position)
+        val originDestinationOption = itemAtPos.OriginDestinationOptions[0]
+        originDestinationOption.isFlightSelected = selectedItemIndex == position
         with(holder) {
             itemBinding.apply {
-                val originDestinationOption = itemAtPos.OriginDestinationOptions[0]
                 roundTripFlightInfo = originDestinationOption
                 tvFlightFare.text =
                     itemAtPos.fareItinerary.airItineraryFareInfo.fareBreakdown.passengerFare.totalFare.formattedTotalFare
-//                tvStopClassification.text =
-//                    if (originDestinationOption.TotalStops > 0) "${originDestinationOption.TotalStops} stop" else "non-stop"
+
+                clRoundTripFlight.setOnClickListener {
+                    selectedItemIndex = adapterPosition
+                    //we are calling this to deselect at last selected position
+                    notifyItemChanged(lastSelectedItemIndex)
+                    lastSelectedItemIndex = selectedItemIndex
+                    //we are calling this to deselect at selected position
+                    notifyItemChanged(selectedItemIndex)
+                    onFlightSelected(itemAtPos,flightType)
+                }
+
+
             }
+
 
         }
     }

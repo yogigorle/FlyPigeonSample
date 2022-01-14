@@ -7,13 +7,14 @@
 
         <variable
             name="roundTripFlightInfo"
-            type="com.tekkr.flypigeonsample.data.models.RoundTripAirFareItinerary.OriginDestinationOption" />
+            type="com.tekkr.flypigeonsample.data.models.OriginDestinationOption" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_round_trip_flight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/white_bg_with_gray_stroke"
+        android:background="@{roundTripFlightInfo.isFlightSelected ? @drawable/light_blue_bg_with_gray_stroke : @drawable/white_bg_with_gray_stroke}"
         android:padding="10dp">
 
         <ImageView
@@ -31,22 +32,22 @@
             android:layout_marginStart="5dp"
             android:fontFamily="sans-serif-medium"
             android:text="@{roundTripFlightInfo.flightSegment.OperatingAirline.formattedFlightCode}"
-            tools:text="SG 8701"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/iv_flight_pic"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="SG 8701" />
 
         <TextView
             android:id="@+id/tv_flight_fare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            tools:text="5,793111"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="5,793111" />
 
         <TextView
             android:id="@+id/tv_fl_start_time"
@@ -103,12 +104,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif"
-            tools:text="non-stop"
+            android:text="@{roundTripFlightInfo.stopQuantityInfo.formattedFlightDuration}"
             android:textColor="@color/purple_700"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@id/tv_fl_end_time"
             app:layout_constraintStart_toEndOf="@id/tv_fl_start_time"
-            app:layout_constraintTop_toBottomOf="@id/seperator_line" />
+            app:layout_constraintTop_toBottomOf="@id/seperator_line"
+            tools:text="non-stop" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

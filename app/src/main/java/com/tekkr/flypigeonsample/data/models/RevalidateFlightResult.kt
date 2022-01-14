@@ -5,9 +5,27 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 data class RevalidateFlightResult(
-    @SerializedName("AirRevalidateResponse")
-    val airRevalidateResponse: AirRevalidateResponse
+    @SerializedName("search_data")
+    val searchData: RevalidatedFlightSearchData,
+    @SerializedName("razor_order_data")
+    val orderData: OrderData
 ) {
+
+    data class OrderData(
+        val id: Int,
+        val fp_booking_order_id: String,
+        val r_order_id: String,
+        val r_amount: Int,
+        val r_currency: String,
+        val r_receipt: String,
+        val created_at: String
+    )
+
+    data class RevalidatedFlightSearchData(
+        @SerializedName("AirRevalidateResponse")
+        val airRevalidateResponse: AirRevalidateResponse
+    )
+
     data class AirRevalidateResponse(
         @SerializedName("AirRevalidateResult")
         val airRevalidateResult: AirRevalidateResult

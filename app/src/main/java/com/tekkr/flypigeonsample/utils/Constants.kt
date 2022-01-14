@@ -4,9 +4,8 @@ object Constants {
     const val origin = "Origin"
     const val destination = "Destination"
     const val fareItinerary = "FARE_ITINERARY"
-    const val revalidatedFlightResult = "REVALIDATED_FLIGHT_RESULT"
-    const val sourceAnDestCity = "source_to_dest_city"
     const val fareSourceCode = "FARE_SOURCE_CODE"
+    const val roundTripTotalFare = "Round_trip_total_fare"
 
     enum class FlightJourneyParams(val param: String) {
         JourneyType("journey_type"),
@@ -32,6 +31,13 @@ object Constants {
         Adult("adult"),
         Child("child"),
         Infant("infant"),
+    }
+
+    enum class FlightTypes(val type: String) {
+        OneWay("one_way"),
+        Return("round_trip"),
+        Departure("departure"),
+        Arrival("arrival")
     }
 
 

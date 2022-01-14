@@ -4,9 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
-            name="oneWayOriginDestOption"
-            type="com.tekkr.flypigeonsample.data.models.RevalidatedFareItinerary.OriginDestinationOption.OriginDestinationOptions" />
+            name="oneWayFlightDetails"
+            type="com.tekkr.flypigeonsample.data.models.FlightDetailsForReview" />
+
+        <variable
+            name="returnFlightDetails"
+            type="com.tekkr.flypigeonsample.data.models.FlightDetailsForReview" />
 
 
     </data>
@@ -216,6 +223,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_toRightOf="@id/iv_oneway_flight_take_off"
                                 android:fontFamily="sans-serif-medium"
+                                android:text="@{oneWayFlightDetails.flightSrcAndDest}"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 tools:text="Hyderabad to Visakhapatnam" />
@@ -230,7 +238,7 @@
                                 android:layout_marginBottom="5dp"
                                 android:layout_toRightOf="@id/iv_oneway_flight_take_off"
                                 android:fontFamily="sans-serif"
-                                android:text="Flight Review"
+                                android:text="@{oneWayFlightDetails.journeyOverView}"
                                 android:textColor="@color/gray"
                                 android:textSize="14sp" />
 
@@ -246,10 +254,10 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-condensed-medium"
                             android:letterSpacing="0.1"
+                            android:text="@{oneWayFlightDetails.flightName}"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
                             android:textSize="21sp"
-                            android:text="@{oneWayOriginDestOption.flightSegment.operatingAirline.formattedFlightCode}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rl_oneway_flight_overview"
                             tools:text="SG 1097" />
@@ -263,10 +271,10 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.1"
+                            android:text="@{oneWayFlightDetails.depTime}"
                             android:textAllCaps="true"
                             android:textColor="#B3000000"
                             android:textSize="21sp"
-                            android:text="@{oneWayOriginDestOption.flightSegment.formattedDepTime}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_flight_name"
                             tools:text="18:55" />
@@ -278,6 +286,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{oneWayFlightDetails.srcAirportInfo}"
                             android:textColor="#b3000000"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toStartOf="@id/tv_oneway_flight_duration"
@@ -292,9 +301,9 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{oneWayFlightDetails.depDate}"
                             android:textColor="#B3000000"
                             android:textSize="14sp"
-                            android:text="@{oneWayOriginDestOption.flightSegment.readableDepDate}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_src_city"
                             tools:text="Thu 06-jan-2022" />
@@ -335,9 +344,9 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
                             android:fontFamily="sans-serif"
+                            android:text="@{oneWayFlightDetails.flightDuration}"
                             android:textColor="@color/gray"
                             android:textSize="14sp"
-                            android:text="@{oneWayOriginDestOption.flightSegment.formattedFlightDuration}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_oneway_flight_duration"
@@ -352,10 +361,10 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.1"
+                            android:text="@{oneWayFlightDetails.arrTime}"
                             android:textAllCaps="true"
                             android:textColor="#B3000000"
                             android:textSize="21sp"
-                            android:text="@{oneWayOriginDestOption.flightSegment.formattedArrTime}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_flight_name"
                             tools:text="18:55" />
@@ -367,6 +376,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{oneWayFlightDetails.destAirportInfo}"
                             android:textAlignment="textEnd"
                             android:textColor="#b3000000"
                             android:textSize="18sp"
@@ -383,9 +393,9 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{oneWayFlightDetails.arrDate}"
                             android:textColor="#B3000000"
                             android:textSize="14sp"
-                            android:text="@{oneWayOriginDestOption.flightSegment.readableArrDate}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_src_city"
                             tools:text="Thu 06-jan-2022" />
@@ -415,12 +425,12 @@
                             android:layout_marginTop="10dp"
                             android:backgroundTint="@color/white"
                             android:enabled="false"
-                            android:text="Non Refundable"
+                            android:text="@{oneWayFlightDetails.refundableStatus ? `Refundable` : `Non Refundable`}"
                             android:textAllCaps="false"
-                            android:textColor="@color/red"
+                            android:textColor="@{oneWayFlightDetails.refundableStatus ? @color/green : @color/red}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_src_airport_name"
-                            app:strokeColor="@color/red"
+                            app:strokeColor="@{oneWayFlightDetails.refundableStatus ? @color/green : @color/red}"
                             app:strokeWidth="1dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -458,7 +468,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:visibility="gone"
+                    android:visibility="@{returnFlightDetails.flightSrcAndDest.empty ? View.VISIBLE : View.GONE }"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="4dp"
@@ -500,6 +510,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_toRightOf="@id/iv_flight_take_off"
                                 android:fontFamily="sans-serif-medium"
+                                android:text="@{returnFlightDetails.flightSrcAndDest}"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 tools:text="Hyderabad to Visakhapatnam" />
@@ -514,7 +525,7 @@
                                 android:layout_marginBottom="5dp"
                                 android:layout_toRightOf="@id/iv_flight_take_off"
                                 android:fontFamily="sans-serif"
-                                android:text="Flight Review"
+                                android:text="@{returnFlightDetails.journeyOverView}"
                                 android:textColor="@color/gray"
                                 android:textSize="14sp" />
 
@@ -530,6 +541,7 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-condensed-medium"
                             android:letterSpacing="0.1"
+                            android:text="@{returnFlightDetails.flightName}"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
                             android:textSize="21sp"
@@ -546,6 +558,7 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.1"
+                            android:text="@{returnFlightDetails.depTime}"
                             android:textAllCaps="true"
                             android:textColor="#B3000000"
                             android:textSize="21sp"
@@ -560,6 +573,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{returnFlightDetails.srcAirportInfo}"
                             android:textColor="#b3000000"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toStartOf="@id/tv_return_flight_duration"
@@ -574,6 +588,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{returnFlightDetails.depDate}"
                             android:textColor="#B3000000"
                             android:textSize="14sp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -616,6 +631,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
                             android:fontFamily="sans-serif"
+                            android:text="@{returnFlightDetails.flightDuration}"
                             android:textColor="@color/gray"
                             android:textSize="14sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -632,6 +648,7 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.1"
+                            android:text="@{returnFlightDetails.arrTime}"
                             android:textAllCaps="true"
                             android:textColor="#B3000000"
                             android:textSize="21sp"
@@ -646,6 +663,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{returnFlightDetails.destAirportInfo}"
                             android:textAlignment="textEnd"
                             android:textColor="#b3000000"
                             android:textSize="18sp"
@@ -662,6 +680,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:fontFamily="sans-serif"
+                            android:text="@{returnFlightDetails.arrDate}"
                             android:textColor="#B3000000"
                             android:textSize="14sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -693,12 +712,12 @@
                             android:layout_marginTop="10dp"
                             android:backgroundTint="@color/white"
                             android:enabled="false"
-                            android:text="Non Refundable"
+                            android:text="@{returnFlightDetails.refundableStatus ? `Refundable` : `Non Refundable`}"
                             android:textAllCaps="false"
-                            android:textColor="@color/red"
+                            android:textColor="@{returnFlightDetails.refundableStatus ? @color/green : @color/red}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_return_src_airport_name"
-                            app:strokeColor="@color/red"
+                            app:strokeColor="@{returnFlightDetails.refundableStatus ? @color/green : @color/red}"
                             app:strokeWidth="1dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -783,6 +802,7 @@
                     android:drawableEnd="@drawable/ic_info_24dp"
                     android:drawablePadding="5dp"
                     android:fontFamily="sans-serif"
+                    android:text="@{oneWayFlightDetails.flightFare}"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -3,19 +3,20 @@ package com.tekkr.flypigeonsample.ui.views.flights
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.data.models.AirFareItinerary
+import com.tekkr.flypigeonsample.data.models.FlightDetailsForReview
+import com.tekkr.flypigeonsample.data.models.RoundTripAirFareItinerary
 import com.tekkr.flypigeonsample.ui.BaseActivity
 import com.tekkr.flypigeonsample.ui.viewmodels.FlightSearchViewModel
 import com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightBookingFlowActivity
 import com.tekkr.flypigeonsample.utils.Constants
+import com.tekkr.flypigeonsample.utils.formatMoney
 import com.tekkr.flypigeonsample.utils.showToast
-import com.tekkr.flypigeonsample.utils.toJson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flights_list.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
@@ -23,19 +24,36 @@ import kotlinx.android.synthetic.main.progress_bar_layout.*
 @AndroidEntryPoint
 class FlightsListActivity : BaseActivity() {
 
-    var flightSearchType = Constants.FlightJourneyParams.OneWay.param
+    private var flightSearchType = Constants.FlightJourneyParams.OneWay.param
 
     private val flightsSearchViewModel: FlightSearchViewModel by viewModels()
     private val oneWayFlightSearchAdapter by lazy { OneWayFlightsListAdapter(::onOneWayFlightItemClicked) }
-    private val roundTripDepFlightSearchAdapter by lazy { RoundTripFlightsListAdapter() }
-    private val roundTripArrFlightSearchAdapter by lazy { RoundTripFlightsListAdapter() }
+    private val roundTripDepFlightSearchAdapter by lazy {
+        RoundTripFlightsListAdapter(
+            Constants.FlightTypes.Departure.type,
+            ::onRoundTripFlightsSelected
+        )
+    }
+    private val roundTripArrFlightSearchAdapter by lazy {
+        RoundTripFlightsListAdapter(
+            Constants.FlightTypes.Arrival.type,
+            ::onRoundTripFlightsSelected
+        )
+    }
 
     //some important params
-    var flightSrcAndDest = ""
-    var selectedClass = ""
-    var adultsCount = ""
-    var childrenCount = ""
-    var infantsCount = ""
+    private var flightSrcAndDest = ""
+    private var selectedClass = ""
+    private var adultsCount = ""
+    private var childrenCount = ""
+    private var infantsCount = ""
+
+    //params to store dep and arr roundtrip flight info
+    private var roundTripDepFlightInfo: RoundTripAirFareItinerary? = null
+    private var roundTripArrFlightInfo: RoundTripAirFareItinerary? = null
+
+
+    private var roundTripTotalFareFormatted = ""
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,14 +120,13 @@ class FlightsListActivity : BaseActivity() {
             } else {
                 flightsSearchViewModel.getRoundTripFlightSearchResults(flightSearchParams)
                     .observe(this, Observer {
-                        Log.e("return_response",it.toString())
                         progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) { searchResult ->
                             progress_bar_view.visibility = GONE
                             roundTripDepFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[0])
                             roundTripArrFlightSearchAdapter.submitList(searchResult.AirSearchResponse.AirSearchResult.FareItineraries[1])
-                            Log.e("round_trip_dep_flights",searchResult.AirSearchResponse.AirSearchResult.FareItineraries[0].toJson())
                             ll_round_trip_flights.visibility = VISIBLE
+                            ll_round_trip_bottom_strip.visibility = VISIBLE
                             rv_first_route_flights.adapter = roundTripDepFlightSearchAdapter
                             rv_second_route_flights.adapter = roundTripArrFlightSearchAdapter
                         }
@@ -119,6 +136,86 @@ class FlightsListActivity : BaseActivity() {
             fl_back.setOnClickListener {
                 finish()
             }
+
+        }
+
+        btn_book_round_trip_flights.setOnClickListener {
+            roundTripDepFlightInfo?.let { depFareItin ->
+                roundTripArrFlightInfo?.let { arrFareItin ->
+                    flightsSearchViewModel.revalidateFlight(depFareItin.fareItinerary.airItineraryFareInfo.FareSourceCode)
+                        .observe(this,
+                            Observer {
+                                it?.let {
+                                    progress_bar_view.visibility = VISIBLE
+                                    handleApiCall(it) { depRevalidatedResult ->
+                                        progress_bar_view.visibility = GONE
+                                        if (depRevalidatedResult.searchData.airRevalidateResponse.airRevalidateResult.isValid.toBooleanStrict()) {
+                                            flightsSearchViewModel.revalidateFlight(arrFareItin.fareItinerary.airItineraryFareInfo.FareSourceCode)
+                                                .observe(this,
+                                                    Observer { arrRevalidatedResult ->
+                                                        arrRevalidatedResult?.let {
+                                                            progress_bar_view.visibility = VISIBLE
+                                                            handleApiCall(it) { arrRevalidatedResult ->
+                                                                progress_bar_view.visibility = GONE
+                                                                if (arrRevalidatedResult.searchData.airRevalidateResponse.airRevalidateResult.isValid.toBooleanStrict()) {
+                                                                    val intent =
+                                                                        Intent(
+                                                                            this,
+                                                                            FlightBookingFlowActivity::class.java
+                                                                        )
+                                                                    with(intent) {
+                                                                        putExtra(
+                                                                            Constants.FlightTypes.OneWay.type,
+                                                                            FlightDetailsForReview(
+                                                                                flightSrcAndDest,
+                                                                                selectedClass,
+                                                                                depRevalidatedResult
+                                                                            )
+                                                                        )
+                                                                        putExtra(
+                                                                            Constants.FlightTypes.Return.type,
+                                                                            FlightDetailsForReview(
+                                                                                flightSrcAndDest,
+                                                                                selectedClass,
+                                                                                arrRevalidatedResult
+                                                                            )
+                                                                        )
+                                                                        putExtra(
+                                                                            Constants.FlightJourneyParams.ChildrenCount.param,
+                                                                            childrenCount.toInt()
+                                                                        )
+                                                                        putExtra(
+                                                                            Constants.FlightJourneyParams.AdultsCount.param,
+                                                                            adultsCount.toInt()
+                                                                        )
+                                                                        putExtra(
+                                                                            Constants.FlightJourneyParams.InfantsCount.param,
+                                                                            infantsCount.toInt()
+                                                                        )
+
+                                                                        putExtra(
+                                                                            Constants.roundTripTotalFare,
+                                                                            roundTripTotalFareFormatted
+                                                                        )
+                                                                    }
+                                                                    startActivity(intent)
+                                                                }
+                                                            }
+                                                        }
+
+                                                    })
+
+
+                                        } else {
+                                            showToast("Sorry Something went wrong please try again...")
+                                        }
+                                    }
+
+                                }
+                            })
+                }
+            }
+
 
         }
     }
@@ -133,18 +230,17 @@ class FlightsListActivity : BaseActivity() {
                         progress_bar_view.visibility = VISIBLE
                         handleApiCall(it) {
                             progress_bar_view.visibility = GONE
-                            if (it.airRevalidateResponse.airRevalidateResult.isValid.toBooleanStrict()) {
+                            if (it.searchData.airRevalidateResponse.airRevalidateResult.isValid.toBooleanStrict()) {
                                 val intent = Intent(this, FlightBookingFlowActivity::class.java)
                                 with(intent) {
                                     putExtra(
-                                        Constants.revalidatedFlightResult,
-                                        it.airRevalidateResponse.airRevalidateResult
+                                        Constants.FlightTypes.OneWay.type,
+                                        FlightDetailsForReview(
+                                            flightSrcAndDest,
+                                            selectedClass,
+                                            it
+                                        )
                                     )
-                                    putExtra(
-                                        Constants.FlightJourneyParams.FlightClass.param,
-                                        selectedClass
-                                    )
-                                    putExtra(Constants.sourceAnDestCity, flightSrcAndDest)
                                     putExtra(
                                         Constants.FlightJourneyParams.ChildrenCount.param,
                                         childrenCount.toInt()
@@ -157,15 +253,52 @@ class FlightsListActivity : BaseActivity() {
                                         Constants.FlightJourneyParams.InfantsCount.param,
                                         infantsCount.toInt()
                                     )
+
                                 }
                                 startActivity(intent)
 
-                            }else{
+                            } else {
                                 showToast("Sorry Something went wrong please try again...")
                             }
                         }
                     }
                 })
-        Log.e("fareSourceCode", airFareItinerary.fareItinerary.airItineraryFareInfo.FareSourceCode)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun onRoundTripFlightsSelected(
+        roundTripFareItinerary: RoundTripAirFareItinerary,
+        flightType: String
+    ) {
+
+        var roundTripDepFlightFare = 0
+        var roundTripArrFlightFare = 0
+
+        if (flightType == Constants.FlightTypes.Departure.type) {
+            roundTripDepFlightInfo = roundTripFareItinerary
+            //set flight details in bottom strip
+            roundTripDepFlightInfo?.let {
+                roundTripDepFlightFare =
+                    it.fareItinerary.airItineraryFareInfo.fareBreakdown.passengerFare.totalFare.Amount
+                tv_dep_flight_details.text =
+                    "${it.ValidatingAirlineCode} ${it.fareItinerary.airItineraryFareInfo.fareBreakdown.passengerFare.totalFare.formattedTotalFare}"
+            }
+
+        } else {
+            roundTripArrFlightInfo = roundTripFareItinerary
+            roundTripArrFlightInfo?.let {
+                roundTripArrFlightFare =
+                    it.fareItinerary.airItineraryFareInfo.fareBreakdown.passengerFare.totalFare.Amount
+                tv_arr_flight_details.text =
+                    "${it.ValidatingAirlineCode} ${it.fareItinerary.airItineraryFareInfo.fareBreakdown.passengerFare.totalFare.formattedTotalFare}"
+            }
+        }
+
+        roundTripTotalFareFormatted =
+            (roundTripDepFlightFare + roundTripArrFlightFare).formatMoney()
+
+        tv_total_price.text =
+            "Total $roundTripTotalFareFormatted"
+
     }
 }

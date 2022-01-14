@@ -126,6 +126,10 @@ data class RevalidatedFareItinerary(
         val originDestinationOption: List<OriginDestinationOptions>,
         val TotalStops: Int
     ) : Parcelable {
+
+        val stopInfo: String
+            get() = if (TotalStops > 0) "$TotalStops stop" else "non-stop"
+
         @Parcelize
         data class OriginDestinationOptions(
             @SerializedName("FlightSegment")
@@ -163,7 +167,8 @@ data class RevalidatedFareItinerary(
                     get() = ArrivalDateTime.formatFlightTime()
 
                 val formattedFlightDuration: String
-                    get() = if (JourneyDuration.toInt() > 60) JourneyDuration.toInt().convertToHoursAndMins() else "$JourneyDuration m"
+                    get() = if (JourneyDuration.toInt() > 60) JourneyDuration.toInt()
+                        .convertToHoursAndMins() else "$JourneyDuration m"
 
                 @Parcelize
                 data class OperatingAirline(
