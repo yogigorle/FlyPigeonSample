@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tekkr.flypigeonsample.R
+import com.tekkr.flypigeonsample.data.models.BookingDetails
 import com.tekkr.flypigeonsample.data.models.TravellerDetails
 import com.tekkr.flypigeonsample.ui.BaseFragment
 import com.tekkr.flypigeonsample.utils.Constants
@@ -126,11 +127,11 @@ class TravellerDetailsFragment : BaseFragment() {
                 if (isChecked) {
                     selectedGender = when (checkedId) {
                         R.id.gender_first_btn -> {
-                            "Male"
+                            Constants.Gender.Male.name
 
                         }
-                        R.id.gender_sec_btn -> "Female"
-                        else -> "Female"
+                        R.id.gender_sec_btn -> Constants.Gender.Female.name
+                        else -> Constants.Gender.Female.name
                     }
                 }
             }
@@ -166,6 +167,9 @@ class TravellerDetailsFragment : BaseFragment() {
                 val passportNo = et_passport.text.toString()
                 val passportIssueDate = et_passport_issue_date.text.toString()
                 val passportExpiryDate = et_passport_expiry_date.text.toString()
+                val travellerTitle =
+                    if (selectedGender == Constants.Gender.Male.name) "Mr" else "Ms"
+
                 checkIfStringsEmpty(
                     listOf(selectedGender, firstName, lastName, dob)
                 ) {
@@ -191,7 +195,8 @@ class TravellerDetailsFragment : BaseFragment() {
                                         passportNo,
                                         passportIssueDate,
                                         passportExpiryDate,
-                                        selectedGender
+                                        selectedGender,
+                                        travellerTitle
                                     ) {
                                         result(it)
                                     }
@@ -208,7 +213,8 @@ class TravellerDetailsFragment : BaseFragment() {
                                 passportNo,
                                 passportIssueDate,
                                 passportExpiryDate,
-                                selectedGender
+                                selectedGender,
+                                travellerTitle
                             ) {
                                 result(it)
                             }
@@ -273,6 +279,7 @@ class TravellerDetailsFragment : BaseFragment() {
         passportIssueDate: String = "",
         passportExpiryDate: String = "",
         selectedGender: String,
+        title: String,
         response: (TravellerDetails) -> Unit
     ) {
         val id = when (travellerType) {
@@ -291,15 +298,81 @@ class TravellerDetailsFragment : BaseFragment() {
         response(
             TravellerDetails(
                 id,
+                travellerType,
                 firstName,
                 lastName,
                 dob,
                 passportNo,
                 passportIssueDate,
                 passportExpiryDate,
-                selectedGender
+                selectedGender,
+                title
             )
         )
+    }
+
+
+    fun navigateToPaymentScreen(razorPayId: String, fareSourceCode: String, onDone: () -> Unit) {
+
+        val userEmail = et_user_email.text.toString()
+        val phoneNum = et_user_phn.text.toString()
+        val countryCode = et_user_country_code.text.toString()
+        val pinCode = et_pin_code.text.toString()
+
+        if (totalAdultsCount == addedAdultsCount && totalChildrenCount == addedChildCount && totalInfantsCount == addedInfantsCount) {
+            checkIfStringsEmpty(listOf(userEmail, phoneNum, countryCode, pinCode)) {
+                if (it) {
+                    requireContext().showToast("All fields are mandatory...")
+                } else {
+                    val travellerDetailsList = arrayListOf<TravellerDetails>()
+
+                    when (true) {
+                        adultsTravellersList.size > 0 -> {
+                            for (i in adultsTravellersList) {
+                                travellerDetailsList.add(i)
+                            }
+                        }
+                        childTravellersList.size > 0 -> {
+                            for (i in childTravellersList) {
+                                travellerDetailsList.add(i)
+                            }
+                        }
+
+                        infantsTravellersList.size > 0 -> {
+                            for (i in infantsTravellersList) {
+                                travellerDetailsList.add(i)
+                            }
+                        }
+                    }
+
+                    val bookingDetails = BookingDetails(
+                        userEmail,
+                        phoneNum,
+                        countryCode,
+                        "Public",
+                        isPassportMandatory,
+                        totalAdultsCount,
+                        totalChildrenCount,
+                        totalInfantsCount,
+                        pinCode,
+                        fareSourceCode,
+                        travellerDetailsList
+
+                    )
+
+                    val action =
+                        TravellerDetailsFragmentDirections.actionTravellerDetailsFragmentToPaymentFragment(
+                            razorPayId,
+                            bookingDetails
+                        )
+                    navigateByAction(action)
+                    onDone.invoke()
+                }
+            }
+        }else{
+            requireContext().showToast("Add Traveller Details.")
+        }
+
     }
 
 

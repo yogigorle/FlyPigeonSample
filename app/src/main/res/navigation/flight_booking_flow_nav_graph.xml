@@ -60,5 +60,8 @@
             android:name="payment_order_id"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="booking_details"
+            app:argType="com.tekkr.flypigeonsample.data.models.BookingDetails" />
     </fragment>
 </navigation>

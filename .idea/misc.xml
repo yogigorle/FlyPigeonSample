@@ -35,14 +35,17 @@
         <entry key="app/src/main/res/drawable/white_bg_with_light_gray_stroke.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/layout/activity_calendar_picker.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_extra_flight_details.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/activity_flight_booking.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_flight_booking_flow.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_flights_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_search_airports.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/add_travellers_info_bottom_sheet.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/airports_info_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/button_selector.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/calendar_months_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/date_item.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/flight_ticket_item.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_flight_review.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_one_way.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.19322916666666667" />

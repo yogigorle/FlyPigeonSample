@@ -1,9 +1,8 @@
 package com.tekkr.flypigeonsample.data.network
 
+import com.google.gson.JsonObject
 import com.tekkr.flypigeonsample.data.models.*
-import retrofit2.http.GET
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
+import retrofit2.http.*
 
 interface ApiInterface {
 
@@ -31,5 +30,20 @@ interface ApiInterface {
     suspend fun getFareRules(
         @Query("fare_source_code") fareSourceCode: String
     ): FareRulesResult
+
+    @POST("api/flights/FlightBookingCustomerAPI/")
+    suspend fun bookFlight(
+        @Body bookingDetails: BookingDetails
+    ): FlightBookingResult
+
+    @POST("api/payment/paymentverify/")
+    suspend fun verifyPayment(
+        @Body data: JsonObject
+    ): PaymentVerificationResponse
+
+    @GET("api/flights/FlightTripDetailsApi/")
+    suspend fun getTripDetails(
+        @Query("UniqueID") uniqueId: String
+    ): FlightTripDetails
 
 }

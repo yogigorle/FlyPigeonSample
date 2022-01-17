@@ -1,22 +1,29 @@
 package com.tekkr.flypigeonsample
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.github.salomonbrys.kotson.put
-import com.google.gson.JsonObject
 import com.razorpay.Checkout
 import com.razorpay.PaymentData
+import com.tekkr.flypigeonsample.data.models.BookingDetails
 import com.tekkr.flypigeonsample.ui.BaseFragment
+import com.tekkr.flypigeonsample.ui.viewmodels.FlightBookingViewModel
+import com.tekkr.flypigeonsample.ui.views.bookingFlow.TripDetailsShowCaseActivity
 import com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightBookingFlowActivity
-import com.tekkr.flypigeonsample.utils.toJson
+import com.tekkr.flypigeonsample.utils.Constants
+import com.tekkr.flypigeonsample.utils.showToast
 import kotlinx.android.synthetic.main.fragment_payment.*
+import kotlinx.android.synthetic.main.progress_bar_layout.*
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -24,7 +31,9 @@ import java.lang.Exception
 class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusListener {
 
     private val safeArgs: PaymentFragmentArgs by navArgs()
-    private var paymentOrderId: String? = null
+    private var razorPayOrderId: String? = null
+    private var flightBookingDetails: BookingDetails? = null
+    private val flightBookingViewModel: FlightBookingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,13 +48,21 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
 
         (activity as FlightBookingFlowActivity?)?.setPaymentStatusListener(this)
 
-        safeArgs.paymentOrderId?.let {
-            paymentOrderId = it
+        with(safeArgs) {
+            paymentOrderId?.let {
+                razorPayOrderId = it
+            }
+            flightBookingDetails = bookingDetails
+        }
+
+        if (razorPayOrderId != null && flightBookingDetails != null) {
             startPaymentProcess()
+        } else {
+            requireContext().showToast("Something went wrong please try again..")
         }
 
         btn_payment.setOnClickListener {
-            paymentOrderId?.let {
+            razorPayOrderId?.let {
                 startPaymentProcess()
             }
         }
@@ -53,7 +70,7 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
     }
 
     private fun startPaymentProcess() {
-        paymentOrderId?.let {
+        razorPayOrderId?.let {
             Checkout.preload(applicationContext)
             val activity: Activity = requireActivity()
             val co = Checkout()
@@ -70,7 +87,6 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
                     val retryObj = JSONObject()
                     retryObj.put("enabled", false)
                     put("retry", retryObj)
-
                 }
                 co.open(activity, options)
             } catch (e: Exception) {
@@ -83,8 +99,35 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
     }
 
     override fun onPaymentSuccess(razorpayPaymentId: String?, paymentData: PaymentData?) {
-        Log.e("successPaymentData", paymentData?.toJson()!!)
-        handleSuccessAndFailureCase(true)
+
+        if (razorpayPaymentId != null && paymentData != null) {
+            //verify payment
+            flightBookingViewModel.verifyPayment(
+                razorpayPaymentId,
+                paymentData.orderId,
+                paymentData.signature
+            ).observe(viewLifecycleOwner, Observer {
+                progress_bar_view.visibility = VISIBLE
+                handleApiCall(it) { paymentRes ->
+                    progress_bar_view.visibility = GONE
+                    if (paymentRes.payment_status.equals(
+                            "success",
+                            true
+                        ) && paymentRes.payment_status.equals("success", true)
+                    ) {
+                        //handle success case
+                        handleSuccessAndFailureCase(true)
+                        bookFlight()
+                    } else {
+                        handleSuccessAndFailureCase(false)
+                    }
+                }
+            })
+        } else {
+            handleSuccessAndFailureCase(false)
+        }
+
+
     }
 
     override fun onPaymentError(
@@ -108,5 +151,32 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
             }
         }
     }
+
+    private fun bookFlight() {
+        flightBookingDetails?.let {
+            flightBookingViewModel.bookFlight(it).observe(viewLifecycleOwner, Observer {
+                progress_bar_view.visibility = VISIBLE
+                handleApiCall(it) {
+                    progress_bar_view.visibility = GONE
+                    with(it.flight_data.bookFlightResponse.bookFlightResult) {
+                        if (Success.equals("true", true)) {
+                            tv_booking_status.text =
+                                "Flight booked successfully, redirecting to ticket details screen."
+                            //go to ticket dis
+                            val intent =
+                                Intent(requireContext(), TripDetailsShowCaseActivity::class.java)
+                            intent.putExtra(Constants.bookingUniqueId, flightBookingDetails)
+                            requireActivity().startActivityFromFragment(
+                                this@PaymentFragment,
+                                intent,
+                                100
+                            )
+                        }
+                    }
+                }
+            })
+        }
+    }
+
 
 }

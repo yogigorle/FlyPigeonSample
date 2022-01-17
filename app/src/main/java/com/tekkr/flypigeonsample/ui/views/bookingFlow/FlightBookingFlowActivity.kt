@@ -38,7 +38,7 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
     private var fareSourceCode = ""
 
     private var paymentStatusListener: PaymentStatusListener? = null
-    private var returnFlightDetails: FlightDetailsForReview? = null
+    private var returnFlightInfo: FlightDetailsForReview? = null
 
     @SuppressLint("SetTextIn")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
                 ) as FlightDetailsForReview
 
             if (intent.hasExtra(Constants.FlightTypes.Return.type)) {
-                returnFlightDetails =
+                returnFlightInfo =
                     intent.getParcelableExtra<FlightDetailsForReview>(Constants.FlightTypes.Return.type) as FlightDetailsForReview
 
                 tv_total_price.text = intent.getStringExtra(Constants.roundTripTotalFare)
@@ -73,9 +73,8 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
             with(flightBookingFlowDatBinding) {
                 oneWayFlightDetails = oneWayRevalidatedFlightDetails
 
-                returnFlightDetails?.let {
+                returnFlightInfo?.let {
                     returnFlightDetails = it
-
                 }
                 isPassportRequired =
                     oneWayRevalidatedFlightDetails.revalidatedFareItinerary.IsPassportMandatory
@@ -114,14 +113,15 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
                             btn_continue_booking.text = "Continue Payment"
                         }
                         R.id.travellerDetailsFragment -> {
-                            val action =
-                                TravellerDetailsFragmentDirections.actionTravellerDetailsFragmentToPaymentFragment(
-                                    "order_IiOmdLJMUcsabv"
-                                )
-                            navController.navigate(action)
-                            //make some ui adjustments
-                            btn_continue_booking.visibility = GONE
-                            ll_grand_total.gravity = Gravity.CENTER
+
+                            val travellerDetailsFragment =
+                                supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments!![0] as TravellerDetailsFragment
+                            travellerDetailsFragment.navigateToPaymentScreen(oneWayRevalidatedFlightDetails.razorPayOrderId,fareSourceCode){
+                                //make some ui adjustments when we get callback.
+                                btn_continue_booking.visibility = GONE
+                                ll_grand_total.gravity = Gravity.CENTER
+                            }
+
                         }
                     }
                 }

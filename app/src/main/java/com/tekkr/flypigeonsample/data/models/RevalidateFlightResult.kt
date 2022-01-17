@@ -4,13 +4,15 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class RevalidateFlightResult(
     @SerializedName("search_data")
     val searchData: RevalidatedFlightSearchData,
     @SerializedName("razor_order_data")
     val orderData: OrderData
-) {
+): Parcelable {
 
+    @Parcelize
     data class OrderData(
         val id: Int,
         val fp_booking_order_id: String,
@@ -19,17 +21,19 @@ data class RevalidateFlightResult(
         val r_currency: String,
         val r_receipt: String,
         val created_at: String
-    )
+    ): Parcelable
 
+    @Parcelize
     data class RevalidatedFlightSearchData(
         @SerializedName("AirRevalidateResponse")
         val airRevalidateResponse: AirRevalidateResponse
-    )
+    ): Parcelable
 
+    @Parcelize
     data class AirRevalidateResponse(
         @SerializedName("AirRevalidateResult")
         val airRevalidateResult: AirRevalidateResult
-    ) {
+    ): Parcelable {
         @Parcelize
         data class AirRevalidateResult(
             @SerializedName("ExtraServices")

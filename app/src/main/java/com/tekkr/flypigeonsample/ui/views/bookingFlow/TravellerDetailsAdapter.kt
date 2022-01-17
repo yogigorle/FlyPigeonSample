@@ -8,7 +8,7 @@ import com.tekkr.flypigeonsample.utils.diffChecker
 
 class TravellerDetailsAdapter :
     BaseBindingAdapter<TravellerDetails, LayoutTravellerDetailsItemBinding>(
-        R.layout.layout_traveller_details_item, diffChecker { old, new -> old.id == new.id }
+        R.layout.layout_traveller_details_item
     ) {
 
     override fun onBindViewHolder(

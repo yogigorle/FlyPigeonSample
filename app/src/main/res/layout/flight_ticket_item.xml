@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_oneway_flight_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="4dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_e_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:letterSpacing="0.1"
+            android:text="E-Ticket"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_e_ticket"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Name: " />
+
+        <TextView
+            android:id="@+id/tv_traveller_full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{oneWayFlightDetails.flightSrcAndDest}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_e_ticket"
+            app:layout_constraintStart_toEndOf="@id/tv_name"
+            tools:text="Yogendra Gorle" />
+
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_traveller_full_name"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Gender: " />
+
+        <TextView
+            android:id="@+id/tv_traveller_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{oneWayFlightDetails.flightSrcAndDest}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_traveller_full_name"
+            app:layout_constraintStart_toEndOf="@id/tv_gender"
+            tools:text="Male" />
+
+        <TextView
+            android:id="@+id/tv_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_traveller_gender"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Dob: " />
+
+        <TextView
+            android:id="@+id/tv_traveller_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{oneWayFlightDetails.flightSrcAndDest}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_traveller_gender"
+            app:layout_constraintStart_toEndOf="@id/tv_dob"
+            tools:text="Male" />
+
+        <TextView
+            android:id="@+id/tv_ticket_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_traveller_dob"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Ticket No: " />
+
+        <TextView
+            android:id="@+id/tv_traveller_ticket_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{oneWayFlightDetails.flightSrcAndDest}"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_traveller_dob"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_ticket_no"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="124456" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.views.bookingFlow.TripDetailsShowCaseActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/standarad_toolbar" />
+
+    <include layout="@layout/progress_bar_layout" />
+
+    <LinearLayout
+        android:id="@+id/ll_tickets"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

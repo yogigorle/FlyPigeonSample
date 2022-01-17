@@ -13,10 +13,12 @@ import android.widget.ToggleButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tekkr.flypigeonsample.FlyPigeonSampleApplication
 import com.tekkr.flypigeonsample.R
+import com.tekkr.flypigeonsample.data.network.Resource
 import com.tekkr.flypigeonsample.ui.views.airportssearch.SearchAirportsActivity
 import com.tekkr.flypigeonsample.ui.views.flights.FlightsListActivity
 import com.tekkr.flypigeonsample.utils.Constants
@@ -351,12 +353,33 @@ abstract class BaseFragment : Fragment() {
         )
     }
 
+    protected fun navigateByAction(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
     protected fun navigateById(navigationId: Int) {
         findNavController().navigate(navigationId)
     }
 
     protected fun navigateBack() {
         findNavController().popBackStack()
+    }
+
+    protected inline fun <T> handleApiCall(
+        response: Resource<T>?,
+        noinline onRetry: (() -> Unit)? = null,
+        onSuccess: (T) -> Unit
+    ) {
+        response?.let {
+            when (it) {
+                is Resource.Success -> {
+                    onSuccess(it.value)
+                }
+                is Resource.Failure -> {
+                }
+
+            }
+        }
     }
 
 

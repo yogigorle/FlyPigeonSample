@@ -323,7 +323,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_dep_date"
                             tools:ignore="RtlCompat"
-                            tools:text="Rajiv Gandhi International Airport" />
+                            android:text="Rajiv Gandhi International Airport" />
 
                         <ImageView
                             android:id="@+id/iv_oneway_flight_duration"
@@ -415,7 +415,7 @@
                             app:layout_constraintStart_toEndOf="@id/tv_oneway_src_airport_name"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_dep_date"
                             tools:ignore="RtlCompat"
-                            tools:text="Rajiv Gandhi International Airport" />
+                            android:text="Madras International Airport" />
 
 
                         <com.google.android.material.button.MaterialButton
@@ -468,7 +468,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:visibility="@{returnFlightDetails.flightSrcAndDest.empty ? View.VISIBLE : View.GONE }"
+                    android:visibility="gone"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="4dp"
@@ -802,9 +802,9 @@
                     android:drawableEnd="@drawable/ic_info_24dp"
                     android:drawablePadding="5dp"
                     android:fontFamily="sans-serif"
-                    android:text="@{oneWayFlightDetails.flightFare}"
                     android:textColor="@color/white"
                     android:textSize="18sp"
+                    android:text="@{oneWayFlightDetails.flightFare}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="17,913" />

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="40dp"
     tools:context=".PaymentFragment">
 
     <TextView
@@ -16,7 +17,6 @@
         android:text="Please complete your payment."
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,9 +25,10 @@
         android:id="@+id/btn_payment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.3"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="40dp"
+        android:layout_weight="1.3"
         android:backgroundTint="#FF5733"
         android:fontFamily="sans-serif-medium"
         android:insetTop="0dp"
@@ -36,10 +37,28 @@
         android:textAllCaps="false"
         android:textSize="16sp"
         app:cornerRadius="20dp"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_payment_status" />
+
+    <include layout="@layout/progress_bar_layout" />
+
+    <TextView
+        android:id="@+id/tv_booking_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:visibility="gone"
+        android:text="Please wait while we are booking your ticket...."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_payment" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
