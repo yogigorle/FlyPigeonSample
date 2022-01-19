@@ -41,9 +41,9 @@ object Constants {
         Arrival("arrival")
     }
 
-    enum class Gender{
-        Male,
-        Female
+    enum class Gender(val shortName: String){
+        Male("M"),
+        Female("F")
     }
 
 

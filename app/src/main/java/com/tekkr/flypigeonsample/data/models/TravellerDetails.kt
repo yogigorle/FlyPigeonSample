@@ -1,6 +1,8 @@
 package com.tekkr.flypigeonsample.data.models
 
 import android.os.Parcelable
+import com.tekkr.flypigeonsample.utils.convertMillsToDate
+import com.tekkr.flypigeonsample.utils.formatFlightDate
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -9,11 +11,16 @@ data class TravellerDetails(
     val passengerType: String,
     val firstName: String,
     val lastName: String,
-    val dob: String = "",
+    val dobInMillis: Long = 0L,
     val passportNumber: String = "",
-    val passportExpiryDate: String = "",
-    val passportIssueCountry: String = "India",
+    val passportExpiryDateInMillis: Long = 0L,
     val gender: String,
     val title: String
-) : Parcelable
+) : Parcelable {
+    val formattedDob: String
+        get() = dobInMillis.convertMillsToDate()
+
+    val formattedPassportExpiryDate: String
+        get() = passportExpiryDateInMillis.convertMillsToDate()
+}
 

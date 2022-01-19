@@ -17,6 +17,8 @@ class FlightBookingViewModel @Inject constructor(
     private val flightBookingRepo: FlightBookingRepo
 ) : ViewModel() {
 
+    val bookingDetails: MutableLiveData<BookingDetails> = MutableLiveData()
+
     fun getFareRules(fareSourceCode: String): LiveData<Resource<FareRulesResult>> {
         val response: MutableLiveData<Resource<FareRulesResult>> = MutableLiveData()
         viewModelScope.launch {

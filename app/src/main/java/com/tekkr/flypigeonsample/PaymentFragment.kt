@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -30,10 +31,9 @@ import java.lang.Exception
 
 class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusListener {
 
-    private val safeArgs: PaymentFragmentArgs by navArgs()
     private var razorPayOrderId: String? = null
     private var flightBookingDetails: BookingDetails? = null
-    private val flightBookingViewModel: FlightBookingViewModel by viewModels()
+    private val flightBookingViewModel: FlightBookingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,12 +48,8 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
 
         (activity as FlightBookingFlowActivity?)?.setPaymentStatusListener(this)
 
-        with(safeArgs) {
-            paymentOrderId?.let {
-                razorPayOrderId = it
-            }
-            flightBookingDetails = bookingDetails
-        }
+        flightBookingDetails = flightBookingViewModel.bookingDetails.value
+        razorPayOrderId = flightBookingDetails?.razorpay_order_id
 
         if (razorPayOrderId != null && flightBookingDetails != null) {
             startPaymentProcess()
@@ -156,6 +152,7 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
         flightBookingDetails?.let {
             flightBookingViewModel.bookFlight(it).observe(viewLifecycleOwner, Observer {
                 progress_bar_view.visibility = VISIBLE
+                tv_booking_status.visibility = VISIBLE
                 handleApiCall(it) {
                     progress_bar_view.visibility = GONE
                     with(it.flight_data.bookFlightResponse.bookFlightResult) {
@@ -165,7 +162,10 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
                             //go to ticket dis
                             val intent =
                                 Intent(requireContext(), TripDetailsShowCaseActivity::class.java)
-                            intent.putExtra(Constants.bookingUniqueId, flightBookingDetails)
+                            intent.putExtra(
+                                Constants.bookingUniqueId,
+                                this.UniqueID
+                            )
                             requireActivity().startActivityFromFragment(
                                 this@PaymentFragment,
                                 intent,

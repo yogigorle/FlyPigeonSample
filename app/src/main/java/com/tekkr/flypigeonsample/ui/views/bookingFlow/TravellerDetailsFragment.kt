@@ -8,13 +8,20 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import com.github.salomonbrys.kotson.jsonArray
+import com.github.salomonbrys.kotson.jsonObject
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.data.models.BookingDetails
 import com.tekkr.flypigeonsample.data.models.TravellerDetails
 import com.tekkr.flypigeonsample.ui.BaseFragment
+import com.tekkr.flypigeonsample.ui.viewmodels.FlightBookingViewModel
+import com.tekkr.flypigeonsample.ui.viewmodels.FlightSearchViewModel
 import com.tekkr.flypigeonsample.utils.Constants
 import com.tekkr.flypigeonsample.utils.checkIfStringsEmpty
 import com.tekkr.flypigeonsample.utils.showToast
@@ -39,6 +46,8 @@ class TravellerDetailsFragment : BaseFragment() {
 
     private val args: TravellerDetailsFragmentArgs by navArgs()
     private var isPassportMandatory = false
+
+    private val flightBookingViewModel: FlightBookingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,6 +104,9 @@ class TravellerDetailsFragment : BaseFragment() {
     ) {
 
         var selectedGender = ""
+        var dobInMilliseconds = 0L
+        var passportExpiryDateInMillis = 0L
+
 
         val bottomSheet = BottomSheetDialog(requireContext())
         with(bottomSheet) {
@@ -102,7 +114,6 @@ class TravellerDetailsFragment : BaseFragment() {
             if (isPassportMandatory) {
                 tl_passport_number.visibility = VISIBLE
                 tl_passport_expiry_date.visibility = VISIBLE
-                tl_passport_issue_date.visibility = VISIBLE
             }
             when (travellerType) {
                 Constants.TravellerType.Adult.type -> {
@@ -127,35 +138,29 @@ class TravellerDetailsFragment : BaseFragment() {
                 if (isChecked) {
                     selectedGender = when (checkedId) {
                         R.id.gender_first_btn -> {
-                            Constants.Gender.Male.name
+                            Constants.Gender.Male.shortName
 
                         }
-                        R.id.gender_sec_btn -> Constants.Gender.Female.name
-                        else -> Constants.Gender.Female.name
+                        R.id.gender_sec_btn -> Constants.Gender.Female.shortName
+                        else -> Constants.Gender.Female.shortName
                     }
                 }
             }
 
             et_user_dob.setOnClickListener {
-                invokeDatePicker(parentFragmentManager) {
+                invokeDatePicker(parentFragmentManager) { dobText, dobInMillis ->
+                    dobInMilliseconds = dobInMillis
                     with(et_user_dob) {
-                        setText(it)
-                    }
-                }
-            }
-
-            et_passport_issue_date.setOnClickListener {
-                invokeDatePicker(parentFragmentManager) {
-                    with(et_passport_issue_date) {
-                        setText(it)
+                        setText(dobText)
                     }
                 }
             }
 
             et_passport_expiry_date.setOnClickListener {
-                invokeDatePicker(parentFragmentManager) {
+                invokeDatePicker(parentFragmentManager) { passportExpiryDate, passportExpiryDateMillis ->
+                    passportExpiryDateInMillis = passportExpiryDateMillis
                     with(et_passport_expiry_date) {
-                        setText(it)
+                        setText(passportExpiryDate)
                     }
                 }
             }
@@ -165,7 +170,6 @@ class TravellerDetailsFragment : BaseFragment() {
                 val lastName = et_user_last_name.text.toString()
                 val dob = et_user_dob.text.toString()
                 val passportNo = et_passport.text.toString()
-                val passportIssueDate = et_passport_issue_date.text.toString()
                 val passportExpiryDate = et_passport_expiry_date.text.toString()
                 val travellerTitle =
                     if (selectedGender == Constants.Gender.Male.name) "Mr" else "Ms"
@@ -180,7 +184,6 @@ class TravellerDetailsFragment : BaseFragment() {
                             checkIfStringsEmpty(
                                 listOf(
                                     passportNo,
-                                    passportIssueDate,
                                     passportExpiryDate
                                 )
                             ) {
@@ -191,10 +194,9 @@ class TravellerDetailsFragment : BaseFragment() {
                                         travellerType,
                                         firstName,
                                         lastName,
-                                        dob,
+                                        dobInMilliseconds,
                                         passportNo,
-                                        passportIssueDate,
-                                        passportExpiryDate,
+                                        passportExpiryDateInMillis,
                                         selectedGender,
                                         travellerTitle
                                     ) {
@@ -209,10 +211,9 @@ class TravellerDetailsFragment : BaseFragment() {
                                 travellerType,
                                 firstName,
                                 lastName,
-                                dob,
+                                dobInMilliseconds,
                                 passportNo,
-                                passportIssueDate,
-                                passportExpiryDate,
+                                passportExpiryDateInMillis,
                                 selectedGender,
                                 travellerTitle
                             ) {
@@ -235,7 +236,7 @@ class TravellerDetailsFragment : BaseFragment() {
 
     private fun invokeDatePicker(
         fragmentManager: FragmentManager,
-        result: (String) -> Unit
+        result: (String, Long) -> Unit
     ) {
 
         val datePicker = MaterialDatePicker.Builder.datePicker()
@@ -246,7 +247,7 @@ class TravellerDetailsFragment : BaseFragment() {
             show(fragmentManager, "DATE_PICKER")
             addOnPositiveButtonClickListener {
                 it?.let {
-                    result(headerText)
+                    result(headerText, it)
                 }
             }
         }
@@ -274,10 +275,9 @@ class TravellerDetailsFragment : BaseFragment() {
         travellerType: String,
         firstName: String,
         lastName: String,
-        dob: String,
+        dobInMillis: Long = 0L,
         passportNo: String = "",
-        passportIssueDate: String = "",
-        passportExpiryDate: String = "",
+        passportExpiryDateInMillis: Long = 0L,
         selectedGender: String,
         title: String,
         response: (TravellerDetails) -> Unit
@@ -301,10 +301,9 @@ class TravellerDetailsFragment : BaseFragment() {
                 travellerType,
                 firstName,
                 lastName,
-                dob,
+                dobInMillis,
                 passportNo,
-                passportIssueDate,
-                passportExpiryDate,
+                passportExpiryDateInMillis,
                 selectedGender,
                 title
             )
@@ -324,52 +323,118 @@ class TravellerDetailsFragment : BaseFragment() {
                 if (it) {
                     requireContext().showToast("All fields are mandatory...")
                 } else {
-                    val travellerDetailsList = arrayListOf<TravellerDetails>()
+                    val travellerDetailsList = ArrayList<JsonObject>()
 
                     when (true) {
                         adultsTravellersList.size > 0 -> {
-                            for (i in adultsTravellersList) {
-                                travellerDetailsList.add(i)
+                            for (adultDetails in adultsTravellersList) {
+                                travellerDetailsList.add(
+                                    with(adultDetails) {
+                                        val commonAdultDetails = jsonObject(
+                                            "passenger_type" to "ADULT",
+                                            "title" to title,
+                                            "first_name" to firstName,
+                                            "last_name" to lastName,
+                                            "dob" to formattedDob,
+                                            "frequentFlyrNum" to "",
+                                            "mealplan" to "",
+                                            "gender" to gender
+                                        )
+
+                                        if (isPassportMandatory) {
+                                            commonAdultDetails.apply {
+                                                addProperty("passport_no", passportNumber)
+                                                addProperty(
+                                                    "passport_expiry",
+                                                    formattedPassportExpiryDate
+                                                )
+                                                addProperty("issue_country", "India")
+                                            }
+                                        } else {
+                                            commonAdultDetails
+                                        }
+
+                                    }
+                                )
                             }
                         }
                         childTravellersList.size > 0 -> {
-                            for (i in childTravellersList) {
-                                travellerDetailsList.add(i)
+                            for (childTravellers in childTravellersList) {
+                                travellerDetailsList.add(
+                                    with(childTravellers) {
+                                        val commonChildDetails = jsonObject(
+                                            "passenger_type" to "CHILD",
+                                            "title" to title,
+                                            "first_name" to firstName,
+                                            "last_name" to lastName,
+                                            "dob" to formattedDob,
+                                            "frequentFlyrNum" to "",
+                                            "mealplan" to "",
+                                            "gender" to gender
+                                        )
+
+                                        if (isPassportMandatory) {
+                                            commonChildDetails.apply {
+                                                addProperty("passport_no", passportNumber)
+                                                addProperty(
+                                                    "passport_expiry",
+                                                    formattedPassportExpiryDate
+                                                )
+                                            }
+                                        } else {
+                                            commonChildDetails
+                                        }
+                                    }
+                                )
                             }
                         }
 
                         infantsTravellersList.size > 0 -> {
-                            for (i in infantsTravellersList) {
-                                travellerDetailsList.add(i)
+                            for (infantTravellers in infantsTravellersList) {
+                                travellerDetailsList.add(
+                                    with(infantTravellers) {
+                                        jsonObject(
+                                            "passenger_type" to "INFANT",
+                                            "title" to title,
+                                            "first_name" to firstName,
+                                            "last_name" to lastName,
+                                            "dob" to formattedDob,
+                                            "mealplan" to "",
+                                            "gender" to gender
+                                        )
+                                    }
+                                )
                             }
                         }
                     }
 
                     val bookingDetails = BookingDetails(
-                        userEmail,
-                        phoneNum,
-                        countryCode,
-                        "Public",
-                        isPassportMandatory,
-                        totalAdultsCount,
-                        totalChildrenCount,
-                        totalInfantsCount,
-                        pinCode,
                         fareSourceCode,
-                        travellerDetailsList
-
+                        isPassportMandatory.toString(),
+                        pinCode,
+                        totalAdultsCount,
+                        "415",
+                        travellerDetailsList,
+                        "WebFare",
+                        totalChildrenCount,
+                        countryCode,
+                        userEmail,
+                        totalInfantsCount,
+                        phoneNum,
+                        razorPayId
                     )
+
+                    flightBookingViewModel.bookingDetails.value = bookingDetails
+
 
                     val action =
                         TravellerDetailsFragmentDirections.actionTravellerDetailsFragmentToPaymentFragment(
-                            razorPayId,
-                            bookingDetails
                         )
                     navigateByAction(action)
                     onDone.invoke()
                 }
             }
-        }else{
+        } else {
             requireContext().showToast("Add Traveller Details.")
         }
 
