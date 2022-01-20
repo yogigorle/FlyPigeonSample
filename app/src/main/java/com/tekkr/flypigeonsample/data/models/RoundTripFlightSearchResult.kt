@@ -3,7 +3,7 @@ package com.tekkr.flypigeonsample.data.models
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.tekkr.flypigeonsample.utils.convertToHoursAndMins
-import com.tekkr.flypigeonsample.utils.formatFlightDate
+import com.tekkr.flypigeonsample.utils.convertToReadableDate
 import com.tekkr.flypigeonsample.utils.formatFlightTime
 import com.tekkr.flypigeonsample.utils.formatMoney
 import kotlinx.android.parcel.Parcelize
@@ -132,10 +132,10 @@ data class OriginDestinationOption(
     ) : Parcelable {
 
         val readableDepDate: String
-            get() = DepartureDateTime.formatFlightDate()
+            get() = DepartureDateTime.convertToReadableDate()
 
         val readableArrDate: String
-            get() = ArrivalDateTime.formatFlightDate()
+            get() = ArrivalDateTime.convertToReadableDate()
 
         val formattedDepTime: String
             get() = DepartureDateTime.formatFlightTime()

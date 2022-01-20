@@ -17,10 +17,10 @@ data class FlightDetailsForReview(
         get() = "$selectedClass | ${revalidatedFareItinerary.originDestinationOptions[0].stopInfo} | ${revalidatedFareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.formattedFlightDuration}"
 
     val srcAirportInfo: String
-        get() = "${flightSrcAndDest.substringBefore("to")} ${revalidatedFareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.DepartureAirportLocationCode}"
+        get() = "${flightSrcAndDest.substringBefore("to")} (${revalidatedFareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.DepartureAirportLocationCode})"
 
     val destAirportInfo: String
-        get() = "${flightSrcAndDest.substringAfter("to")} ${revalidatedFareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.ArrivalAirportLocationCode}"
+        get() = "${flightSrcAndDest.substringAfter("to")} (${revalidatedFareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.ArrivalAirportLocationCode})"
 
     val flightName: String
         get() = revalidatedFareItinerary.originDestinationOptions[0].originDestinationOption[0].flightSegment.operatingAirline.formattedFlightCode

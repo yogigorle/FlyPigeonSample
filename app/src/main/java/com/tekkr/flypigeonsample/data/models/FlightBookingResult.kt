@@ -15,23 +15,23 @@ data class FlightBookingResult(
         ) {
             data class BookFlightResult(
                 @SerializedName("Errors")
-                val errors: ErrorsFromServer? = null,
+                val errors: Any? = null,
                 val Status: String,
                 val Success: String,
                 val Target: String,
                 val TktTimeLimit: String,
                 val UniqueID: String
-            ) {
-                data class ErrorsFromServer(
-                    @SerializedName("Errors")
-                    val errors: Errors
-                ) {
-                    data class Errors(
-                        val ErrorCode: String,
-                        val ErrorMessage: String
-                    )
-                }
-            }
+            )
         }
     }
+}
+
+data class ErrorsFromServer(
+    @SerializedName("Errors")
+    val errors: Errors
+) {
+    data class Errors(
+        val ErrorCode: String,
+        val ErrorMessage: String
+    )
 }

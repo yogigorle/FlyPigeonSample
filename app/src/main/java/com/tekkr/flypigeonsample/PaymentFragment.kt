@@ -17,12 +17,16 @@ import androidx.navigation.fragment.navArgs
 import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.tekkr.flypigeonsample.data.models.BookingDetails
+import com.tekkr.flypigeonsample.data.models.ErrorsFromServer
+import com.tekkr.flypigeonsample.data.network.Resource
 import com.tekkr.flypigeonsample.ui.BaseFragment
 import com.tekkr.flypigeonsample.ui.viewmodels.FlightBookingViewModel
 import com.tekkr.flypigeonsample.ui.views.bookingFlow.TripDetailsShowCaseActivity
 import com.tekkr.flypigeonsample.ui.views.bookingFlow.FlightBookingFlowActivity
 import com.tekkr.flypigeonsample.utils.Constants
+import com.tekkr.flypigeonsample.utils.gson
 import com.tekkr.flypigeonsample.utils.showToast
+import com.tekkr.flypigeonsample.utils.toJson
 import kotlinx.android.synthetic.main.fragment_payment.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
 import org.json.JSONObject
@@ -155,27 +159,44 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
                 tv_booking_status.visibility = VISIBLE
                 handleApiCall(it) {
                     progress_bar_view.visibility = GONE
-                    with(it.flight_data.bookFlightResponse.bookFlightResult) {
-                        if (Success.equals("true", true)) {
-                            tv_booking_status.text =
-                                "Flight booked successfully, redirecting to ticket details screen."
-                            //go to ticket dis
-                            val intent =
-                                Intent(requireContext(), TripDetailsShowCaseActivity::class.java)
-                            intent.putExtra(
-                                Constants.bookingUniqueId,
-                                this.UniqueID
-                            )
-                            requireActivity().startActivityFromFragment(
-                                this@PaymentFragment,
-                                intent,
-                                100
-                            )
-                        }
+                    val bookingFlightResult = it.flight_data.bookFlightResponse.bookFlightResult
+                    if (bookingFlightResult.Success.equals(
+                            "true",
+                            true
+                        )
+                    ) {
+                        tv_booking_status.text =
+                            "Flight booked successfully, redirecting to ticket details screen."
+                        //go to ticket dis
+                        val intent =
+                            Intent(requireContext(), TripDetailsShowCaseActivity::class.java)
+                        intent.putExtra(
+                            Constants.bookingUniqueId,
+                            bookingFlightResult.UniqueID
+                        )
+                        requireActivity().startActivityFromFragment(
+                            this,
+                            intent, 100
+                        )
+                    } else {
+                        val errors = gson.fromJson(
+                            bookingFlightResult.errors.toString(),
+                            ErrorsFromServer::class.java
+                        )
+                        requireContext().showToast(
+                            errors.errors.ErrorMessage
+                        )
+                        requireActivity().finish()
                     }
                 }
             })
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        requireActivity().finish()
     }
 
 

@@ -1,6 +1,7 @@
 package com.tekkr.flypigeonsample.data.models
 
 import com.google.gson.annotations.SerializedName
+import com.tekkr.flypigeonsample.utils.convertToReadableDate
 
 data class FlightTripDetails(
     @SerializedName("TripDetailsResponse")
@@ -54,7 +55,10 @@ data class FlightTripDetails(
                             val PhoneNumber: String,
                             val PostCode: String,
                             val eTicketNumber: String
-                        )
+                        ){
+                            val formattedDob: String
+                                get() = DateOfBirth.convertToReadableDate()
+                        }
                     }
 
                     data class ItineraryPricing(

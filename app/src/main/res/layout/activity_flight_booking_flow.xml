@@ -284,11 +284,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            android:layout_gravity="center"
                             android:fontFamily="sans-serif"
                             android:text="@{oneWayFlightDetails.srcAirportInfo}"
                             android:textColor="#b3000000"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             app:layout_constraintEnd_toStartOf="@id/tv_oneway_flight_duration"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_dep_time"
@@ -374,20 +373,18 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            android:layout_gravity="center"
                             android:fontFamily="sans-serif"
                             android:text="@{oneWayFlightDetails.destAirportInfo}"
                             android:textAlignment="textEnd"
                             android:textColor="#b3000000"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_oneway_flight_duration"
                             app:layout_constraintTop_toBottomOf="@id/tv_oneway_dep_time"
-                            tools:ignore="RtlCompat"
-                            tools:text="Hyderabad(HYD)" />
+                            tools:text="VISAKHAPATNAM(VTZ)" />
 
                         <TextView
-                            android:id="@+id/tv_aoneway_rr_date"
+                            android:id="@+id/tv_oneway_arr_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -397,7 +394,7 @@
                             android:textColor="#B3000000"
                             android:textSize="14sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_oneway_src_city"
+                            app:layout_constraintTop_toBottomOf="@id/tv_oneway_dest_city"
                             tools:text="Thu 06-jan-2022" />
 
                         <TextView
@@ -413,9 +410,9 @@
                             android:textSize="14sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_oneway_src_airport_name"
-                            app:layout_constraintTop_toBottomOf="@id/tv_oneway_dep_date"
+                            app:layout_constraintTop_toBottomOf="@id/tv_oneway_arr_date"
                             tools:ignore="RtlCompat"
-                            android:text="Madras International Airport" />
+                            android:text="Visakhapatnam Airport" />
 
 
                         <com.google.android.material.button.MaterialButton

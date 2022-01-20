@@ -2,7 +2,6 @@ package com.tekkr.flypigeonsample.data.models
 
 import android.os.Parcelable
 import com.tekkr.flypigeonsample.utils.convertMillsToDate
-import com.tekkr.flypigeonsample.utils.formatFlightDate
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

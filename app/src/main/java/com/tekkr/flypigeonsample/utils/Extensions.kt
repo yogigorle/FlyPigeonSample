@@ -44,6 +44,7 @@ fun Long.convertMillisToReadableDate(): String {
 val gson = Gson()
 fun Any.toJson() = gson.toJson(this)
 
+
 fun <T> diffChecker(itemsSame: (T, T) -> Boolean): DiffUtil.ItemCallback<T> where T : Any {
     return object : DiffUtil.ItemCallback<T>() {
         override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
@@ -72,7 +73,7 @@ fun String.formatFlightTime(): String {
     return hoursAndMins.toString()
 }
 
-fun String.formatFlightDate(): String {
+fun String.convertToReadableDate(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     val calendar = Calendar.getInstance()
     calendar.time = dateFormat.parse(this)!!

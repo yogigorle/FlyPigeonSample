@@ -10,9 +10,11 @@ import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.github.salomonbrys.kotson.jsonArray
 import com.github.salomonbrys.kotson.jsonObject
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -28,6 +30,10 @@ import com.tekkr.flypigeonsample.utils.showToast
 import kotlinx.android.synthetic.main.add_travellers_info_bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_flight_review.tv_title
 import kotlinx.android.synthetic.main.fragment_traveller_details.*
+import java.time.Year
+import java.time.YearMonth
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TravellerDetailsFragment : BaseFragment() {
 
@@ -76,7 +82,8 @@ class TravellerDetailsFragment : BaseFragment() {
                 totalAdultsCount,
                 Constants.TravellerType.Adult.type,
                 adultsTravellersList,
-                adultTravellerDetailsAdapter
+                adultTravellerDetailsAdapter,
+                rv_adult_travellers
             )
         }
         btn_add_children.setOnClickListener {
@@ -84,7 +91,8 @@ class TravellerDetailsFragment : BaseFragment() {
                 totalChildrenCount,
                 Constants.TravellerType.Child.type,
                 childTravellersList,
-                childTravellerDetailsAdapter
+                childTravellerDetailsAdapter,
+                rv_child_travellers
             )
         }
         btn_add_infant.setOnClickListener {
@@ -92,7 +100,8 @@ class TravellerDetailsFragment : BaseFragment() {
                 totalInfantsCount,
                 Constants.TravellerType.Infant.type,
                 infantsTravellersList,
-                infantTravellerDetailsAdapter
+                infantTravellerDetailsAdapter,
+                rv_infant_travellers
             )
 
         }
@@ -106,6 +115,7 @@ class TravellerDetailsFragment : BaseFragment() {
         var selectedGender = ""
         var dobInMilliseconds = 0L
         var passportExpiryDateInMillis = 0L
+        var maxYearsForTravellers = 0
 
 
         val bottomSheet = BottomSheetDialog(requireContext())
@@ -118,12 +128,14 @@ class TravellerDetailsFragment : BaseFragment() {
             when (travellerType) {
                 Constants.TravellerType.Adult.type -> {
                     tv_title.text = "Add Adult Details"
+                    maxYearsForTravellers = 14
                 }
                 Constants.TravellerType.Child.type -> {
                     tv_title.text = "Add Child Details"
                     gender_first_btn.text = "Miss."
                     gender_sec_btn.text = "Master."
                     gender_third_btn.visibility = GONE
+                    maxYearsForTravellers = 12
                 }
 
                 Constants.TravellerType.Infant.type -> {
@@ -131,6 +143,7 @@ class TravellerDetailsFragment : BaseFragment() {
                     gender_first_btn.text = "Miss."
                     gender_sec_btn.text = "Master."
                     gender_third_btn.visibility = GONE
+                    maxYearsForTravellers = 0
                 }
             }
 
@@ -148,7 +161,10 @@ class TravellerDetailsFragment : BaseFragment() {
             }
 
             et_user_dob.setOnClickListener {
-                invokeDatePicker(parentFragmentManager) { dobText, dobInMillis ->
+                invokeDatePicker(
+                    maxYearsForTravellers,
+                    parentFragmentManager
+                ) { dobText, dobInMillis ->
                     dobInMilliseconds = dobInMillis
                     with(et_user_dob) {
                         setText(dobText)
@@ -157,7 +173,10 @@ class TravellerDetailsFragment : BaseFragment() {
             }
 
             et_passport_expiry_date.setOnClickListener {
-                invokeDatePicker(parentFragmentManager) { passportExpiryDate, passportExpiryDateMillis ->
+                invokeDatePicker(
+                    0,
+                    parentFragmentManager
+                ) { passportExpiryDate, passportExpiryDateMillis ->
                     passportExpiryDateInMillis = passportExpiryDateMillis
                     with(et_passport_expiry_date) {
                         setText(passportExpiryDate)
@@ -172,7 +191,7 @@ class TravellerDetailsFragment : BaseFragment() {
                 val passportNo = et_passport.text.toString()
                 val passportExpiryDate = et_passport_expiry_date.text.toString()
                 val travellerTitle =
-                    if (selectedGender == Constants.Gender.Male.name) "Mr" else "Ms"
+                    if (selectedGender == Constants.Gender.Male.shortName) "Mr" else "Ms"
 
                 checkIfStringsEmpty(
                     listOf(selectedGender, firstName, lastName, dob)
@@ -235,13 +254,25 @@ class TravellerDetailsFragment : BaseFragment() {
     }
 
     private fun invokeDatePicker(
+        yearRestrictionNo: Int = 0,
         fragmentManager: FragmentManager,
         result: (String, Long) -> Unit
     ) {
 
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - yearRestrictionNo)
+        val endYear = calendar.timeInMillis
+
+        val calendarConstraints = CalendarConstraints.Builder()
+        calendarConstraints.apply {
+            setEnd(endYear)
+        }
+
         val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setCalendarConstraints(calendarConstraints.build())
             .setTitleText("Select Desired Date")
             .build()
+
 
         with(datePicker) {
             show(fragmentManager, "DATE_PICKER")
@@ -257,7 +288,8 @@ class TravellerDetailsFragment : BaseFragment() {
         travellersCount: Int,
         travellerType: String,
         travellersList: ArrayList<TravellerDetails>,
-        adapter: TravellerDetailsAdapter
+        adapter: TravellerDetailsAdapter,
+        recyclerView: RecyclerView
     ) {
         if (travellersCount == travellersList.size) {
             requireContext().showToast("You can add only $travellersCount $travellerType")
@@ -265,7 +297,7 @@ class TravellerDetailsFragment : BaseFragment() {
             invokeTravellerDetailsBottomSheet(travellerType) {
                 travellersList.add(it)
                 adapter.submitList(travellersList)
-                rv_adult_travellers.adapter = adapter
+                recyclerView.adapter = adapter
             }
         }
 
@@ -325,88 +357,88 @@ class TravellerDetailsFragment : BaseFragment() {
                 } else {
                     val travellerDetailsList = ArrayList<JsonObject>()
 
-                    when (true) {
-                        adultsTravellersList.size > 0 -> {
-                            for (adultDetails in adultsTravellersList) {
-                                travellerDetailsList.add(
-                                    with(adultDetails) {
-                                        val commonAdultDetails = jsonObject(
-                                            "passenger_type" to "ADULT",
-                                            "title" to title,
-                                            "first_name" to firstName,
-                                            "last_name" to lastName,
-                                            "dob" to formattedDob,
-                                            "frequentFlyrNum" to "",
-                                            "mealplan" to "",
-                                            "gender" to gender
-                                        )
+                    if(adultsTravellersList.size > 0){
+                        for (adultDetails in adultsTravellersList) {
+                            travellerDetailsList.add(
+                                with(adultDetails) {
+                                    val commonAdultDetails = jsonObject(
+                                        "passenger_type" to "ADULT",
+                                        "title" to title,
+                                        "first_name" to firstName,
+                                        "last_name" to "DOE",
+                                        "dob" to formattedDob,
+                                        "frequentFlyrNum" to "",
+                                        "mealplan" to "",
+                                        "gender" to gender
+                                    )
 
-                                        if (isPassportMandatory) {
-                                            commonAdultDetails.apply {
-                                                addProperty("passport_no", passportNumber)
-                                                addProperty(
-                                                    "passport_expiry",
-                                                    formattedPassportExpiryDate
-                                                )
-                                                addProperty("issue_country", "India")
-                                            }
-                                        } else {
-                                            commonAdultDetails
+                                    if (isPassportMandatory) {
+                                        commonAdultDetails.apply {
+                                            addProperty("passport_no", passportNumber)
+                                            addProperty(
+                                                "passport_expiry",
+                                                formattedPassportExpiryDate
+                                            )
+                                            addProperty("issue_country", "India")
                                         }
-
+                                    } else {
+                                        commonAdultDetails
                                     }
-                                )
-                            }
-                        }
-                        childTravellersList.size > 0 -> {
-                            for (childTravellers in childTravellersList) {
-                                travellerDetailsList.add(
-                                    with(childTravellers) {
-                                        val commonChildDetails = jsonObject(
-                                            "passenger_type" to "CHILD",
-                                            "title" to title,
-                                            "first_name" to firstName,
-                                            "last_name" to lastName,
-                                            "dob" to formattedDob,
-                                            "frequentFlyrNum" to "",
-                                            "mealplan" to "",
-                                            "gender" to gender
-                                        )
 
-                                        if (isPassportMandatory) {
-                                            commonChildDetails.apply {
-                                                addProperty("passport_no", passportNumber)
-                                                addProperty(
-                                                    "passport_expiry",
-                                                    formattedPassportExpiryDate
-                                                )
-                                            }
-                                        } else {
-                                            commonChildDetails
-                                        }
-                                    }
-                                )
-                            }
-                        }
-
-                        infantsTravellersList.size > 0 -> {
-                            for (infantTravellers in infantsTravellersList) {
-                                travellerDetailsList.add(
-                                    with(infantTravellers) {
-                                        jsonObject(
-                                            "passenger_type" to "INFANT",
-                                            "title" to title,
-                                            "first_name" to firstName,
-                                            "last_name" to lastName,
-                                            "dob" to formattedDob,
-                                            "mealplan" to "",
-                                            "gender" to gender
-                                        )
-                                    }
-                                )
-                            }
+                                }
+                            )
                         }
                     }
+
+                    if(childTravellersList.size > 0){
+                        for (childTravellers in childTravellersList) {
+                            travellerDetailsList.add(
+                                with(childTravellers) {
+                                    val commonChildDetails = jsonObject(
+                                        "passenger_type" to "CHILD",
+                                        "title" to title,
+                                        "first_name" to firstName,
+                                        "last_name" to lastName,
+                                        "dob" to formattedDob,
+                                        "frequentFlyrNum" to "",
+                                        "mealplan" to "",
+                                        "gender" to gender
+                                    )
+
+                                    if (isPassportMandatory) {
+                                        commonChildDetails.apply {
+                                            addProperty("passport_no", passportNumber)
+                                            addProperty(
+                                                "passport_expiry",
+                                                formattedPassportExpiryDate
+                                            )
+                                        }
+                                    } else {
+                                        commonChildDetails
+                                    }
+                                }
+                            )
+                        }
+                    }
+
+                    if(infantsTravellersList.size > 0){
+                        for (infantTravellers in infantsTravellersList) {
+                            travellerDetailsList.add(
+                                with(infantTravellers) {
+                                    jsonObject(
+                                        "passenger_type" to "INFANT",
+                                        "title" to title,
+                                        "first_name" to firstName,
+                                        "last_name" to lastName,
+                                        "dob" to formattedDob,
+                                        "mealplan" to "",
+                                        "gender" to gender
+                                    )
+                                }
+                            )
+                        }
+                    }
+
 
                     val bookingDetails = BookingDetails(
                         fareSourceCode,

@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import androidx.activity.viewModels
+import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import com.tekkr.flypigeonsample.R
 import com.tekkr.flypigeonsample.data.models.BookingDetails
@@ -35,17 +37,18 @@ class TripDetailsShowCaseActivity : BaseActivity() {
                 flightBookingViewModel.getTripDetails(it).observe(this, Observer {
                     progress_bar_view.visibility = VISIBLE
                     handleApiCall(it) {
+                        progress_bar_view.visibility = GONE
                         if (it.tripDetailsResponse.tripDetailsResult.Success.equals("true", true)) {
                             ll_tickets.removeAllViews()
                             for (customerDetails in it.tripDetailsResponse.tripDetailsResult.travelItinerary.itineraryInfo.CustomerInfos) {
                                 val ticketLayout = LayoutInflater.from(this)
-                                    .inflate(R.layout.flight_ticket_item, null, false)
+                                    .inflate(R.layout.flight_ticket_item, ll_tickets, false)
                                 with(ticketLayout) {
-                                    tv_name.text =
+                                    tv_traveller_full_name.text =
                                         "${customerDetails.customerInfo.PassengerTitle} ${customerDetails.customerInfo.PassengerFirstName} ${customerDetails.customerInfo.PassengerLastName}"
-                                    tv_gender.text = customerDetails.customerInfo.Gender
-                                    tv_dob.text = customerDetails.customerInfo.DateOfBirth
-                                    tv_e_ticket.text = customerDetails.customerInfo.eTicketNumber
+                                    tv_traveller_gender.text = customerDetails.customerInfo.Gender
+                                    tv_traveller_dob.text = customerDetails.customerInfo.formattedDob
+                                    tv_traveller_ticket_no.text = customerDetails.customerInfo.eTicketNumber
                                 }
 
                                 ll_tickets.addView(ticketLayout)
