@@ -116,6 +116,7 @@ class TravellerDetailsFragment : BaseFragment() {
         var dobInMilliseconds = 0L
         var passportExpiryDateInMillis = 0L
         var maxYearsForTravellers = 0
+        var minYearsForTravellers = 0
 
 
         val bottomSheet = BottomSheetDialog(requireContext())
@@ -129,13 +130,15 @@ class TravellerDetailsFragment : BaseFragment() {
                 Constants.TravellerType.Adult.type -> {
                     tv_title.text = "Add Adult Details"
                     maxYearsForTravellers = 14
+                    minYearsForTravellers = 90
                 }
                 Constants.TravellerType.Child.type -> {
                     tv_title.text = "Add Child Details"
                     gender_first_btn.text = "Miss."
                     gender_sec_btn.text = "Master."
                     gender_third_btn.visibility = GONE
-                    maxYearsForTravellers = 12
+                    maxYearsForTravellers = 1
+                    minYearsForTravellers = 12
                 }
 
                 Constants.TravellerType.Infant.type -> {
@@ -143,6 +146,7 @@ class TravellerDetailsFragment : BaseFragment() {
                     gender_first_btn.text = "Miss."
                     gender_sec_btn.text = "Master."
                     gender_third_btn.visibility = GONE
+                    minYearsForTravellers = 2
                     maxYearsForTravellers = 0
                 }
             }
@@ -162,6 +166,7 @@ class TravellerDetailsFragment : BaseFragment() {
 
             et_user_dob.setOnClickListener {
                 invokeDatePicker(
+                    minYearsForTravellers,
                     maxYearsForTravellers,
                     parentFragmentManager
                 ) { dobText, dobInMillis ->
@@ -174,6 +179,7 @@ class TravellerDetailsFragment : BaseFragment() {
 
             et_passport_expiry_date.setOnClickListener {
                 invokeDatePicker(
+                    0,
                     0,
                     parentFragmentManager
                 ) { passportExpiryDate, passportExpiryDateMillis ->
@@ -254,17 +260,25 @@ class TravellerDetailsFragment : BaseFragment() {
     }
 
     private fun invokeDatePicker(
-        yearRestrictionNo: Int = 0,
+        startYearRestrictionNo: Int = 0,
+        endYearRestrictionNo: Int = 0,
         fragmentManager: FragmentManager,
         result: (String, Long) -> Unit
     ) {
 
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - yearRestrictionNo)
+        val currentYear = calendar.get(Calendar.YEAR)
+
+        calendar.set(Calendar.YEAR, currentYear - startYearRestrictionNo)
+        val startYear = calendar.timeInMillis
+
+        calendar.set(Calendar.YEAR,currentYear - endYearRestrictionNo)
         val endYear = calendar.timeInMillis
+
 
         val calendarConstraints = CalendarConstraints.Builder()
         calendarConstraints.apply {
+            setStart(startYear)
             setEnd(endYear)
         }
 
