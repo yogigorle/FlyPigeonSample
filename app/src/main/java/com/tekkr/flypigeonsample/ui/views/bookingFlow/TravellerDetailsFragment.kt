@@ -137,7 +137,7 @@ class TravellerDetailsFragment : BaseFragment() {
                     gender_first_btn.text = "Miss."
                     gender_sec_btn.text = "Master."
                     gender_third_btn.visibility = GONE
-                    maxYearsForTravellers = 1
+                    maxYearsForTravellers = 2
                     minYearsForTravellers = 12
                 }
 

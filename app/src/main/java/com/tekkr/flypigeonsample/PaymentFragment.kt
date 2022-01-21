@@ -199,5 +199,4 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
         requireActivity().finish()
     }
 
-
 }
