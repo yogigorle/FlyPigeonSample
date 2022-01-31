@@ -7,6 +7,7 @@ object Constants {
     const val fareSourceCode = "FARE_SOURCE_CODE"
     const val roundTripTotalFare = "Round_trip_total_fare"
     const val bookingUniqueId = "BOOKING_UNIQUE_ID"
+    const val returnBookingUniqueId = "RETURN_BOOKING_UNIQUE_ID"
 
     enum class FlightJourneyParams(val param: String) {
         JourneyType("journey_type"),

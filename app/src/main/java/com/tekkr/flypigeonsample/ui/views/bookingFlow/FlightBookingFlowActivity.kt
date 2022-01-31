@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -19,6 +20,8 @@ import com.tekkr.flypigeonsample.data.models.RevalidateFlightResult
 import com.tekkr.flypigeonsample.databinding.ActivityFlightBookingFlowBinding
 import com.tekkr.flypigeonsample.ui.BaseActivity
 import com.tekkr.flypigeonsample.utils.Constants
+import com.tekkr.flypigeonsample.utils.showToast
+import com.tekkr.flypigeonsample.utils.toJson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_flight_booking_flow.*
 import kotlinx.android.synthetic.main.fragment_one_way.*
@@ -68,6 +71,8 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
                     intent.getParcelableExtra<FlightDetailsForReview>(Constants.FlightTypes.Return.type) as FlightDetailsForReview
 
                 tv_total_price.text = intent.getStringExtra(Constants.roundTripTotalFare)
+            } else {
+                tv_total_price.text = oneWayRevalidatedFlightDetails.flightFare
             }
 
             with(flightBookingFlowDatBinding) {
@@ -116,7 +121,13 @@ class FlightBookingFlowActivity : BaseActivity(), PaymentResultWithDataListener 
 
                             val travellerDetailsFragment =
                                 supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments!![0] as TravellerDetailsFragment
-                            travellerDetailsFragment.navigateToPaymentScreen(oneWayRevalidatedFlightDetails.razorPayOrderId,fareSourceCode){
+                            travellerDetailsFragment.navigateToPaymentScreen(
+                                oneWayRevalidatedFlightDetails.razorPayOrderId,
+                                returnFlightInfo?.razorPayOrderId ?: "",
+                                fareSourceCode,
+                                returnFlightInfo?.revalidatedFareItinerary?.airItineraryFareInfo?.FareSourceCode
+                                    ?: ""
+                            ) {
                                 //make some ui adjustments when we get callback.
                                 btn_continue_booking.visibility = GONE
                                 ll_grand_total.gravity = Gravity.CENTER

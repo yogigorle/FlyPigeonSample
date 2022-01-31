@@ -43,14 +43,20 @@ class FlightsListActivity : BaseActivity() {
 
     //some important params
     private var flightSrcAndDest = ""
+    private var returnFlightSrcAndDest = ""
     private var selectedClass = ""
     private var adultsCount = ""
     private var childrenCount = ""
     private var infantsCount = ""
+    private var srcAirportCode = ""
+    private var destAirPortCode = ""
 
     //params to store dep and arr roundtrip flight info
     private var roundTripDepFlightInfo: RoundTripAirFareItinerary? = null
     private var roundTripArrFlightInfo: RoundTripAirFareItinerary? = null
+
+    private var roundTripDepFlightFare = 0
+    private var roundTripArrFlightFare = 0
 
 
     private var roundTripTotalFareFormatted = ""
@@ -77,14 +83,20 @@ class FlightsListActivity : BaseActivity() {
                 Constants.FlightJourneyParams.InfantsCount.param,
                 0
             ).toString()
+
+            srcAirportCode = (it.getStringExtra(
+                Constants.FlightJourneyParams.SrcAirPortCode.param
+            ) ?: "")
+
+            destAirPortCode = (it.getStringExtra(
+                Constants.FlightJourneyParams.DestAirPortCode.param
+            ) ?: "")
+
+
             val flightSearchParams = hashMapOf(
                 Constants.FlightJourneyParams.JourneyType.param to flightSearchType,
-                Constants.FlightJourneyParams.SrcAirPortCode.param to (it.getStringExtra(
-                    Constants.FlightJourneyParams.SrcAirPortCode.param
-                ) ?: ""),
-                Constants.FlightJourneyParams.DestAirPortCode.param to (it.getStringExtra(
-                    Constants.FlightJourneyParams.DestAirPortCode.param
-                ) ?: ""),
+                Constants.FlightJourneyParams.SrcAirPortCode.param to srcAirportCode,
+                Constants.FlightJourneyParams.DestAirPortCode.param to destAirPortCode,
                 Constants.FlightJourneyParams.DepDate.param to (it.getStringExtra(Constants.FlightJourneyParams.DepDate.param)
                     ?: ""),
                 Constants.FlightJourneyParams.ReturnDate.param to (it.getStringExtra(Constants.FlightJourneyParams.ReturnDate.param)
@@ -95,11 +107,14 @@ class FlightsListActivity : BaseActivity() {
                 Constants.FlightJourneyParams.FlightClass.param to selectedClass
             )
 
+            val flightSrc = it.getStringExtra(Constants.FlightJourneyParams.SrcCity.param)
+            val flightDest = it.getStringExtra(Constants.FlightJourneyParams.DestCity.param)
+
             flightSrcAndDest =
-                "${it.getStringExtra(Constants.FlightJourneyParams.SrcCity.param)} to ${
-                    it.getStringExtra(Constants.FlightJourneyParams.DestCity.param)
-                }"
+                "$flightSrc to $flightDest"
             tv_toolbar_title.text = flightSrcAndDest
+
+            returnFlightSrcAndDest = "$flightDest to $flightSrc"
 
 
             tv_departure_date.text =
@@ -129,6 +144,10 @@ class FlightsListActivity : BaseActivity() {
                             ll_round_trip_bottom_strip.visibility = VISIBLE
                             rv_first_route_flights.adapter = roundTripDepFlightSearchAdapter
                             rv_second_route_flights.adapter = roundTripArrFlightSearchAdapter
+
+                            tv_first_route.text = "$srcAirportCode - $destAirPortCode"
+                            tv_second_route.text = "$destAirPortCode - $srcAirportCode"
+
                         }
                     })
             }
@@ -175,7 +194,7 @@ class FlightsListActivity : BaseActivity() {
                                                                         putExtra(
                                                                             Constants.FlightTypes.Return.type,
                                                                             FlightDetailsForReview(
-                                                                                flightSrcAndDest,
+                                                                                returnFlightSrcAndDest,
                                                                                 selectedClass,
                                                                                 arrRevalidatedResult
                                                                             )
@@ -271,8 +290,6 @@ class FlightsListActivity : BaseActivity() {
         flightType: String
     ) {
 
-        var roundTripDepFlightFare = 0
-        var roundTripArrFlightFare = 0
 
         if (flightType == Constants.FlightTypes.Departure.type) {
             roundTripDepFlightInfo = roundTripFareItinerary

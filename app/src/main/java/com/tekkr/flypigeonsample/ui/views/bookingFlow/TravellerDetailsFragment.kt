@@ -272,7 +272,7 @@ class TravellerDetailsFragment : BaseFragment() {
         calendar.set(Calendar.YEAR, currentYear - startYearRestrictionNo)
         val startYear = calendar.timeInMillis
 
-        calendar.set(Calendar.YEAR,currentYear - endYearRestrictionNo)
+        calendar.set(Calendar.YEAR, currentYear - endYearRestrictionNo)
         val endYear = calendar.timeInMillis
 
 
@@ -357,7 +357,13 @@ class TravellerDetailsFragment : BaseFragment() {
     }
 
 
-    fun navigateToPaymentScreen(razorPayId: String, fareSourceCode: String, onDone: () -> Unit) {
+    fun navigateToPaymentScreen(
+        oneWayFlightRazorPayId: String,
+        returnFlightRazorPayId: String,
+        oneWayFlightFareSourceCode: String,
+        returnFlightFareSourceCode: String,
+        onDone: () -> Unit
+    ) {
 
         val userEmail = et_user_email.text.toString()
         val phoneNum = et_user_phn.text.toString()
@@ -371,7 +377,7 @@ class TravellerDetailsFragment : BaseFragment() {
                 } else {
                     val travellerDetailsList = ArrayList<JsonObject>()
 
-                    if(adultsTravellersList.size > 0){
+                    if (adultsTravellersList.size > 0) {
                         for (adultDetails in adultsTravellersList) {
                             travellerDetailsList.add(
                                 with(adultDetails) {
@@ -379,7 +385,7 @@ class TravellerDetailsFragment : BaseFragment() {
                                         "passenger_type" to "ADULT",
                                         "title" to title,
                                         "first_name" to firstName,
-                                        "last_name" to "DOE",
+                                        "last_name" to "Doe",
                                         "dob" to formattedDob,
                                         "frequentFlyrNum" to "",
                                         "mealplan" to "",
@@ -404,7 +410,7 @@ class TravellerDetailsFragment : BaseFragment() {
                         }
                     }
 
-                    if(childTravellersList.size > 0){
+                    if (childTravellersList.size > 0) {
                         for (childTravellers in childTravellersList) {
                             travellerDetailsList.add(
                                 with(childTravellers) {
@@ -435,7 +441,7 @@ class TravellerDetailsFragment : BaseFragment() {
                         }
                     }
 
-                    if(infantsTravellersList.size > 0){
+                    if (infantsTravellersList.size > 0) {
                         for (infantTravellers in infantsTravellersList) {
                             travellerDetailsList.add(
                                 with(infantTravellers) {
@@ -455,7 +461,7 @@ class TravellerDetailsFragment : BaseFragment() {
 
 
                     val bookingDetails = BookingDetails(
-                        fareSourceCode,
+                        oneWayFlightFareSourceCode,
                         isPassportMandatory.toString(),
                         pinCode,
                         totalAdultsCount,
@@ -467,10 +473,33 @@ class TravellerDetailsFragment : BaseFragment() {
                         userEmail,
                         totalInfantsCount,
                         phoneNum,
-                        razorPayId
+                        oneWayFlightRazorPayId,
+                        Constants.FlightTypes.OneWay.type
                     )
 
                     flightBookingViewModel.bookingDetails.value = bookingDetails
+
+                    if(returnFlightFareSourceCode.isNotEmpty()){
+
+                        val returnFlightBookingDetails = BookingDetails(
+                            returnFlightFareSourceCode,
+                            isPassportMandatory.toString(),
+                            pinCode,
+                            totalAdultsCount,
+                            "415",
+                            travellerDetailsList,
+                            "WebFare",
+                            totalChildrenCount,
+                            countryCode,
+                            userEmail,
+                            totalInfantsCount,
+                            phoneNum,
+                            returnFlightRazorPayId,
+                            Constants.FlightTypes.Return.type
+                        )
+
+                        flightBookingViewModel.returnFlightBookingDetails.value = returnFlightBookingDetails
+                    }
 
 
                     val action =

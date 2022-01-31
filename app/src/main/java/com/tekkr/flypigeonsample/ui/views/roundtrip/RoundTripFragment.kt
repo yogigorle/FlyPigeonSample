@@ -30,7 +30,7 @@ class RoundTripFragment : BaseFragment() {
 
     var depDateInMillis = 0L
     var returnDateInMills = 0L
-    var adultTravellers = 0
+    var adultTravellers = 1
     var childTravellers = 0
     var infantTravellers = 0
     var depAndReturnDate = ""
@@ -57,13 +57,13 @@ class RoundTripFragment : BaseFragment() {
             launchSearchAirportsActivity(sourceType, roundTripAirportSearchActvLauncher)
         }
 
-        //set default travellers count
+//        set default travellers count
 //        lifecycleScope.launchWhenStarted {
 //            dataStoreManager.getString("TRAVELLERS_COUNT").collectLatest {
 //                tv_travellers_count.text = it ?: "1 Travellers"
 //            }
 //        }
-//
+
 
         iv_pointing_arrow_round_trip.setOnClickListener {
             interChangeSrcAndDest(

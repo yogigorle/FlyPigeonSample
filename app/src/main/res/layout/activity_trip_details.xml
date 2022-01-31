@@ -20,10 +20,52 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
-            android:id="@+id/ll_tickets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_one_way_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tickets for HYD-VSKP"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:background="@color/light_gray"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textSize="24sp"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/ll_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/tv_return_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tickets for HYD-VSKP"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:background="@color/light_gray"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textSize="24sp"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/ll_return_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+
 
     </androidx.core.widget.NestedScrollView>
 

@@ -19,6 +19,7 @@ data class BookingDetails(
     val email_id: String,
     val infant_flight: Int,
     val mobile_no: String,
-    val razorpay_order_id: String
+    val razorpay_order_id: String,
+    val flightType: String
 
 )

@@ -35,9 +35,11 @@ import java.lang.Exception
 
 class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusListener {
 
-    private var razorPayOrderId: String? = null
     private var flightBookingDetails: BookingDetails? = null
+    private var returnFlightBookingDetails: BookingDetails? = null
     private val flightBookingViewModel: FlightBookingViewModel by activityViewModels()
+    private var returnFlightPaymentVerification = false
+    private var returnFlightBookingStatus = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,27 +52,34 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as FlightBookingFlowActivity?)?.setPaymentStatusListener(this)
 
         flightBookingDetails = flightBookingViewModel.bookingDetails.value
-        razorPayOrderId = flightBookingDetails?.razorpay_order_id
+        (activity as FlightBookingFlowActivity?)?.setPaymentStatusListener(this)
+        val razorPayOrderId = flightBookingDetails?.razorpay_order_id
+
+        returnFlightBookingDetails = flightBookingViewModel.returnFlightBookingDetails.value
 
         if (razorPayOrderId != null && flightBookingDetails != null) {
-            startPaymentProcess()
+            startPaymentProcess(razorPayOrderId)
         } else {
             requireContext().showToast("Something went wrong please try again..")
         }
 
         btn_payment.setOnClickListener {
-            razorPayOrderId?.let {
-                startPaymentProcess()
+
+            if (!returnFlightPaymentVerification) {
+                startPaymentProcess(returnFlightBookingDetails?.razorpay_order_id)
+            } else {
+                startPaymentProcess(razorPayOrderId)
             }
+
+
         }
 
     }
 
-    private fun startPaymentProcess() {
-        razorPayOrderId?.let {
+    private fun startPaymentProcess(razorpayPaymentId: String?) {
+        razorpayPaymentId?.let {
             Checkout.preload(applicationContext)
             val activity: Activity = requireActivity()
             val co = Checkout()
@@ -115,9 +124,23 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
                             true
                         ) && paymentRes.payment_status.equals("success", true)
                     ) {
-                        //handle success case
-                        handleSuccessAndFailureCase(true)
-                        bookFlight()
+
+                        if (returnFlightBookingDetails != null && !returnFlightPaymentVerification) {
+                            startPaymentProcess(returnFlightBookingDetails?.razorpay_order_id)
+                            returnFlightPaymentVerification = true
+                        } else {
+                            //handle success case
+                            handleSuccessAndFailureCase(true)
+                            bookFlight(flightBookingDetails) { oneWayFlightUniqueId ->
+                                if (returnFlightBookingDetails != null) {
+                                    bookFlight(returnFlightBookingDetails) {
+                                        launchTripDetailsActivity(oneWayFlightUniqueId, it)
+                                    }
+                                } else {
+                                    launchTripDetailsActivity(oneWayFlightUniqueId)
+                                }
+                            }
+                        }
                     } else {
                         handleSuccessAndFailureCase(false)
                     }
@@ -137,6 +160,7 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
     ) {
         Log.e("failurePaymentData", "$errorCode $errorDescription")
         handleSuccessAndFailureCase(false)
+        returnFlightPaymentVerification = false
     }
 
     private fun handleSuccessAndFailureCase(paymentSuccess: Boolean = false) {
@@ -152,7 +176,10 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
         }
     }
 
-    private fun bookFlight() {
+    private fun bookFlight(
+        flightBookingDetails: BookingDetails?,
+        onBookingSucceeded: (String) -> Unit
+    ) {
         flightBookingDetails?.let {
             flightBookingViewModel.bookFlight(it).observe(viewLifecycleOwner, Observer {
                 progress_bar_view.visibility = VISIBLE
@@ -165,19 +192,8 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
                             true
                         )
                     ) {
-                        tv_booking_status.text =
-                            "Flight booked successfully, redirecting to ticket details screen."
-                        //go to ticket dis
-                        val intent =
-                            Intent(requireContext(), TripDetailsShowCaseActivity::class.java)
-                        intent.putExtra(
-                            Constants.bookingUniqueId,
-                            bookingFlightResult.UniqueID
-                        )
-                        requireActivity().startActivityFromFragment(
-                            this,
-                            intent, 100
-                        )
+                        onBookingSucceeded(bookingFlightResult.UniqueID)
+
                     } else {
                         val errors = gson.fromJson(
                             bookingFlightResult.errors.toString(),
@@ -191,6 +207,7 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
                 }
             })
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -198,5 +215,26 @@ class PaymentFragment : BaseFragment(), FlightBookingFlowActivity.PaymentStatusL
 
         requireActivity().finish()
     }
+
+    private fun launchTripDetailsActivity(
+        oneWayFlightUniqueId: String,
+        roundTripFlightUniqueId: String = ""
+    ) {
+        tv_booking_status.text =
+            "Flight booked successfully, redirecting to ticket details screen."
+        //go to ticket dis
+        val intent =
+            Intent(requireContext(), TripDetailsShowCaseActivity::class.java)
+        intent.putExtra(
+            Constants.bookingUniqueId,
+            oneWayFlightUniqueId
+        )
+        intent.putExtra(Constants.returnBookingUniqueId, roundTripFlightUniqueId)
+        requireActivity().startActivityFromFragment(
+            this,
+            intent, 100
+        )
+    }
+
 
 }
